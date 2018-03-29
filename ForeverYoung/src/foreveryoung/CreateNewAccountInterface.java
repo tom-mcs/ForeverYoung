@@ -17,6 +17,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import java.sql.*;
+
 /**
  *
  * @author Admin
@@ -59,20 +61,4 @@ public class CreateNewAccountInterface {
         JOptionPane.showConfirmDialog(frame, panel, "Forever Young - Create New Account", JOptionPane.OK_CANCEL_OPTION);
        
     }
-}
-
-class DbCreate {
-    
-    public static void main(String[] args) throws Exception {
-        /* ------- Start DB ----------- */
-        final String driver = "org.apache.derby.jdbc.EmbeddedDriver";
-        Class.forName(driver).newInstance();
-
-        final String protocol = "jdbc:derby:";
-        final String dbName = "derbyDB";
-        Connection connection = DriverManager.getConnection(
-                protocol + dbName + ";create=true");
-        System.out.println("=====    Started/Connected DB    =====");
-    }
-    
 }
