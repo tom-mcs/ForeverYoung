@@ -27,7 +27,11 @@ public class Broker {
         System.out.println("=====    Started/Connected DB    =====");
      }
     
-    
-    
-    
+     public static boolean addUser(String username, String password){     
+         return false;
+     }
+     
+     public static String[] getUser(){
+         return null;
+     }
 }
