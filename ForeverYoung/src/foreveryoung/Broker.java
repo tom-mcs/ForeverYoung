@@ -79,6 +79,7 @@ public class Broker {
      }
      
      //looks up username in db and returns their info as a user object
+     //returns null if the user isn't found
      public static User getUser(String username) throws SQLException{     
         ResultSet rs = statement.executeQuery("SELECT * FROM users WHERE username='" + username + "'");
         User user = new User();
