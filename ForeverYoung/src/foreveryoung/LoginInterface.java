@@ -25,7 +25,7 @@ class LoginInterface {
 
     //constructor
     public LoginInterface(){
-    this.init();
+        this.init();
     }
     
     //initialises components

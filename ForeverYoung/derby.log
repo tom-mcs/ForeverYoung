@@ -1,13 +1,13 @@
 ----------------------------------------------------------------
-Thu Mar 29 10:13:45 ACDT 2018:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): instance a816c00e-0162-6efe-f4a0-00000360a838 
-on database directory C:\Users\rhino_000\Documents\NetBeansProjects\ForeverYoung\ForeverYoung\derbyDB with class loader sun.misc.Launcher$AppClassLoader@610455d6 
-Loaded from file:/C:/Program%20Files/Java/jdk1.8.0_111/db/lib/derby.jar
+Thu Mar 29 11:49:54 ACDT 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): instance a816c00e-0162-6f56-fa4d-000003224af8 
+on database directory C:\Users\Admin\Documents\GitHub\ForeverYoung\ForeverYoung\derbyDB with class loader sun.misc.Launcher$AppClassLoader@610455d6 
+Loaded from file:/C:/Program%20Files/Java/jdk1.8.0_101/db/lib/derby.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_111-b14
-user.dir=C:\Users\rhino_000\Documents\NetBeansProjects\ForeverYoung\ForeverYoung
-os.name=Windows 8.1
+java.runtime.version=1.8.0_101-b13
+user.dir=C:\Users\Admin\Documents\GitHub\ForeverYoung\ForeverYoung
+os.name=Windows 10
 os.arch=amd64
-os.version=6.3
+os.version=10.0
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''

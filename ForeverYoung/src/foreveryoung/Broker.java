@@ -15,7 +15,7 @@ import java.sql.DriverManager;
  */
 public class Broker {
     
-     public static void main(String[] args) throws Exception {
+     public Broker() throws Exception {
      /* ------- Start DB ----------- */
         final String driver = "org.apache.derby.jdbc.EmbeddedDriver";
         Class.forName(driver).newInstance();
