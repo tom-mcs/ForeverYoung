@@ -7,6 +7,8 @@ package foreveryoung;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -57,4 +59,20 @@ public class CreateNewAccountInterface {
         JOptionPane.showConfirmDialog(frame, panel, "Forever Young - Create New Account", JOptionPane.OK_CANCEL_OPTION);
        
     }
+}
+
+class DbCreate {
+    
+    public static void main(String[] args) throws Exception {
+        /* ------- Start DB ----------- */
+        final String driver = "org.apache.derby.jdbc.EmbeddedDriver";
+        Class.forName(driver).newInstance();
+
+        final String protocol = "jdbc:derby:";
+        final String dbName = "derbyDB";
+        Connection connection = DriverManager.getConnection(
+                protocol + dbName + ";create=true");
+        System.out.println("=====    Started/Connected DB    =====");
+    }
+    
 }
