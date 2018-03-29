@@ -44,7 +44,10 @@ public class Derby {
         final String createSql = "create table users ( id int, name varchar(32) )";
         statement.execute(createSql);
         System.out.println("=====    Created Table 'users'   =====");
-
+        
+        final String createSQL = "create table accounts ( username String, password varchar(35) )";
+        statement.execute(createSQL);
+        System.out.println("=====   Created Table 'accounts'   =====");
         /* ----- Insert 'peeskillet' into 'users' ----*/
         final String insertSql = "insert into users values ( 1 , 'peeskillet' )";
         statement.execute(insertSql);
