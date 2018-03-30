@@ -2,6 +2,9 @@ package foreveryoung;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -55,6 +58,23 @@ class LoginInterface {
         
         //Show JOption Pane containing panel within frame
         JOptionPane.showConfirmDialog(frame, panel, "Forever Young - Login", JOptionPane.OK_CANCEL_OPTION);
-       
+        
+        //gets user from the typed username, and checks the typed password with the one in the database
+        //first checks to see if user exists, then if password matches, user is logged in, if not then prints that the password doesn't match
+        String username = userNameTextField.getText();
+        String password = passwordField.getText();  //java doesn't like that the password isn't encrypted, so might have to change this later
+        User user = Broker.getUser(username);  
+        if(user == null){
+            System.out.println("user not found");
+        }
+        else{
+            if (password.equals(user.getPassword())){
+                System.out.println("user is logged in as " + user.getUserName());
+            }
+            else{
+                System.out.println("password doesn't match");
+            }  
+        }
+      
     }
 }

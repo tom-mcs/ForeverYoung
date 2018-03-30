@@ -59,6 +59,22 @@ public class CreateNewAccountInterface {
         
         //display JOptionPane
         JOptionPane.showConfirmDialog(frame, panel, "Forever Young - Create New Account", JOptionPane.OK_CANCEL_OPTION);
-       
+        
+        String username = userNameTextField.getText();
+        String password1 = passwordField1.getText();
+        String password2 = passwordField2.getText();
+        
+        //if passwords match, adds the user. if user already exists returns an error
+        if (password1.equals(password2)){
+            if(Broker.addUser(username, password1)){
+                System.out.println("user added successfully"); 
+            }
+            else{
+                System.out.println("error: username already exists"); 
+            }
+        }
+        else{
+            System.out.println("passwords do not match");
+        }
     }
 }

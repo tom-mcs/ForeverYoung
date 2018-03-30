@@ -49,6 +49,11 @@ public class Broker {
         
         statement.execute("DROP table users");
         statement.execute("CREATE TABLE users (username VARCHAR(15) PRIMARY KEY, password VARCHAR(15))");
+        
+        //adds users to db as example data
+        addUser("Matt", "password");
+        addUser("Ryan", "123");
+        addUser("Tom", "bum");
      }
      
     //closes all connections to the database
@@ -72,27 +77,36 @@ public class Broker {
     }
     
     //adds user with username and password as argument
-    //haven't implemented a check to see if the user already exists before insert, will look into that later
-     public static void addUser(String username, String password) throws SQLException{  
-        statement = connection.createStatement();
-        statement.execute("INSERT INTO USERS VALUES ('" + username + "', '" + password + "')");
+     public static boolean addUser(String username, String password){  
+        try{
+            statement = connection.createStatement();
+            statement.execute("INSERT INTO users VALUES ('" + username + "', '" + password + "')");
+            return true;
+        }
+        catch (SQLException ex) {
+            return false;
+        }
      }
      
      //looks up username in db and returns their info as a user object
      //returns null if the user isn't found
-     public static User getUser(String username) throws SQLException{     
-        ResultSet rs = statement.executeQuery("SELECT * FROM users WHERE username='" + username + "'");
-        User user = new User();
-        
-        if(rs.next()){
-            user.setUserName(rs.getString("username"));
-            user.setPassword(rs.getString("password"));
-            
-            return user;
+     public static User getUser(String username){  
+        try{
+            ResultSet rs = statement.executeQuery("SELECT * FROM users WHERE username='" + username + "'");
+            User user = new User();
+
+            if(rs.next()){
+                user.setUserName(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+
+                return user;
+            }
+            else{
+                return null;
+            }
         }
-        else{
+        catch(SQLException ex){
             return null;
         }
-     }
-     
+    }    
 }
