@@ -46,9 +46,13 @@ public class Broker {
         System.out.println("=====    Started/Connected DB    =====");
         
         statement = connection.createStatement();
-        
-        statement.execute("DROP table users");
-        statement.execute("CREATE TABLE users (username VARCHAR(15) PRIMARY KEY, password VARCHAR(15))");
+        try{
+            statement.execute("DROP TABLE users");
+        }
+        catch (SQLException sqlExcept){
+            System.out.println("table doesn't exist so can't be dropped");
+        }
+        statement.execute("CREATE TABLE users (username VARCHAR(15) PRIMARY KEY NOT NULL, password VARCHAR(15) NOT NULL)");
         
         //adds users to db as example data
         addUser("Matt", "password");
@@ -77,14 +81,19 @@ public class Broker {
     }
     
     //adds user with username and password as argument
-     public static boolean addUser(String username, String password){  
-        try{
-            statement = connection.createStatement();
-            statement.execute("INSERT INTO users VALUES ('" + username + "', '" + password + "')");
-            return true;
-        }
-        catch (SQLException ex) {
+     public static boolean addUser(String username, String password){
+        if(username.isEmpty() || password.isEmpty()){
             return false;
+        }
+        else{
+            try{
+                statement = connection.createStatement();
+                statement.execute("INSERT INTO users VALUES ('" + username + "', '" + password + "')");
+                return true;
+            }
+            catch (SQLException ex) {
+                return false;
+            }
         }
      }
      

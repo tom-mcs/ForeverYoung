@@ -70,7 +70,7 @@ public class CreateNewAccountInterface {
                 System.out.println("user added successfully"); 
             }
             else{
-                System.out.println("error: username already exists"); 
+                System.out.println("error: username already exists or fields were left empty"); 
             }
         }
         else{
