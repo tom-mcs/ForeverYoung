@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -68,10 +69,12 @@ public class Broker {
             if (statement != null)
             {
                 statement.close();
+                System.out.print("statement closed");
             }
             if (connection != null)
             {
                 connection.close();
+                System.out.print("connection closed");
             }           
         }
         catch (SQLException sqlExcept)
@@ -116,12 +119,18 @@ public class Broker {
         }
     }    
      
-    public static User[] getAllUsers(){
-        User tom = new User("tom", "tompass");
-        User joe = new User("joe", "joepass");
-        User bill = new User("bill", "billpass");
-        
-        User[] users = {tom, joe, bill};
-        return users;
+    public static ArrayList<User> getAllUsers(){
+        try{
+            ResultSet rs = statement.executeQuery("SELECT * FROM users");
+            ArrayList<User> Users = new ArrayList<>();
+            
+            while(rs.next()){
+                Users.add(new User(rs.getString("username"),rs.getString("password")));
+            }
+            return Users;
+        }
+        catch(SQLException ex){
+           return null; 
+        }        
     }
 }

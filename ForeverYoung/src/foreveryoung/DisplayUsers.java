@@ -11,6 +11,7 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -48,12 +49,12 @@ public class DisplayUsers {
   
         
         //create text field of all users
-        User[] users = Broker.getAllUsers();
-        String[][] table = new String[users.length][2];
+        ArrayList<User> users = Broker.getAllUsers();
+        String[][] table = new String[users.size()][2];
        
-        for(int i = 0 ; i < users.length ; i++){
-            table[i][0] = users[i].getUserName();
-            table[i][1] = users[i].getPassword();
+        for(int i = 0 ; i < users.size() ; i++){
+            table[i][0] = users.get(i).getUserName();
+            table[i][1] = users.get(i).getPassword();
         }
         String[] titles = {"Username", "Password"};
         JTable jTable = new JTable(table, titles);
