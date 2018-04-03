@@ -12,6 +12,22 @@ package foreveryoung;
 public class User {
     private String userName;
     private String password;
+    private boolean isLoggedIn = false;
+    
+    public User(String username, String password){
+        this.userName = username;
+        this.password = password;
+    }
+    
+    public void login(){
+        isLoggedIn = true;
+    }
+    public void logout(){
+        isLoggedIn = false;
+    }
+    public boolean isLoggedIn(){
+        return isLoggedIn();
+    }
     
     public String getUserName() {
         return userName;

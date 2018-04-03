@@ -24,13 +24,20 @@ import javax.swing.JPanel;
  */
 public class WelcomeInterface extends Observable {
     
+    private JButton loginButton = new JButton("Log In");
+    private JButton createAccountButton = new JButton("Create Account");
+    private boolean selectionMade = false;
+    private String action;
+    JFrame frame = new JFrame("Forever Young - Welcome");
+    
+    
     public WelcomeInterface(){
         init();
     }
     
     private void init(){
         //create relevant panels and frames
-        JFrame frame = new JFrame("Forever Young - Welcome");
+
         JPanel panel = new JPanel(new GridLayout(2,1));
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 100));
         JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 100));
@@ -52,9 +59,7 @@ public class WelcomeInterface extends Observable {
         JLabel label  = new JLabel(logo);
         logoPanel.add(label);
         
-        //Create Buttons
-        JButton loginButton = new JButton("Log In");
-        JButton createAccountButton = new JButton("Create Account");
+        //add Buttons
         buttonPanel.add(loginButton);
         buttonPanel.add(createAccountButton);
         
@@ -67,21 +72,35 @@ public class WelcomeInterface extends Observable {
         frame.setVisible(true);
         
         //add action listeners.
-        //NOTE: this is a mock implementation. implementing the functionality of the Login Interface
-        //and the create Account Interface should be done using a controller.
         loginButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                new LoginInterface();
+                action = "login";
+                selectionMade = true;
             }
             
         });
         createAccountButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CreateNewAccountInterface();
+                action = "createNewAccount";
+                selectionMade = true;
             }
         });
         
     }
+ 
+    public boolean selectionMade(){
+        return selectionMade;
+    }
+    
+    public String getAction(){
+        selectionMade = false;
+        return action;
+    }
+    
+    public void dispose(){
+        frame.dispose();
+    }
+
 }

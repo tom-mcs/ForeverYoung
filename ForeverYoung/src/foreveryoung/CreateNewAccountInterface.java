@@ -25,6 +25,10 @@ import java.sql.*;
  */
 public class CreateNewAccountInterface {
     
+    private JTextField userNameTextField = new JTextField();
+    private JPasswordField passwordField1 = new JPasswordField();
+    private JPasswordField passwordField2 = new JPasswordField();
+    
     public CreateNewAccountInterface(){
         this.init();
     }
@@ -38,9 +42,7 @@ public class CreateNewAccountInterface {
         JPanel TextFieldPanel = new JPanel(new GridLayout(0,1,2,2));
         
         //create components
-        JTextField userNameTextField = new JTextField();
-        JPasswordField passwordField1 = new JPasswordField();
-        JPasswordField passwordField2 = new JPasswordField();
+
         JLabel uLabel = new JLabel("Username:", SwingConstants.RIGHT);
         JLabel p1Label = new JLabel("Password:", SwingConstants.RIGHT);
         JLabel p2Label = new JLabel("Re-Enter Password:", SwingConstants.RIGHT);
@@ -59,15 +61,19 @@ public class CreateNewAccountInterface {
         
         //display JOptionPane
         JOptionPane.showConfirmDialog(frame, panel, "Forever Young - Create New Account", JOptionPane.OK_CANCEL_OPTION);
-        
+    }
+    
+    public void create(){
+
         String username = userNameTextField.getText();
         String password1 = passwordField1.getText();
         String password2 = passwordField2.getText();
         
+        
         //if passwords match, adds the user. if user already exists returns an error
         if (password1.equals(password2)){
             if(Broker.addUser(username, password1)){
-                System.out.println("user added successfully"); 
+                System.out.println("user added successfully");
             }
             else{
                 System.out.println("error: username already exists or fields were left empty"); 

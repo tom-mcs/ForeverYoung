@@ -102,12 +102,9 @@ public class Broker {
      public static User getUser(String username){  
         try{
             ResultSet rs = statement.executeQuery("SELECT * FROM users WHERE username='" + username + "'");
-            User user = new User();
-
+            
             if(rs.next()){
-                user.setUserName(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
-
+                User user = new User(rs.getString("username"),rs.getString("password"));
                 return user;
             }
             else{
@@ -118,4 +115,13 @@ public class Broker {
             return null;
         }
     }    
+     
+    public static User[] getAllUsers(){
+        User tom = new User("tom", "tompass");
+        User joe = new User("joe", "joepass");
+        User bill = new User("bill", "billpass");
+        
+        User[] users = {tom, joe, bill};
+        return users;
+    }
 }

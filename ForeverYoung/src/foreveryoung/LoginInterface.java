@@ -26,6 +26,9 @@ import javax.swing.SwingConstants;
  */
 class LoginInterface {
 
+    private JTextField userNameTextField = new JTextField();
+    private JPasswordField passwordField = new JPasswordField();
+    
     //constructor
     public LoginInterface(){
         this.init();
@@ -38,10 +41,7 @@ class LoginInterface {
         JPanel panel = new JPanel(new BorderLayout(5,5)); 
         JPanel LabelPanel = new JPanel(new GridLayout(0,1,2,2));
         JPanel TextFieldPanel = new JPanel(new GridLayout(0,1,2,2));
-        
-        //create text fields
-        JTextField userNameTextField = new JTextField();
-        JPasswordField passwordField = new JPasswordField();
+
         //create Labels
         JLabel uLabel = new JLabel("Username:", SwingConstants.RIGHT);
         JLabel pLabel = new JLabel("Password:", SwingConstants.RIGHT);
@@ -58,7 +58,9 @@ class LoginInterface {
         
         //Show JOption Pane containing panel within frame
         JOptionPane.showConfirmDialog(frame, panel, "Forever Young - Login", JOptionPane.OK_CANCEL_OPTION);
-        
+    }
+    
+    public User login(){
         //gets user from the typed username, and checks the typed password with the one in the database
         //first checks to see if user exists, then if password matches, user is logged in, if not then prints that the password doesn't match
         String username = userNameTextField.getText();
@@ -69,12 +71,15 @@ class LoginInterface {
         }
         else{
             if (password.equals(user.getPassword())){
+                user.login();
                 System.out.println("user is logged in as " + user.getUserName());
+                return user;
             }
             else{
                 System.out.println("password doesn't match");
             }  
         }
-      
+        return null;
     }
+
 }
