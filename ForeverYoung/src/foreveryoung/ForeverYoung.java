@@ -9,8 +9,9 @@ import static java.lang.Thread.sleep;
  */
 
 /**
- *
- * @author Admin
+ * This is the main file for the ForeverYoung Fitness tracking app.
+ * It is the main controller for the program.
+ * @author Thomas McSkimming
  */
 public class ForeverYoung {
     /**
@@ -18,29 +19,70 @@ public class ForeverYoung {
      */
     public static void main(String[] args) throws Exception {
         Broker broker = new Broker();
-        WelcomeInterface WInterface = new WelcomeInterface();
-        User user = null;
         
-        while (user == null){
+        MainFrame mainFrame = new MainFrame();
+        
+        User user = new User();
+        WelcomeInterface WInterface = new WelcomeInterface();
+        
+        mainFrame.setVisible(true); 
+        
+        //login/create account sequence
+      
+        while (!user.isLoggedIn()){
+            mainFrame.setPanel(WInterface);
             while(!WInterface.selectionMade()){
                 sleep(100);
             }
-
             String action = WInterface.getAction();
+            
+            
             //create login interface
             if (action.equals("login")){
                 LoginInterface loginInterface = new LoginInterface();
-                user = loginInterface.login();
+                mainFrame.setPanel(loginInterface);
+                loginInterface.setDefaultButton();
+                boolean done = false;
+                while (!done){
+                    while(!loginInterface.selectionMade()){
+                        sleep(100);
+                    }
+                    String loginAction = loginInterface.getAction();
+                    if(loginAction.equals("login")){
+                        if(loginInterface.login()){
+                            user = loginInterface.getUser();
+                            done = true;
+                        }
+                    }
+                    if(loginAction.equals("cancel")){
+                        done = true;
+                    }
+                }
             }
+            
             //create CNA interface
             if (action.equals("createNewAccount")){
                 CreateNewAccountInterface CNAInterface = new CreateNewAccountInterface();
-                CNAInterface.create();
+                mainFrame.setPanel(CNAInterface);
+                CNAInterface.setDefaultButton();
+                
+                boolean done = false;
+                while(!done){
+                    while(!CNAInterface.selectionMade()){
+                        sleep(100);
+                    }
+                    String CNAAction = CNAInterface.getAction();
+                    if(CNAAction.equals("create")){
+                        done = CNAInterface.create();
+                    }
+                    if(CNAAction.equals("cancel")){
+                        done = true;
+                    }
+                }
             }
         }
-        WInterface.dispose();
+        mainFrame.setPanel(new DisplayUsers());
         
-        new DisplayUsers();
         
     }
 

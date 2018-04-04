@@ -5,30 +5,31 @@
  */
 package foreveryoung;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.border.EmptyBorder;
 
 /**
- *
- * @author Admin
+ * This Interface displays the logo and a list of all users and passwords 
+ * that are stored in the database. It is being used as a temporary tool for
+ * demonstration and debugging.
+ * @author Thomas McSkimming
  */
-public class DisplayUsers {
+public class DisplayUsers extends JPanel {
     
     public DisplayUsers(){
-        JFrame frame = new JFrame("ForeverYoung - Users");
-        JPanel panel = new JPanel(new GridLayout(2,1));
-        JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 100));
-        JPanel userPanel = new JPanel();
+
+        this.setLayout(new GridLayout(2,1));
+        this.setBorder(new EmptyBorder(10,10,10,10));
+        JPanel logoPanel = new JPanel(new BorderLayout());
+        JPanel userPanel = new JPanel(new BorderLayout());
         
         //Dimensions
         int frameHeight = 500;
@@ -38,14 +39,12 @@ public class DisplayUsers {
         Dimension ScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int screenWidth = ScreenSize.width;
         int screenHeight = ScreenSize.height;
-        
-        frame.setSize(FrameSize);
-        frame.setLocation((screenWidth-frameWidth)/2,(screenHeight-frameHeight)/2);
+       
         
         //Import Logo and add to Logo Panel
         ImageIcon logo = new ImageIcon("./lph.png");
         JLabel label  = new JLabel(logo);
-        logoPanel.add(label);
+        logoPanel.add(label, BorderLayout.CENTER);
   
         
         //create text field of all users
@@ -59,15 +58,12 @@ public class DisplayUsers {
         String[] titles = {"Username", "Password"};
         JTable jTable = new JTable(table, titles);
         
-        userPanel.add(jTable);
+        userPanel.add(jTable, BorderLayout.CENTER);
         
         //Add panels to frame and make visible
-        panel.add(logoPanel);
-        panel.add(userPanel);
-        frame.add(panel);
-        frame.repaint();
-        frame.revalidate();
-        frame.setVisible(true);
+        this.add(logoPanel);
+        this.add(userPanel);
+  
        
         
     }
