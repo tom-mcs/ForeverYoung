@@ -28,6 +28,7 @@ public class MainFrame extends JFrame{
     public MainFrame(){
         super.setSize(frameSize);
         super.setLocation((screenWidth-frameWidth)/2,(screenHeight-frameHeight)/2);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
     public void setPanel(JPanel panel){
@@ -37,5 +38,5 @@ public class MainFrame extends JFrame{
         super.revalidate();
         super.repaint();
     }
-
+    
 }
