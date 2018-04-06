@@ -60,10 +60,6 @@ public class Broker {
                 System.out.println("error creating user table");
             }
         } 
-        //adds users to db as example data
-        addUser("Matt", "password");
-        addUser("Ryan", "123");
-        addUser("Tom", "bum");
      }
      
     //closes all connections to the database
