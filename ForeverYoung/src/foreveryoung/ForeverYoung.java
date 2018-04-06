@@ -3,7 +3,6 @@ package foreveryoung;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import static java.lang.Thread.sleep;
-import javax.swing.JFrame;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -12,25 +11,20 @@ import javax.swing.JFrame;
  */
 
 /**
- * This is the main file for the ForeverYoung Fitness tracking app.
- * It is the main controller for the program.
+ * This is the main controller for the ForeverYoung Fitness tracking app.
  * @author Thomas McSkimming
  */
 public class ForeverYoung {
-    /**
-     * @param args the command line arguments
-     */
+    
     public static void main(String[] args) throws Exception {
         Broker broker = new Broker();
-        
         MainFrame mainFrame = new MainFrame();
-        
         User user = new User();
         WelcomeInterface WInterface = new WelcomeInterface();
+        mainFrame.setVisible(true);
         
-        mainFrame.setVisible(true); 
-        
-         mainFrame.addWindowListener(new WindowAdapter(){
+        //program terminates and database is shut down when the main frame is closed
+        mainFrame.addWindowListener(new WindowAdapter(){
         @Override
         public void windowClosing(WindowEvent we)
         {
@@ -39,68 +33,78 @@ public class ForeverYoung {
         }
         });
          
-        //login/create account sequence
+        //loop forever
         while(true){
+            /**
+             * login/create new account sequence
+             * continues until a user is logged in.
+             * checks if a button is clicked and creates the relevant interface
+             **/
             while (!user.isLoggedIn()){
                 mainFrame.setPanel(WInterface);
-                while(!WInterface.selectionMade()){
-                    sleep(100);
-                }
-                String action = WInterface.getAction();
-
-
+                sleep(50);  //delay to reduce frequency of checking
+                
                 //create login interface
-                if (action.equals("login")){
+                if (WInterface.getLoginButtonClicked()){
+                    WInterface.setLoginButtonClicked(false);
                     LoginInterface loginInterface = new LoginInterface();
                     mainFrame.setPanel(loginInterface);
                     loginInterface.setDefaultButton();
                     boolean done = false;
+                    
+                    //continues until user is logged in or cancel is clicked
                     while (!done){
-                        while(!loginInterface.selectionMade()){
-                            sleep(100);
-                        }
-                        String loginAction = loginInterface.getAction();
-                        if(loginAction.equals("login")){
+                        sleep(50);
+                        if(loginInterface.getLoginButtonClicked()){
+                            loginInterface.setLoginButtonClicked(false);
                             if(loginInterface.login()){
                                 user = loginInterface.getUser();
                                 done = true;
                             }
                         }
-                        if(loginAction.equals("cancel")){
+                        if(loginInterface.getCancelButtonClicked()){
+                            loginInterface.setCancelButtonClicked(false);
                             done = true;
                         }
                     }
                 }
 
                 //create CNA interface
-                if (action.equals("createNewAccount")){
+                if (WInterface.getCNAButtonClicked()){
+                    WInterface.setCNAButtonClicked(false);
                     CreateNewAccountInterface CNAInterface = new CreateNewAccountInterface();
                     mainFrame.setPanel(CNAInterface);
                     CNAInterface.setDefaultButton();
-
                     boolean done = false;
+                    
+                    //continues until account is created or cancel is pressed
                     while(!done){
-                        while(!CNAInterface.selectionMade()){
-                            sleep(100);
-                        }
-                        String CNAAction = CNAInterface.getAction();
-                        if(CNAAction.equals("create")){
+                        sleep(50);
+                        if(CNAInterface.isCreateButtonClicked()){
+                            CNAInterface.setCreateButtonClicked(false);
                             done = CNAInterface.create();
                         }
-                        if(CNAAction.equals("cancel")){
+                        if(CNAInterface.isCancelButtonClicked()){
+                            CNAInterface.setCancelButtonClicked(false);
                             done = true;
                         }
                     }
                 }
             }
+            
+            /**
+             * user is logged in create display users interface
+             */
             DisplayUsers displayUsers = new DisplayUsers();
             mainFrame.setPanel(displayUsers);
+            //continues until user is logs out
             while(user.isLoggedIn()){
-                while(!displayUsers.getLogoutClicked()){
-                    sleep(100);
+                sleep(50);
+                if(displayUsers.getLogoutClicked()){
+                    displayUsers.setLogoutClicked(false);
+                    System.out.println("logging out");
+                    user.logout();
                 }
-                System.out.println("logging out");
-                user.logout();
             }
         }
     }

@@ -11,13 +11,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**
- * this class is the extends JFrame and creates a frame for the program to run into.
+ * this class is the extends JFrame and creates a frame for interfaces to be displayed in.
  * all interfaces extend JPanel and are placed into this frame.
  * @author Thomas McSkimming
  */
 public class MainFrame extends JFrame{
     
-    //set/get dimensions        
+    //Initial Dimensions        
     private final Dimension ScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private final int screenWidth = ScreenSize.width;
     private final int screenHeight = ScreenSize.height;
@@ -25,11 +25,13 @@ public class MainFrame extends JFrame{
     private final int frameWidth = screenWidth/4;
     private final Dimension frameSize = new Dimension(frameWidth,frameHeight);
     
+    //constructor
     public MainFrame(){
         super.setSize(frameSize);
         super.setLocation((screenWidth-frameWidth)/2,(screenHeight-frameHeight)/2);        
     }
     
+    //Set the panel that is placed into the main frame.
     public void setPanel(JPanel panel){
         super.getContentPane().removeAll();
         panel.setSize(super.getSize());
@@ -37,5 +39,5 @@ public class MainFrame extends JFrame{
         super.revalidate();
         super.repaint();
     }
-    
+ 
 }

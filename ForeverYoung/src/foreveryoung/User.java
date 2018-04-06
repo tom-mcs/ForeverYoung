@@ -7,7 +7,6 @@ package foreveryoung;
 
 /**
  * This class is the User class. It is to be extended to practitioner and client classes.
- * 
  * @author Thomas McSkimming
  */
 public class User {
@@ -15,21 +14,26 @@ public class User {
     private String password;
     private boolean isLoggedIn;
     
+    //create a user with username and password
     public User(String username, String password){
         this.userName = username;
         this.password = password;
-        this.isLoggedIn = false;
+        isLoggedIn = false;
     }
     
+    //create a user with no username and password
     public User(){
-        this.isLoggedIn = false;
+        isLoggedIn = false;
     }
+    
     public void login(){
         isLoggedIn = true;
     }
+    
     public void logout(){
         isLoggedIn = false;
     }
+    
     public boolean isLoggedIn(){
         return isLoggedIn;
     }

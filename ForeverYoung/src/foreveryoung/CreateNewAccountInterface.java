@@ -30,14 +30,14 @@ import javax.swing.border.EmptyBorder;
  */
 public class CreateNewAccountInterface extends JPanel{
     
-    private JTextField userNameTextField = new JTextField();
-    private JPasswordField passwordField1 = new JPasswordField();
-    private JPasswordField passwordField2 = new JPasswordField();
+    private final JTextField userNameTextField = new JTextField();
+    private final JPasswordField passwordField1 = new JPasswordField();
+    private final JPasswordField passwordField2 = new JPasswordField();
     private JLabel dialog = new JLabel();
-    private JButton create = new JButton("create");
-    private JButton cancel = new JButton("cancel");
-    private String action;
-    private boolean selectionMade;
+    private final JButton createButton = new JButton("create");
+    private final JButton cancel = new JButton("cancel");
+    private boolean createButtonClicked;
+    private boolean cancelButtonClicked;
     
     public CreateNewAccountInterface() {
         this.init();
@@ -45,20 +45,14 @@ public class CreateNewAccountInterface extends JPanel{
     
     //initialises components
     private void init(){
-        //create frames and panels
- 
+        //formatting
         this.setLayout(new GridLayout(2,1));
         this.setBorder(new EmptyBorder(10,10,10,10));
         JPanel topPanel = new JPanel(new BorderLayout());
-        JPanel bottomPanel = new JPanel(new BorderLayout());
-        bottomPanel.setLayout(new BorderLayout(5,5)); 
-        
+        JPanel bottomPanel = new JPanel(new BorderLayout(5,5));
         JPanel LabelPanel = new JPanel(new GridLayout(0,1,2,20));
         JPanel TextFieldPanel = new JPanel(new GridLayout(0,1,2,20));
-        
         JPanel ButtonPanel = new JPanel(new FlowLayout());
-
-        //create fonts
         Font dialogFont = new Font(Font.SANS_SERIF, Font.PLAIN, 11);
         dialog.setFont(dialogFont);
         
@@ -66,11 +60,10 @@ public class CreateNewAccountInterface extends JPanel{
         JLabel uLabel = new JLabel("Username:", SwingConstants.RIGHT);
         JLabel pLabel = new JLabel("Password:", SwingConstants.RIGHT);
         JLabel p2Label = new JLabel("Re-enter password", SwingConstants.RIGHT);
-        
-
+        JLabel logo  = new JLabel(new ImageIcon("./lph.png"));
         
         //Add components to panels
-        ButtonPanel.add(create);
+        ButtonPanel.add(createButton);
         ButtonPanel.add(cancel);
         LabelPanel.add(uLabel);
         LabelPanel.add(pLabel);
@@ -78,77 +71,65 @@ public class CreateNewAccountInterface extends JPanel{
         TextFieldPanel.add(userNameTextField);
         TextFieldPanel.add(passwordField1);
         TextFieldPanel.add(passwordField2);
-        
-        //add panels to main panel
+        topPanel.add(logo);
         bottomPanel.add(TextFieldPanel, BorderLayout.CENTER);
         bottomPanel.add(LabelPanel, BorderLayout.WEST);
         bottomPanel.add(dialog, BorderLayout.NORTH);
         bottomPanel.add(ButtonPanel, BorderLayout.SOUTH);
         
-        //Import Logo and add to Logo Panel
-        ImageIcon logo = new ImageIcon("./lph.png");
-        JLabel label  = new JLabel(logo);
-        topPanel.add(label);
-        
+        //add panels to main panel
         this.add(topPanel);
         this.add(bottomPanel);
         
-        create.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                action = "create";
-                selectionMade = true;
-            }
-        });
-        
-        cancel.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                action = "cancel";
-                selectionMade = true;
-            }
-        });
-        
-        
+        //add action listeners
+        createButton.addActionListener(createButtonAL);
+        cancel.addActionListener(cancelButtonAL);
     }
     
+    /**
+     * returns true if a user is created
+     * otherwise displays an error message and returns false
+     */
     public boolean create(){
 
         String username = userNameTextField.getText();
         String password1 = passwordField1.getText();
         String password2 = passwordField2.getText();
         
-        
         //if passwords match, adds the user. if user already exists returns an error
         if (password1.equals(password2)){
             if(Broker.addUser(username, password1)){
                 setMessage("user added successfully");
-                selectionMade = false;
                 return true;
             }
             else{
-                setMessage("error: username already exists or fields were left empty"); 
-                selectionMade = false;
+                setMessage("error: username already exists or fields were left empty");
             }
         }
         else{
             setMessage("passwords do not match");
-            selectionMade = false;
         }
         return false;
-        
+    }
+
+    public boolean isCreateButtonClicked() {
+        return createButtonClicked;
+    }
+
+    public void setCreateButtonClicked(boolean createButtonClicked) {
+        this.createButtonClicked = createButtonClicked;
+    }
+
+    public boolean isCancelButtonClicked() {
+        return cancelButtonClicked;
+    }
+
+    public void setCancelButtonClicked(boolean cancelButtonClicked) {
+        this.cancelButtonClicked = cancelButtonClicked;
     }
     
     public void setDefaultButton()throws NullPointerException{
-        this.getRootPane().setDefaultButton(create);
-    }
-    
-    public boolean selectionMade(){
-        return selectionMade;
-    }
-
-    public String getAction() {
-        return action;
+        this.getRootPane().setDefaultButton(createButton);
     }
     
     private void setMessage(String message){
@@ -157,4 +138,18 @@ public class CreateNewAccountInterface extends JPanel{
     private void clearMessage(){
         dialog.setText("");
     }
+    
+    private ActionListener createButtonAL = new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            createButtonClicked = true;
+        }
+    };
+    
+    private ActionListener cancelButtonAL = new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            cancelButtonClicked = true;
+        }
+    };
 }

@@ -11,8 +11,6 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -28,80 +26,50 @@ import javax.swing.JPanel;
  */
 public class WelcomeInterface extends JPanel {
     
-    private JButton loginButton = new JButton("Log In");
-    private JButton createAccountButton = new JButton("Create Account");
-    private boolean selectionMade = false;
+    private final JButton loginButton = new JButton("Log In");
+    private final JButton createAccountButton = new JButton("Create Account");
+    private final boolean selectionMade = false;
     private String action;
     private JLabel dialog = new JLabel();
+    private boolean loginButtonClicked = false;
+    private boolean CNAButtonClicked = false;
     
     public WelcomeInterface(){
         init();
-        
     }
     
     private void init(){
         
-        //create panels
+        //formatting
         this.setLayout(new GridLayout(2,1));                       
         JPanel topPanel = new JPanel(new BorderLayout());                               
         JPanel bottomPanel = new JPanel(new BorderLayout());
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 100));    
         JPanel dialogPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
-        
-        Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 11);
-        dialog.setFont(font);
+        dialog.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 11));
         
         //Import Logo and add to Logo Panel
         ImageIcon logo = new ImageIcon("./lph.png");
         JLabel label  = new JLabel(logo);
         topPanel.add(label);
         
-        //add Buttons
+        //add components to panels
         buttonPanel.add(loginButton);
         buttonPanel.add(createAccountButton);
-        
         dialogPanel.add(dialog);
-        
         bottomPanel.add(buttonPanel, BorderLayout.CENTER);
         bottomPanel.add(dialogPanel, BorderLayout.SOUTH);
 
-        //Add panels to frame and make visible
+        //Add panels to main panel
         this.add(topPanel);
         this.add(bottomPanel);
-
         
         //add action listeners.
-        loginButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                action = "login";
-                selectionMade = true;
-            }
-            
-        });
-        createAccountButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                action = "createNewAccount";
-                selectionMade = true;
-            }
-        });
+        loginButton.addActionListener(loginButtonAL);
+        createAccountButton.addActionListener(CNAButtonAL);
         
     }
-   
-    public void setSelectionMade(boolean bool){
-        selectionMade = bool;
-    }
  
-    public boolean selectionMade(){
-        return selectionMade;
-    }
-    
-    public String getAction(){
-        setSelectionMade(false);
-        return action;
-    }
-    
     public void displayMessage(String message){
         dialog.setText(message);
     }
@@ -109,6 +77,35 @@ public class WelcomeInterface extends JPanel {
     public void clearMessage(){
         dialog.setText("");
     }
+    
+    public void setLoginButtonClicked(boolean bool){
+        loginButtonClicked = bool;
+    }
+    
+    public boolean getLoginButtonClicked(){
+        return loginButtonClicked;
+    }    
+    
+    public void setCNAButtonClicked(boolean bool){
+        CNAButtonClicked = bool;
+    }
+    
+    public boolean getCNAButtonClicked(){
+        return CNAButtonClicked;
+    }
   
+    ActionListener loginButtonAL = new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            loginButtonClicked = true;
+        }
+    };
+    
+    ActionListener CNAButtonAL = new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            CNAButtonClicked = true;
+        }
+    };
     
 }

@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -24,10 +23,10 @@ import javax.swing.border.EmptyBorder;
 
 /**
  * This is the login interface. It is added to the main frame, when the user selects
- * "login" from the welcome interface. It has fields for username and password, a
- * "login" button and a "cancel" button. When a button is selected, the "action"
- * variable is altered. The main method checks this variable to determine what action
- * has been taken by the user.
+ "login" from the welcome interface. It has fields for username and password, a
+ "login" button and a "cancelButton" button. When a button is selected, the "action"
+ variable is altered. The main method checks this variable to determine what action
+ has been taken by the user.
  * @author Thomas McSkimming
  */
 class LoginInterface extends JPanel {
@@ -35,10 +34,10 @@ class LoginInterface extends JPanel {
     private JTextField userNameTextField = new JTextField();
     private JPasswordField passwordField = new JPasswordField();
     private JLabel dialog = new JLabel();
-    private JButton login = new JButton("login");
-    private JButton cancel = new JButton("cancel");
-    private String action;
-    private boolean selectionMade;
+    private JButton loginButton = new JButton("login");
+    private JButton cancelButton = new JButton("cancel");
+    private boolean cancelButtonClicked = false;
+    private boolean loginButtonClicked = false;
     
     //constructor
     public LoginInterface(){
@@ -47,20 +46,15 @@ class LoginInterface extends JPanel {
     
     //initialises components
     private void init(){
-        //create panels
+        //formatting
         this.setLayout(new GridLayout(2,1));
         this.setBorder(new EmptyBorder(10,10,10,10));
         JPanel topPanel = new JPanel(new BorderLayout());
         JPanel bottomPanel = new JPanel(new BorderLayout());
-        bottomPanel.setLayout(new BorderLayout(5,5)); 
-        
+        bottomPanel.setLayout(new BorderLayout(5,5));
         JPanel LabelPanel = new JPanel(new GridLayout(0,1,2,20));
-        JPanel TextFieldPanel = new JPanel();
-        TextFieldPanel.setLayout(new GridLayout(0,1,2,20));
-        
+        JPanel TextFieldPanel = new JPanel(new GridLayout(0,1,2,20));
         JPanel ButtonPanel = new JPanel(new FlowLayout());
-
-        //create fonts
         Font dialogFont = new Font(Font.SANS_SERIF, Font.PLAIN, 11);
         dialog.setFont(dialogFont);
         
@@ -68,11 +62,9 @@ class LoginInterface extends JPanel {
         JLabel uLabel = new JLabel("Username:", SwingConstants.RIGHT);
         JLabel pLabel = new JLabel("Password:", SwingConstants.RIGHT);
         
- 
-        
         //Add components to panels
-        ButtonPanel.add(login);
-        ButtonPanel.add(cancel);
+        ButtonPanel.add(loginButton);
+        ButtonPanel.add(cancelButton);
         LabelPanel.add(uLabel);
         TextFieldPanel.add(userNameTextField);
         LabelPanel.add(pLabel);
@@ -92,23 +84,9 @@ class LoginInterface extends JPanel {
         this.add(topPanel);
         this.add(bottomPanel);
         
-        login.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                action = "login";
-                selectionMade = true;
-            }
-        });
+        loginButton.addActionListener(loginButtonAL);
         
-        cancel.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                action = "cancel";
-                selectionMade = true;
-            }
-        });
-
-       
+        cancelButton.addActionListener(cancelButtonAL);
     }
     
     private User user;
@@ -138,17 +116,19 @@ class LoginInterface extends JPanel {
         return false;
     }
     
- public void setSelectionMade(boolean bool){
-        selectionMade = bool;
+    public boolean getLoginButtonClicked(){
+        return loginButtonClicked;
     }
- 
-    public boolean selectionMade(){
-        return selectionMade;
+    public boolean getCancelButtonClicked(){
+        return cancelButtonClicked;
     }
-    
-    public String getAction(){
-        setSelectionMade(false);
-        return action;
+
+    public void setCancelButtonClicked(boolean bool) {
+        cancelButtonClicked = bool;
+    }
+
+    public void setLoginButtonClicked(boolean bool) {
+        loginButtonClicked = bool;
     }
     
     public void displayMessage(String message){
@@ -160,7 +140,21 @@ class LoginInterface extends JPanel {
     }
     
     public void setDefaultButton()throws NullPointerException{
-        this.getRootPane().setDefaultButton(login);
+        this.getRootPane().setDefaultButton(loginButton);
     }
+    
+    private final ActionListener loginButtonAL = new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            loginButtonClicked = true;
+        }
+    };
+    
+    private final ActionListener cancelButtonAL = new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            cancelButtonClicked = true;
+        }
+    };
 }
 
