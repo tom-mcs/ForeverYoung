@@ -77,13 +77,9 @@ public class DisplayUsers extends JPanel {
         userPanel.add(jTable, BorderLayout.CENTER);
         userPanel.add(logout,BorderLayout.SOUTH);
         
-        
-        
         //Add panels to frame and make visible
         this.add(logoPanel);
-        this.add(userPanel);
-  
-       
+        this.add(userPanel);   
         
     }
     

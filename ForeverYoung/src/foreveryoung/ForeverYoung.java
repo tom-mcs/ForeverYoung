@@ -35,13 +35,10 @@ public class ForeverYoung {
         public void windowClosing(WindowEvent we)
         {
             broker.shutdown();
-            System.exit(0);
-            
-          
-    }
+            System.exit(0);    
+        }
         });
-        
-        
+         
         //login/create account sequence
         while(true){
             while (!user.isLoggedIn()){
@@ -105,11 +102,6 @@ public class ForeverYoung {
                 System.out.println("logging out");
                 user.logout();
             }
-
-
-
-
         }
     }
-
 }
