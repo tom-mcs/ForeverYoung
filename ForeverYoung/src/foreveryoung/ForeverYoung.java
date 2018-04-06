@@ -1,6 +1,9 @@
 package foreveryoung;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import static java.lang.Thread.sleep;
+import javax.swing.JFrame;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -26,6 +29,18 @@ public class ForeverYoung {
         WelcomeInterface WInterface = new WelcomeInterface();
         
         mainFrame.setVisible(true); 
+        
+         mainFrame.addWindowListener(new WindowAdapter(){
+        @Override
+        public void windowClosing(WindowEvent we)
+        {
+            broker.shutdown();
+            System.exit(0);
+            
+          
+    }
+        });
+        
         
         //login/create account sequence
       
@@ -82,6 +97,8 @@ public class ForeverYoung {
             }
         }
         mainFrame.setPanel(new DisplayUsers());
+        
+      
         
         
     }
