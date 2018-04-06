@@ -27,9 +27,7 @@ public class MainFrame extends JFrame{
     
     public MainFrame(){
         super.setSize(frameSize);
-        super.setLocation((screenWidth-frameWidth)/2,(screenHeight-frameHeight)/2);
-        // line below will terminate program if the user exits the program on any of the interfaces
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        super.setLocation((screenWidth-frameWidth)/2,(screenHeight-frameHeight)/2);        
     }
     
     public void setPanel(JPanel panel){

@@ -62,7 +62,7 @@ public class Broker {
      }
      
     //closes all connections to the database
-    private static void shutdown()
+    public static void shutdown()
     {
         try
         {
