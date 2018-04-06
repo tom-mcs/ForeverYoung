@@ -1,6 +1,7 @@
 package foreveryoung;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -47,14 +48,18 @@ public class Broker {
         System.out.println("=====    Started/Connected DB    =====");
         
         statement = connection.createStatement();
-        try{
-            statement.execute("DROP TABLE users");
-        }
-        catch (SQLException sqlExcept){
-            System.out.println("table doesn't exist so can't be dropped");
-        }
-        statement.execute("CREATE TABLE users (username VARCHAR(15) PRIMARY KEY NOT NULL, password VARCHAR(15) NOT NULL)");
         
+        try{
+            statement.execute("SELECT * FROM users");
+        }
+        catch(SQLException sqlExcept){
+            try{
+                statement.execute("CREATE TABLE users (username VARCHAR(15) PRIMARY KEY NOT NULL, password VARCHAR(15) NOT NULL)");
+            }
+            catch(SQLException sqlExcept2){
+                System.out.println("error creating user table");
+            }
+        } 
         //adds users to db as example data
         addUser("Matt", "password");
         addUser("Ryan", "123");
@@ -79,7 +84,7 @@ public class Broker {
         }
         catch (SQLException sqlExcept)
         {
-            
+            System.out.print(sqlExcept);
         }
     }
     
