@@ -70,12 +70,12 @@ public class Broker {
             if (statement != null)
             {
                 statement.close();
-                System.out.print("statement closed");
+                System.out.println("statement closed");
             }
             if (connection != null)
             {
                 connection.close();
-                System.out.print("connection closed");
+                System.out.println("connection closed");
             }           
         }
         catch (SQLException sqlExcept)
