@@ -9,8 +9,11 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -23,6 +26,13 @@ import javax.swing.border.EmptyBorder;
  * @author Thomas McSkimming
  */
 public class DisplayUsers extends JPanel {
+    
+    private final JButton logout = new JButton("logout");
+    private boolean logoutClicked = false;
+    
+    public boolean getLogoutClicked(){
+        return logoutClicked;
+    }
     
     public DisplayUsers(){
 
@@ -46,6 +56,12 @@ public class DisplayUsers extends JPanel {
         JLabel label  = new JLabel(logo);
         logoPanel.add(label, BorderLayout.CENTER);
   
+        logout.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                logoutClicked = true;
+            }
+        }); 
         
         //create text field of all users
         ArrayList<User> users = Broker.getAllUsers();
@@ -59,6 +75,9 @@ public class DisplayUsers extends JPanel {
         JTable jTable = new JTable(table, titles);
         
         userPanel.add(jTable, BorderLayout.CENTER);
+        userPanel.add(logout,BorderLayout.SOUTH);
+        
+        
         
         //Add panels to frame and make visible
         this.add(logoPanel);

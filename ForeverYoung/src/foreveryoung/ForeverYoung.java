@@ -43,64 +43,73 @@ public class ForeverYoung {
         
         
         //login/create account sequence
-      
-        while (!user.isLoggedIn()){
-            mainFrame.setPanel(WInterface);
-            while(!WInterface.selectionMade()){
-                sleep(100);
-            }
-            String action = WInterface.getAction();
-            
-            
-            //create login interface
-            if (action.equals("login")){
-                LoginInterface loginInterface = new LoginInterface();
-                mainFrame.setPanel(loginInterface);
-                loginInterface.setDefaultButton();
-                boolean done = false;
-                while (!done){
-                    while(!loginInterface.selectionMade()){
-                        sleep(100);
-                    }
-                    String loginAction = loginInterface.getAction();
-                    if(loginAction.equals("login")){
-                        if(loginInterface.login()){
-                            user = loginInterface.getUser();
+        while(true){
+            while (!user.isLoggedIn()){
+                mainFrame.setPanel(WInterface);
+                while(!WInterface.selectionMade()){
+                    sleep(100);
+                }
+                String action = WInterface.getAction();
+
+
+                //create login interface
+                if (action.equals("login")){
+                    LoginInterface loginInterface = new LoginInterface();
+                    mainFrame.setPanel(loginInterface);
+                    loginInterface.setDefaultButton();
+                    boolean done = false;
+                    while (!done){
+                        while(!loginInterface.selectionMade()){
+                            sleep(100);
+                        }
+                        String loginAction = loginInterface.getAction();
+                        if(loginAction.equals("login")){
+                            if(loginInterface.login()){
+                                user = loginInterface.getUser();
+                                done = true;
+                            }
+                        }
+                        if(loginAction.equals("cancel")){
                             done = true;
                         }
                     }
-                    if(loginAction.equals("cancel")){
-                        done = true;
+                }
+
+                //create CNA interface
+                if (action.equals("createNewAccount")){
+                    CreateNewAccountInterface CNAInterface = new CreateNewAccountInterface();
+                    mainFrame.setPanel(CNAInterface);
+                    CNAInterface.setDefaultButton();
+
+                    boolean done = false;
+                    while(!done){
+                        while(!CNAInterface.selectionMade()){
+                            sleep(100);
+                        }
+                        String CNAAction = CNAInterface.getAction();
+                        if(CNAAction.equals("create")){
+                            done = CNAInterface.create();
+                        }
+                        if(CNAAction.equals("cancel")){
+                            done = true;
+                        }
                     }
                 }
             }
-            
-            //create CNA interface
-            if (action.equals("createNewAccount")){
-                CreateNewAccountInterface CNAInterface = new CreateNewAccountInterface();
-                mainFrame.setPanel(CNAInterface);
-                CNAInterface.setDefaultButton();
-                
-                boolean done = false;
-                while(!done){
-                    while(!CNAInterface.selectionMade()){
-                        sleep(100);
-                    }
-                    String CNAAction = CNAInterface.getAction();
-                    if(CNAAction.equals("create")){
-                        done = CNAInterface.create();
-                    }
-                    if(CNAAction.equals("cancel")){
-                        done = true;
-                    }
+            DisplayUsers displayUsers = new DisplayUsers();
+            mainFrame.setPanel(displayUsers);
+            while(user.isLoggedIn()){
+                while(!displayUsers.getLogoutClicked()){
+                    sleep(100);
                 }
+                System.out.println("logging out");
+                user.logout();
             }
+
+
+
+
         }
-        mainFrame.setPanel(new DisplayUsers());
-        
-      
-        
-        
     }
 
 }

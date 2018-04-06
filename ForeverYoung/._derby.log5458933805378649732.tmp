@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Fri Mar 30 14:04:26 ACDT 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): instance a816c00e-0162-74f8-83d7-00000ec7e238 
+on database directory C:\Users\Brett\Documents\NetBeansProjects\ForeverYoung\ForeverYoung\derbyDB with class loader sun.misc.Launcher$AppClassLoader@42a57993 
+Loaded from file:/C:/Users/Brett/Documents/NetBeansProjects/ForeverYoung/ForeverYoung/Libraries/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_111-b14
+user.dir=C:\Users\Brett\Documents\NetBeansProjects\ForeverYoung\ForeverYoung
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
