@@ -21,12 +21,27 @@ import java.util.logging.Logger;
  * @author Ryan_Lancer
  */
 public class Broker {
+ 
+/**
+ * The program uses specialized strings to set up the connection to the derby database
+ * The driver string tells the program which driver to use to allow the database to work
+ * The protocol string specifies how to connect to the database
+ *  
+ */     
     
     final String driver = "org.apache.derby.jdbc.EmbeddedDriver";
     final String protocol = "jdbc:derby:";
     final String dbName = "derbyDB";
     static Connection connection = null;
     static Statement statement = null;
+
+/**
+ * @throws SQLException 
+ * The program makes use of Java SQL imports to try to establish a connection to the database.
+ * If the program detects it cannot make a connection, it will throw an exception. If a 
+ * successful connection has been made, the program will then attempt to create a table
+ * to store and retrieve information.
+ */
     
     //constructer connects to db and creates username table
     //if a username table already exists it will drop the table and create a new one
@@ -61,6 +76,12 @@ public class Broker {
             }
         } 
      }
+
+/**
+ * The program again makes use of the SQL imports, in order to close the connection
+ * to the database. The method makes use of the stated booleans above to detect when
+ * to terminate the connection.
+ */  
      
     //closes all connections to the database
     public static void shutdown()
@@ -83,6 +104,17 @@ public class Broker {
             System.out.print(sqlExcept);
         }
     }
+
+/**
+ * 
+ * @param username
+ * @param password
+ * @return 
+ * 
+ * The addUser method uses statements to add a newly created user to the database.
+ * When using the derby DB database, statements are required to perform any SQL 
+ * executions.
+ */
     
     //adds user with username and password as argument
      public static boolean addUser(String username, String password){
@@ -100,6 +132,15 @@ public class Broker {
             }
         }
      }
+
+/**
+ * 
+ * @param username
+ * @return
+ * Similar to the addUSer method, this method also uses a statement to retrieve
+ * both the username and password from the database. The method also utilizes get
+ * methods to retrieve the appropriate information.
+ */
      
      //looks up username in db and returns their info as a user object
      //returns null if the user isn't found
@@ -119,6 +160,13 @@ public class Broker {
             return null;
         }
     }    
+ 
+/**
+ * 
+ * @return
+ * The getAllUsers method used an ArrayList to store all of the pulled into a list,
+ * which then can be displayed to the user.
+ */         
      
     public static ArrayList<User> getAllUsers(){
         try{
