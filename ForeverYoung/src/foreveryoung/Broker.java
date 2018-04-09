@@ -60,7 +60,10 @@ public class Broker {
         System.out.println("=====    Started/Connected DB    =====");
         
         statement = connection.createStatement();
-        
+/**
+ * Dropping the table will prevent data from being saved into the derby database
+ * @author Ryan
+ */       
 //        try{
 //            statement.execute("DROP TABLE users");
 //            System.out.println("table dropped");
@@ -75,7 +78,10 @@ public class Broker {
         catch(SQLException sqlExcept2){
             System.out.println("error creating user table");
         }
-        
+/**
+ * These insertion statements will throw error messages whilst the drop table statement
+ * is commented out. 
+ */        
 //        statement.execute("INSERT INTO users VALUES ('Matt', 'pass', 'Matthew', 'Evans', NULL)");
 //        statement.execute("INSERT INTO users VALUES ('Ryan', 'pass', 'Ryan', 'Evans', NULL)");
 //        statement.execute("INSERT INTO users VALUES ('Mort123', 'pass', 'Mortimer', 'Paul', 'Matt')");
