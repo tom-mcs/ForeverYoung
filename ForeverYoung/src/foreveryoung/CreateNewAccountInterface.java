@@ -11,6 +11,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -52,8 +53,8 @@ public class CreateNewAccountInterface extends JPanel{
         this.setBorder(new EmptyBorder(10,10,10,10));
         JPanel topPanel = new JPanel(new BorderLayout());
         JPanel bottomPanel = new JPanel(new BorderLayout(5,5));
-        JPanel LabelPanel = new JPanel(new GridLayout(0,1,2,20));
-        JPanel TextFieldPanel = new JPanel(new GridLayout(0,1,2,20));
+        JPanel LabelPanel = new JPanel(new GridLayout(0,1,2,2));
+        JPanel TextFieldPanel = new JPanel(new GridLayout(0,1,2,2));
         JPanel ButtonPanel = new JPanel(new FlowLayout());
         Font dialogFont = new Font(Font.SANS_SERIF, Font.PLAIN, 11);
         dialog.setFont(dialogFont);

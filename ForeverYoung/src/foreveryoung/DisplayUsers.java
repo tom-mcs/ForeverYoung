@@ -61,9 +61,9 @@ public class DisplayUsers extends JPanel {
         createAccountButton.addActionListener(CNAButtonAL);
         
         userPanel.setBorder (BorderFactory.createTitledBorder (BorderFactory.createEtchedBorder (),
-                                                            "Clients",
-                                                            TitledBorder.CENTER,
-                                                            TitledBorder.TOP));
+                                                                                "Clients",
+                                                                                TitledBorder.CENTER,
+                                                                                TitledBorder.TOP));
         
         //create table of all users
         ArrayList<User> users = Broker.getClients(this.user);

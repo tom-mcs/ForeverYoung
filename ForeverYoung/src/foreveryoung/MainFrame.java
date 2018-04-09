@@ -21,20 +21,22 @@ public class MainFrame extends JFrame{
     private final Dimension ScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private final int screenWidth = ScreenSize.width;
     private final int screenHeight = ScreenSize.height;
-    private final int frameHeight = screenHeight/2;
-    private final int frameWidth = screenWidth/4;
+    private final int frameHeight = screenHeight - 100;
+    private final int frameWidth = screenWidth - 100;
     private final Dimension frameSize = new Dimension(frameWidth,frameHeight);
     
     //constructor
     public MainFrame(){
         super.setSize(frameSize);
-        super.setLocation((screenWidth-frameWidth)/2,(screenHeight-frameHeight)/2);        
+        super.setLocationRelativeTo(null);        
+        this.setVisible(true);
     }
     
     //Set the panel that is placed into the main frame.
     public void setPanel(JPanel panel){
         super.getContentPane().removeAll();
-        panel.setSize(super.getSize());
+        panel.repaint();
+        panel.revalidate();
         super.add(panel);
         super.revalidate();
         super.repaint();
