@@ -12,12 +12,14 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
 /**
  * This Interface displays the logo and a list of all users and passwords that
@@ -34,12 +36,14 @@ public class DisplayUsers extends JPanel {
     private String action;
     private JLabel dialog = new JLabel();
     private boolean CNAButtonClicked = false;
+    private User user;
     
     //constructor
-    public DisplayUsers() {
+    public DisplayUsers(User user) {
+        this.user = user;
         init();
     }
-    
+        
     private void init(){
         //formatting
         this.setLayout(new GridLayout(2, 1));
@@ -60,23 +64,27 @@ public class DisplayUsers extends JPanel {
         logout.addActionListener(logoutAL);
         createAccountButton.addActionListener(CNAButtonAL);
         
-       
+        userPanel.setBorder (BorderFactory.createTitledBorder (BorderFactory.createEtchedBorder (),
+                                                            "Clients",
+                                                            TitledBorder.CENTER,
+                                                            TitledBorder.TOP));
         
-
         //create table of all users
-        ArrayList<User> users = Broker.getAllUsers();
-        String[][] table = new String[users.size()][2];
+        ArrayList<User> users = Broker.getClients(this.user);
+        String[][] table = new String[users.size()][3];
         for (int i = 0; i < users.size(); i++) {
             table[i][0] = users.get(i).getUserName();
-            table[i][1] = users.get(i).getPassword();
+            table[i][1] = users.get(i).getFirstName();
+            table[i][2] = users.get(i).getLastName();
         }
-        String[] titles = {"Username", "Password"};
+        String[] titles = {"Username", "FirstName", "LastName"};
         JTable jTable = new JTable(table, titles);
         
         //add elements
         logoPanel.add(label, BorderLayout.CENTER);
         userPanel.add(jTable, BorderLayout.CENTER);
-        userPanel.add(logout, BorderLayout.SOUTH);
+        userPanel.add(jTable.getTableHeader(), BorderLayout.NORTH);
+        buttonPanel.add(logout, BorderLayout.SOUTH);
         
         buttonPanel.add(createAccountButton);
         dialogPanel.add(dialog);

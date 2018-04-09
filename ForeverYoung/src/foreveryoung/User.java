@@ -12,12 +12,16 @@ package foreveryoung;
 public class User {
     private String userName;
     private String password;
+    private String firstName;
+    private String lastName;
     private boolean isLoggedIn;
     
     //create a user with username and password
-    public User(String username, String password){
+    public User(String username, String password, String firstName, String lastName){
         this.userName = username;
         this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
         isLoggedIn = false;
     }
     
@@ -46,6 +50,14 @@ public class User {
         this.userName = userName;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+    
     public String getPassword() {
         return password;
     }

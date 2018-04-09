@@ -95,7 +95,7 @@ public class ForeverYoung {
             /**
              * user is logged in create display users interface
              */
-            DisplayUsers displayUsers = new DisplayUsers();
+            DisplayUsers displayUsers = new DisplayUsers(user);
             mainFrame.setPanel(displayUsers);
             //continues until user is logs out
             while(user.isLoggedIn()){

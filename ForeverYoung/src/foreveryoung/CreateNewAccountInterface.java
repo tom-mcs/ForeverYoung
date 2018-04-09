@@ -31,6 +31,8 @@ import javax.swing.border.EmptyBorder;
 public class CreateNewAccountInterface extends JPanel{
     
     private final JTextField userNameTextField = new JTextField();
+    private final JTextField firstNameTextField = new JTextField();
+    private final JTextField lastNameTextField = new JTextField();
     private final JPasswordField passwordField1 = new JPasswordField();
     private final JPasswordField passwordField2 = new JPasswordField();
     private JLabel dialog = new JLabel();
@@ -58,6 +60,8 @@ public class CreateNewAccountInterface extends JPanel{
         
         //create Labels
         JLabel uLabel = new JLabel("Username:", SwingConstants.RIGHT);
+        JLabel fnLabel = new JLabel("First Name:", SwingConstants.RIGHT);
+        JLabel lnLabel = new JLabel("Last Name:", SwingConstants.RIGHT);
         JLabel pLabel = new JLabel("Password:", SwingConstants.RIGHT);
         JLabel p2Label = new JLabel("Re-enter password", SwingConstants.RIGHT);
         JLabel logo  = new JLabel(new ImageIcon("./lph.png"));
@@ -66,9 +70,13 @@ public class CreateNewAccountInterface extends JPanel{
         ButtonPanel.add(createButton);
         ButtonPanel.add(cancel);
         LabelPanel.add(uLabel);
+        LabelPanel.add(fnLabel);
+        LabelPanel.add(lnLabel);
         LabelPanel.add(pLabel);
         LabelPanel.add(p2Label);
         TextFieldPanel.add(userNameTextField);
+        TextFieldPanel.add(firstNameTextField);
+        TextFieldPanel.add(lastNameTextField);
         TextFieldPanel.add(passwordField1);
         TextFieldPanel.add(passwordField2);
         topPanel.add(logo);
@@ -93,12 +101,14 @@ public class CreateNewAccountInterface extends JPanel{
     public boolean create(){
 
         String username = userNameTextField.getText();
+        String firstName = firstNameTextField.getText();
+        String lastName = lastNameTextField.getText();
         String password1 = passwordField1.getText();
         String password2 = passwordField2.getText();
         
         //if passwords match, adds the user. if user already exists returns an error
         if (password1.equals(password2)){
-            if(Broker.addUser(username, password1)){
+            if(Broker.addUser(username, password1, firstName, lastName)){
                 setMessage("user added successfully");
                 return true;
             }

@@ -62,16 +62,24 @@ public class Broker {
         statement = connection.createStatement();
         
         try{
-            statement.execute("SELECT * FROM users");
+            statement.execute("DROP TABLE users");
+            System.out.println("table dropped");
         }
         catch(SQLException sqlExcept){
-            try{
-                statement.execute("CREATE TABLE users (username VARCHAR(15) PRIMARY KEY NOT NULL, password VARCHAR(15) NOT NULL)");
-            }
-            catch(SQLException sqlExcept2){
-                System.out.println("error creating user table");
-            }
+            System.out.println("error dropping user table");
         } 
+        try{
+            statement.execute("CREATE TABLE users (username VARCHAR(15) PRIMARY KEY NOT NULL, password VARCHAR(15) NOT NULL, firstName VARCHAR(15), lastName VARCHAR(15), parent VARCHAR(15))");
+            System.out.println("user table created");
+        }
+        catch(SQLException sqlExcept2){
+            System.out.println("error creating user table");
+        }
+        
+        statement.execute("INSERT INTO users VALUES ('Matt', 'pass', 'Matthew', 'Evans', NULL)");
+        statement.execute("INSERT INTO users VALUES ('Ryan', 'pass', 'Ryan', 'Evans', NULL)");
+        statement.execute("INSERT INTO users VALUES ('Mort123', 'pass', 'Mortimer', 'Paul', 'Matt')");
+        statement.execute("INSERT INTO users VALUES ('vin5', 'pass', 'Vin', 'Diesel', 'Matt')");
      }
 
 /**
@@ -107,6 +115,8 @@ public class Broker {
  * 
  * @param username
  * @param password
+ * @param firstName
+ * @param lastName
  * @return 
  * 
  * The addUser method uses statements to add a newly created user to the database.
@@ -115,15 +125,15 @@ public class Broker {
  * @author Ryan
  */
     
-    //adds user with username and password as argument
-     public static boolean addUser(String username, String password){
-        if(username.isEmpty() || password.isEmpty()){
+    //adds practitioner with username, password, first name, and last name as argument
+     public static boolean addUser(String username, String password, String firstName, String lastName){
+        if(username.isEmpty() || password.isEmpty() || firstName.isEmpty() || lastName.isEmpty()){
             return false;
         }
         else{
             try{
                 statement = connection.createStatement();
-                statement.execute("INSERT INTO users VALUES ('" + username + "', '" + password + "')");
+                statement.execute("INSERT INTO users VALUES ('" + username + "', '" + password + "', '" + firstName + "', '" + lastName + "', NULL)");
                 return true;
             }
             catch (SQLException ex) {
@@ -149,7 +159,7 @@ public class Broker {
             ResultSet rs = statement.executeQuery("SELECT * FROM users WHERE username='" + username + "'");
             
             if(rs.next()){
-                User user = new User(rs.getString("username"),rs.getString("password"));
+                User user = new User(rs.getString("username"),rs.getString("password"), rs.getString("firstName"), rs.getString("lastName"));
                 return user;
             }
             else{
@@ -169,13 +179,13 @@ public class Broker {
  * @author Ryan
  */         
      
-    public static ArrayList<User> getAllUsers(){
+    public static ArrayList<User> getClients(User practitioner){
         try{
-            ResultSet rs = statement.executeQuery("SELECT * FROM users");
+            ResultSet rs = statement.executeQuery("SELECT * FROM users WHERE parent='" + practitioner.getUserName() + "'");
             ArrayList<User> Users = new ArrayList<>();
             
             while(rs.next()){
-                Users.add(new User(rs.getString("username"),rs.getString("password")));
+                Users.add(new User(rs.getString("username"),rs.getString("password"), rs.getString("firstName"), rs.getString("lastName")));
             }
             return Users;
         }
