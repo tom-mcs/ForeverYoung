@@ -16,17 +16,13 @@ import java.util.logging.Logger;
  * and open the template in the editor.
  */
 
-/**
- *
- * @author Ryan_Lancer
- */
 public class Broker {
  
 /**
  * The program uses specialized strings to set up the connection to the derby database
  * The driver string tells the program which driver to use to allow the database to work
  * The protocol string specifies how to connect to the database
- *  
+ * @author Ryan
  */     
     
     final String driver = "org.apache.derby.jdbc.EmbeddedDriver";
@@ -41,6 +37,7 @@ public class Broker {
  * If the program detects it cannot make a connection, it will throw an exception. If a 
  * successful connection has been made, the program will then attempt to create a table
  * to store and retrieve information.
+ * @author Ryan
  */
     
     //constructer connects to db and creates username table
@@ -81,6 +78,7 @@ public class Broker {
  * The program again makes use of the SQL imports, in order to close the connection
  * to the database. The method makes use of the stated booleans above to detect when
  * to terminate the connection.
+ * @author Ryan
  */  
      
     //closes all connections to the database
@@ -114,6 +112,7 @@ public class Broker {
  * The addUser method uses statements to add a newly created user to the database.
  * When using the derby DB database, statements are required to perform any SQL 
  * executions.
+ * @author Ryan
  */
     
     //adds user with username and password as argument
@@ -140,6 +139,7 @@ public class Broker {
  * Similar to the addUSer method, this method also uses a statement to retrieve
  * both the username and password from the database. The method also utilizes get
  * methods to retrieve the appropriate information.
+ * @author Ryan
  */
      
      //looks up username in db and returns their info as a user object
@@ -166,6 +166,7 @@ public class Broker {
  * @return
  * The getAllUsers method used an ArrayList to store all of the pulled into a list,
  * which then can be displayed to the user.
+ * @author Ryan
  */         
      
     public static ArrayList<User> getAllUsers(){

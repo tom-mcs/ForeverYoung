@@ -53,6 +53,8 @@ public class WelcomeInterface extends JPanel {
         JLabel label  = new JLabel(logo);
         topPanel.add(label);
         
+        
+        
         //add components to panels
         buttonPanel.add(loginButton);
         buttonPanel.add(createAccountButton);

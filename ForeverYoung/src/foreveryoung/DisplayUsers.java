@@ -6,6 +6,8 @@
 package foreveryoung;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,7 +29,12 @@ public class DisplayUsers extends JPanel {
 
     private final JButton logout = new JButton("logout");
     private boolean logoutClicked = false;
-
+    private final JButton createAccountButton = new JButton("Create Account");
+    private final boolean selectionMade = false;
+    private String action;
+    private JLabel dialog = new JLabel();
+    private boolean CNAButtonClicked = false;
+    
     //constructor
     public DisplayUsers() {
         init();
@@ -39,6 +46,11 @@ public class DisplayUsers extends JPanel {
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
         JPanel logoPanel = new JPanel(new BorderLayout());
         JPanel userPanel = new JPanel(new BorderLayout());
+        JPanel topPanel = new JPanel(new BorderLayout());                               
+        JPanel bottomPanel = new JPanel(new BorderLayout());
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 100));    
+        JPanel dialogPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        dialog.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 11));
 
         //import logo
         ImageIcon logo = new ImageIcon("./lph.png");
@@ -46,6 +58,10 @@ public class DisplayUsers extends JPanel {
         
         //add action listener to logout button
         logout.addActionListener(logoutAL);
+        createAccountButton.addActionListener(CNAButtonAL);
+        
+       
+        
 
         //create table of all users
         ArrayList<User> users = Broker.getAllUsers();
@@ -61,10 +77,17 @@ public class DisplayUsers extends JPanel {
         logoPanel.add(label, BorderLayout.CENTER);
         userPanel.add(jTable, BorderLayout.CENTER);
         userPanel.add(logout, BorderLayout.SOUTH);
-
+        
+        buttonPanel.add(createAccountButton);
+        dialogPanel.add(dialog);
+        bottomPanel.add(buttonPanel, BorderLayout.CENTER);
+        bottomPanel.add(dialogPanel, BorderLayout.SOUTH);
         //Add panels main panel
         this.add(logoPanel);
         this.add(userPanel);
+        this.add(topPanel);
+        this.add(bottomPanel);
+    
     }
     
     public boolean getLogoutClicked() {
@@ -75,11 +98,35 @@ public class DisplayUsers extends JPanel {
         logoutClicked = bool;
     }
     
+    public void displayMessage(String message){
+        dialog.setText(message);
+    }
+    
+    public void clearMessage(){
+        dialog.setText("");
+    }
+    
+     public void setCNAButtonClicked(boolean bool){
+        CNAButtonClicked = bool;
+    }
+    
+    public boolean getCNAButtonClicked(){
+        return CNAButtonClicked;
+    }
+    
+    
     //logout actionListener
     private ActionListener logoutAL = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             logoutClicked = true;
+        }
+    };
+    
+    ActionListener CNAButtonAL = new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            CNAButtonClicked = true;
         }
     };
 
