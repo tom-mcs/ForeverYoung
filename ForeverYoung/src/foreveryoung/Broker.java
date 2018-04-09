@@ -61,13 +61,13 @@ public class Broker {
         
         statement = connection.createStatement();
         
-        try{
-            statement.execute("DROP TABLE users");
-            System.out.println("table dropped");
-        }
-        catch(SQLException sqlExcept){
-            System.out.println("error dropping user table");
-        } 
+//        try{
+//            statement.execute("DROP TABLE users");
+//            System.out.println("table dropped");
+//        }
+//        catch(SQLException sqlExcept){
+//            System.out.println("error dropping user table");
+//        } 
         try{
             statement.execute("CREATE TABLE users (username VARCHAR(15) PRIMARY KEY NOT NULL, password VARCHAR(15) NOT NULL, firstName VARCHAR(15), lastName VARCHAR(15), parent VARCHAR(15))");
             System.out.println("user table created");
@@ -76,10 +76,10 @@ public class Broker {
             System.out.println("error creating user table");
         }
         
-        statement.execute("INSERT INTO users VALUES ('Matt', 'pass', 'Matthew', 'Evans', NULL)");
-        statement.execute("INSERT INTO users VALUES ('Ryan', 'pass', 'Ryan', 'Evans', NULL)");
-        statement.execute("INSERT INTO users VALUES ('Mort123', 'pass', 'Mortimer', 'Paul', 'Matt')");
-        statement.execute("INSERT INTO users VALUES ('vin5', 'pass', 'Vin', 'Diesel', 'Matt')");
+//        statement.execute("INSERT INTO users VALUES ('Matt', 'pass', 'Matthew', 'Evans', NULL)");
+//        statement.execute("INSERT INTO users VALUES ('Ryan', 'pass', 'Ryan', 'Evans', NULL)");
+//        statement.execute("INSERT INTO users VALUES ('Mort123', 'pass', 'Mortimer', 'Paul', 'Matt')");
+//        statement.execute("INSERT INTO users VALUES ('vin5', 'pass', 'Vin', 'Diesel', 'Matt')");
      }
 
 /**
