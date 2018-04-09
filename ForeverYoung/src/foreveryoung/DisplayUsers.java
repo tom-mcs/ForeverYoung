@@ -32,10 +32,10 @@ public class DisplayUsers extends JPanel {
     private final JButton logout = new JButton("logout");
     private boolean logoutClicked = false;
     private final JButton createAccountButton = new JButton("Create Account");
+    private boolean CNAButtonClicked = false;
     private final boolean selectionMade = false;
     private String action;
     private JLabel dialog = new JLabel();
-    private boolean CNAButtonClicked = false;
     private User user;
     
     //constructor
@@ -50,12 +50,8 @@ public class DisplayUsers extends JPanel {
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
         JPanel logoPanel = new JPanel(new BorderLayout());
         JPanel userPanel = new JPanel(new BorderLayout());
-        JPanel topPanel = new JPanel(new BorderLayout());                               
-        JPanel bottomPanel = new JPanel(new BorderLayout());
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 100));    
-        JPanel dialogPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
-        dialog.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 11));
-
+        JPanel buttonPanel = new JPanel(new FlowLayout());    
+      
         //import logo
         ImageIcon logo = new ImageIcon("./lph.png");
         JLabel label = new JLabel(logo);
@@ -79,39 +75,29 @@ public class DisplayUsers extends JPanel {
         }
         String[] titles = {"Username", "FirstName", "LastName"};
         JTable jTable = new JTable(table, titles);
-        
+      
         //add elements
         logoPanel.add(label, BorderLayout.CENTER);
         userPanel.add(jTable, BorderLayout.CENTER);
         userPanel.add(jTable.getTableHeader(), BorderLayout.NORTH);
-        buttonPanel.add(logout, BorderLayout.SOUTH);
-        
-        buttonPanel.add(createAccountButton);
-        dialogPanel.add(dialog);
-        bottomPanel.add(buttonPanel, BorderLayout.CENTER);
-        bottomPanel.add(dialogPanel, BorderLayout.SOUTH);
         //Add panels main panel
         this.add(logoPanel);
         this.add(userPanel);
-        this.add(topPanel);
-        this.add(bottomPanel);
-    
+        this.add(buttonPanel);
+        buttonPanel.add(logout);
+        buttonPanel.add(createAccountButton);
+         //add action listener to logout button
+        logout.addActionListener(logoutAL);
+        createAccountButton.addActionListener(CNAButtonAL);
+  
     }
-    
+   
     public boolean getLogoutClicked() {
         return logoutClicked;
     }
 
     public void setLogoutClicked(boolean bool){
         logoutClicked = bool;
-    }
-    
-    public void displayMessage(String message){
-        dialog.setText(message);
-    }
-    
-    public void clearMessage(){
-        dialog.setText("");
     }
     
      public void setCNAButtonClicked(boolean bool){
@@ -139,3 +125,4 @@ public class DisplayUsers extends JPanel {
     };
 
 }
+
