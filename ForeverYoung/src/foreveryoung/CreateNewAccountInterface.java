@@ -41,8 +41,15 @@ public class CreateNewAccountInterface extends JPanel{
     private final JButton cancel = new JButton("cancel");
     private boolean createButtonClicked;
     private boolean cancelButtonClicked;
+    private String parent;
     
     public CreateNewAccountInterface() {
+        this.parent = null;
+        this.init();
+    }
+    
+    public CreateNewAccountInterface(String parent) {
+        this.parent = parent;
         this.init();
     }
     
@@ -109,8 +116,10 @@ public class CreateNewAccountInterface extends JPanel{
         
         //if passwords match, adds the user. if user already exists returns an error
         if (password1.equals(password2)){
-            if(Broker.addUser(username, password1, firstName, lastName)){
+            User user = new User(username, password1, firstName, lastName, parent);
+            if(Broker.addUser(user)){
                 setMessage("user added successfully");
+                System.out.println("user added, parent is " + parent);
                 return true;
             }
             else{

@@ -64,13 +64,16 @@ public class Broker {
  * Dropping the table will prevent data from being saved into the derby database
  * @author Ryan
  */       
-//        try{
-//            statement.execute("DROP TABLE users");
-//            System.out.println("table dropped");
-//        }
-//        catch(SQLException sqlExcept){
-//            System.out.println("error dropping user table");
-//        } 
+/*
+        try{
+            statement.execute("DROP TABLE users");
+            System.out.println("table dropped");
+        }
+        catch(SQLException sqlExcept){
+            System.out.println("error dropping user table");
+        } 
+*/
+        
         try{
             statement.execute("CREATE TABLE users (username VARCHAR(15) PRIMARY KEY NOT NULL, password VARCHAR(15) NOT NULL, firstName VARCHAR(15), lastName VARCHAR(15), parent VARCHAR(15))");
             System.out.println("user table created");
@@ -78,14 +81,6 @@ public class Broker {
         catch(SQLException sqlExcept2){
             System.out.println("error creating user table");
         }
-/**
- * These insertion statements will throw error messages whilst the drop table statement
- * is commented out. 
- */        
-//        statement.execute("INSERT INTO users VALUES ('Matt', 'pass', 'Matthew', 'Evans', NULL)");
-//        statement.execute("INSERT INTO users VALUES ('Ryan', 'pass', 'Ryan', 'Evans', NULL)");
-//        statement.execute("INSERT INTO users VALUES ('Mort123', 'pass', 'Mortimer', 'Paul', 'Matt')");
-//        statement.execute("INSERT INTO users VALUES ('vin5', 'pass', 'Vin', 'Diesel', 'Matt')");
      }
 
 /**
@@ -132,14 +127,18 @@ public class Broker {
  */
     
     //adds practitioner with username, password, first name, and last name as argument
-     public static boolean addUser(String username, String password, String firstName, String lastName){
-        if(username.isEmpty() || password.isEmpty() || firstName.isEmpty() || lastName.isEmpty()){
+     public static boolean addUser(User user){
+        if(user.getUserName().isEmpty() || user.getPassword().isEmpty() || user.getFirstName().isEmpty() || user.getLastName().isEmpty()){
             return false;
         }
         else{
             try{
                 statement = connection.createStatement();
-                statement.execute("INSERT INTO users VALUES ('" + username + "', '" + password + "', '" + firstName + "', '" + lastName + "', NULL)");
+                if(user.isPractitioner()){
+                    statement.execute("INSERT INTO users VALUES ('" + user.getUserName() + "', '" + user.getPassword() + "', '" + user.getFirstName() + "', '" + user.getLastName() + "', NULL)");
+                }else{
+                    statement.execute("INSERT INTO users VALUES ('" + user.getUserName() + "', '" + user.getPassword() + "', '" + user.getFirstName() + "', '" + user.getLastName() + "', '" + user.getParent() + "')");
+                }
                 return true;
             }
             catch (SQLException ex) {
@@ -165,7 +164,7 @@ public class Broker {
             ResultSet rs = statement.executeQuery("SELECT * FROM users WHERE username='" + username + "'");
             
             if(rs.next()){
-                User user = new User(rs.getString("username"),rs.getString("password"), rs.getString("firstName"), rs.getString("lastName"));
+                User user = new User(rs.getString("username"),rs.getString("password"), rs.getString("firstName"), rs.getString("lastName"), rs.getString("parent"));
                 return user;
             }
             else{
@@ -191,7 +190,7 @@ public class Broker {
             ArrayList<User> Users = new ArrayList<>();
             
             while(rs.next()){
-                Users.add(new User(rs.getString("username"),rs.getString("password"), rs.getString("firstName"), rs.getString("lastName")));
+                Users.add(new User(rs.getString("username"),rs.getString("password"), rs.getString("firstName"), rs.getString("lastName"), rs.getString("parent")));
             }
             return Users;
         }

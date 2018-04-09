@@ -27,7 +27,7 @@ import javax.swing.JPanel;
 public class WelcomeInterface extends JPanel {
     
     private final JButton loginButton = new JButton("Log In");
-    private final JButton createAccountButton = new JButton("Create Account");
+    private final JButton createAccountButton = new JButton("Create Practitioner Account");
     private final boolean selectionMade = false;
     private String action;
     private JLabel dialog = new JLabel();

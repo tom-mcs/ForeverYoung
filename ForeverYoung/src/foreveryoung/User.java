@@ -14,14 +14,16 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
+    private String parent;
     private boolean isLoggedIn;
     
     //create a user with username and password
-    public User(String username, String password, String firstName, String lastName){
+    public User(String username, String password, String firstName, String lastName, String parent){
         this.userName = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.parent = parent;
         isLoggedIn = false;
     }
     
@@ -41,7 +43,20 @@ public class User {
     public boolean isLoggedIn(){
         return isLoggedIn;
     }
+
+    public String getParent() {
+        return parent;
+    }
     
+    public boolean isPractitioner(){
+        if(parent==null){
+            return true;
+        }
+        else{
+            return false;
+        }        
+    }
+            
     public String getUserName() {
         return userName;
     }

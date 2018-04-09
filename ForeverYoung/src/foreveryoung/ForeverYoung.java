@@ -96,33 +96,47 @@ public class ForeverYoung {
              * user is logged in create display users interface
              */
             DisplayUsers displayUsers = new DisplayUsers(user);
-            
+            ClientMenu clientMenu = new ClientMenu(user);
             //continues until user is logs out
             while(user.isLoggedIn()){
-                mainFrame.setPanel(displayUsers);
-                sleep(50);
-                if(displayUsers.getLogoutClicked()){
-                    displayUsers.setLogoutClicked(false);
-                    System.out.println("logging out");
-                    user.logout();
+                if(user.isPractitioner()){
+                    mainFrame.setPanel(displayUsers);
+                    sleep(50);
+                    if(displayUsers.getLogoutClicked()){
+                        displayUsers.setLogoutClicked(false);
+                        System.out.println("logging out");
+                        user.logout();
+                    }
+                    if(displayUsers.getCNAButtonClicked()){
+                        displayUsers.setCNAButtonClicked(false);
+                        CreateNewAccountInterface CNAInterface = new CreateNewAccountInterface(user.getUserName());
+                        mainFrame.setPanel(CNAInterface);
+                        CNAInterface.setDefaultButton();
+                        boolean done = false;
+                        //continues until account is created or cancel is pressed
+                        while(!done){
+                            sleep(50);
+                            if(CNAInterface.isCreateButtonClicked()){
+                                CNAInterface.setCreateButtonClicked(false);
+                                done = CNAInterface.create();
+                            }
+                            if(CNAInterface.isCancelButtonClicked()){
+                                CNAInterface.setCancelButtonClicked(false);
+                                done = true;
+                            }                     
+                        }
+                        //refreshes display users after a user has been added
+                        displayUsers = new DisplayUsers(user);
+                        mainFrame.setPanel(displayUsers); 
+                    }
                 }
-                if(displayUsers.getCNAButtonClicked()){
-                    displayUsers.setCNAButtonClicked(false);
-                    CreateNewAccountInterface CNAInterface = new CreateNewAccountInterface();
-                    mainFrame.setPanel(CNAInterface);
-                    CNAInterface.setDefaultButton();
-                    boolean done = false;
-                    //continues until account is created or cancel is pressed
-                    while(!done){
-                        sleep(50);
-                        if(CNAInterface.isCreateButtonClicked()){
-                            CNAInterface.setCreateButtonClicked(false);
-                            done = CNAInterface.create();
-                        }
-                        if(CNAInterface.isCancelButtonClicked()){
-                            CNAInterface.setCancelButtonClicked(false);
-                            done = true;
-                        }
+                else{
+                    mainFrame.setPanel(clientMenu);
+                    sleep(50);
+                    if(clientMenu.getLogoutClicked()){
+                        clientMenu.setLogoutClicked(false);
+                        System.out.println("logging out");
+                        user.logout();
                     }
                 }
             }

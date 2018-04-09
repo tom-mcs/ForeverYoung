@@ -31,12 +31,12 @@ public class DisplayUsers extends JPanel {
 
     private final JButton logout = new JButton("logout");
     private boolean logoutClicked = false;
-    private final JButton createAccountButton = new JButton("Create Account");
+    private final JButton createAccountButton = new JButton("Create Client Account");
     private boolean CNAButtonClicked = false;
     private final boolean selectionMade = false;
     private String action;
-    private JLabel dialog = new JLabel();
     private User user;
+    
     
     //constructor
     public DisplayUsers(User user) {
@@ -50,11 +50,16 @@ public class DisplayUsers extends JPanel {
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
         JPanel logoPanel = new JPanel(new BorderLayout());
         JPanel userPanel = new JPanel(new BorderLayout());
-        JPanel buttonPanel = new JPanel(new FlowLayout());    
-      
+        JPanel buttonPanel = new JPanel(new FlowLayout());         
         //import logo
         ImageIcon logo = new ImageIcon("./lph.png");
         JLabel label = new JLabel(logo);
+        
+        JLabel loginInfo= new JLabel();
+        Font loginInfoFont = new Font(Font.SANS_SERIF, Font.PLAIN, 18);
+        loginInfo.setFont(loginInfoFont);
+        loginInfo.setText("logged in as Practitioner " + user.getFirstName());
+        logoPanel.add(loginInfo, BorderLayout.NORTH);
         
         //add action listener to logout button
         logout.addActionListener(logoutAL);
@@ -75,10 +80,11 @@ public class DisplayUsers extends JPanel {
         }
         String[] titles = {"Username", "FirstName", "LastName"};
         JTable jTable = new JTable(table, titles);
-      
+              
         //add elements
         logoPanel.add(label, BorderLayout.CENTER);
         userPanel.add(jTable, BorderLayout.CENTER);
+        
         userPanel.add(jTable.getTableHeader(), BorderLayout.NORTH);
         //Add panels main panel
         this.add(logoPanel);
@@ -88,10 +94,9 @@ public class DisplayUsers extends JPanel {
         buttonPanel.add(createAccountButton);
          //add action listener to logout button
         logout.addActionListener(logoutAL);
-        createAccountButton.addActionListener(CNAButtonAL);
-  
+        createAccountButton.addActionListener(CNAButtonAL);  
     }
-   
+       
     public boolean getLogoutClicked() {
         return logoutClicked;
     }
