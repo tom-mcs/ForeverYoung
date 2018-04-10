@@ -4,8 +4,13 @@
  * and open the template in the editor.
  */
 
+import foreveryoung.Broker;
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -30,7 +35,25 @@ public class ForeverYoungJUnit {
     }
     
     @Before
-    public void setUp() {  
+    public void setUp() { 
+        
+        try{
+            Class.forName(driver).newInstance();
+        }
+        catch(Exception E){
+            E.printStackTrace();
+        }
+        try {
+             connection = DriverManager.getConnection(
+                     protocol + dbName + ";create=true");
+        } 
+        catch (SQLException ex) {
+             Logger.getLogger(Broker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+          
     }
 
     // TODO add test methods here.
@@ -39,9 +62,60 @@ public class ForeverYoungJUnit {
     // @Test
     // public void hello() {}
     
+        // connection test sees if the program can actually connect to the derby db 
         @Test
         public void connection() {
-            String actual = "=====    Started/Connected DB    =====";
+              
+            try{
+            Class.forName(driver).newInstance();
+        }
+        catch(Exception E){
+            E.printStackTrace();
+        }
+        try {
+             connection = DriverManager.getConnection(
+                     protocol + dbName + ";create=true");
+        } 
+        catch (SQLException ex) {
+             Logger.getLogger(Broker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+                     
+        }
+        
+        
+        @Test
+        public void tablecreate() throws SQLException {  
+            
+            try {
+                statement.execute("CREATE TABLE sample (numbers INTEGER NOT NULL)");
+            //    System.out.println("statement success");
+                
+            } catch(SQLException sqlE) {
+                
+                System.out.println("statement failed");
+                throw sqlE;        
+            }
+            
+        }
+        
+        @Test 
+        public void insertdrop() throws SQLException {
+               
+        }
+        
+        
+        
+        @Test
+        public void terminate() throws SQLException {
+            
+           try {
+              connection.close(); 
+           } catch(SQLException sqlE) {
+               
+               System.out.println("close failed");
+               throw sqlE;
+           } 
+                   
             
         }
     
