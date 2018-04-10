@@ -35,7 +35,7 @@ public class ForeverYoungJUnit {
     }
     
     @Before
-    public void setUp() { 
+    public void setUp() throws SQLException { 
         
         try{
             Class.forName(driver).newInstance();
@@ -51,7 +51,7 @@ public class ForeverYoungJUnit {
              Logger.getLogger(Broker.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        
+        statement = connection.createStatement();
         
           
     }
@@ -82,12 +82,24 @@ public class ForeverYoungJUnit {
                      
         }
         
+        @Test 
+        public void drop() throws SQLException {
+            
+            try {
+                statement.execute("DROP TABLE SAMPLE");
+                System.out.println("table dropped");
+            }
+            catch(SQLException sqlExcept){
+                System.out.println("error dropping user table");
+            } 
+               
+        }
         
         @Test
         public void tablecreate() throws SQLException {  
-            
+           
             try {
-                statement.execute("CREATE TABLE sample (numbers INTEGER NOT NULL)");
+                statement.execute("CREATE TABLE SAMPLE (SAMP INT PRIMARY KEY NOT NULL, MIX VARCHAR(5) )");
             //    System.out.println("statement success");
                 
             } catch(SQLException sqlE) {
@@ -96,15 +108,17 @@ public class ForeverYoungJUnit {
                 throw sqlE;        
             }
             
-        }
-        
-        @Test 
-        public void insertdrop() throws SQLException {
+            try {
+                statement.execute("INSERT INTO SAMPLE VALUES (1, 'MIX1'), (2, 'MIX2')");
+            }catch(SQLException sqlE) {
+                
+                System.out.println("statement failed");
+                throw sqlE;        
+            }
                
         }
         
-        
-        
+ 
         @Test
         public void terminate() throws SQLException {
             
