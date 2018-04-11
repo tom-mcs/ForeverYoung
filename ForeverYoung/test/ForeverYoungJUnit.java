@@ -20,19 +20,28 @@ import static org.junit.Assert.*;
  * @author Ryan_Lancer
  */
 public class ForeverYoungJUnit {
-    
+     
     final String driver = "org.apache.derby.jdbc.EmbeddedDriver";
     final String protocol = "jdbc:derby:";
     final String dbName = "derbyDB";
     static Connection connection = null;
     static Statement statement = null;
     
-    
-    
-    
+/**
+* Declaring the code above is necessary for the tests to function correctly,
+* as the connection needs to be made to the database
+* @author Ryan 
+*/    
     
     public ForeverYoungJUnit() {
     }
+    
+/**
+ * The setUp method holds necessary code in order for the tests to function, as
+ * the tests only try the method and expect an expected output, which does not 
+ * automatically perform prerequisite code. 
+ * @throws SQLException 
+ */    
     
     @Before
     public void setUp() throws SQLException { 
@@ -53,14 +62,14 @@ public class ForeverYoungJUnit {
         
         statement = connection.createStatement();
         
+        
           
     }
 
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
+/**
+ * The connection is identical to the setUp method code but is actually testing
+ * if a connection can be made to the database
+ */
     
         // connection test sees if the program can actually connect to the derby db 
         @Test
@@ -82,6 +91,7 @@ public class ForeverYoungJUnit {
                      
         }
         
+        // tests if the program can drop an uneeded/unecessary table
         @Test 
         public void drop() throws SQLException {
             
@@ -95,6 +105,7 @@ public class ForeverYoungJUnit {
                
         }
         
+        // tests if a table with columns can be created and then insert data into the table 
         @Test
         public void tablecreate() throws SQLException {  
            
@@ -118,7 +129,18 @@ public class ForeverYoungJUnit {
                
         }
         
- 
+        @Test
+        public void pulldata() throws SQLException{
+            
+            try {
+                statement.executeQuery("SELECT * FROM users");
+            } catch(SQLException sqlE) {
+                
+                System.out.println("statement failed");
+                throw sqlE;
+            }
+        }
+        
         @Test
         public void terminate() throws SQLException {
             
@@ -128,9 +150,7 @@ public class ForeverYoungJUnit {
                
                System.out.println("close failed");
                throw sqlE;
-           } 
-                   
-            
+           }                         
         }
     
 }
