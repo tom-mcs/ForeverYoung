@@ -53,20 +53,21 @@ public class BrokerTest {
     @Test
     public void testAddUser() {
         System.out.println("addUser");
-        User user = new User();
-        boolean expResult = false;
+        User user = new User("Royal", "fqac", "Elizabeth", "Mary", "Ryan");
+        boolean expResult = true;
         boolean result = Broker.addUser(user);
         assertEquals(expResult, result);
     }
 
-    /**
+    /**0
      * Test of getUser method, of class Broker.
      */
+    
     @Test
     public void testGetUser() {
         System.out.println("getUser");
-        String username = "Ryan";
-        User expResult = new User();
+        String username = "Royal";
+        User expResult = new User("Royal", "fqac", "Elizabeth", "Mary", "Ryan");
         User result = Broker.getUser(username);
         assertEquals(expResult, result);
     }
@@ -77,12 +78,11 @@ public class BrokerTest {
     @Test
     public void testGetClients() {
         System.out.println("getClients");
-        User practitioner = new User();
+        User practitioner = new User("Ryan", "pass", "Ryan", "Chao", null);
         ArrayList<User> expResult = new ArrayList<>();
         expResult.add(practitioner);
         ArrayList<User> result = Broker.getClients(practitioner);
-        assertEquals(expResult, result);
-     
+        assertEquals(expResult, result); 
     }
     
 }
