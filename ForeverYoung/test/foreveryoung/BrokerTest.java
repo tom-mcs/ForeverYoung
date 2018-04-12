@@ -54,7 +54,7 @@ public class BrokerTest {
     public void testAddUser() {
         System.out.println("addUser");
         User user = new User();
-        boolean expResult = true;
+        boolean expResult = false;
         boolean result = Broker.addUser(user);
         assertEquals(expResult, result);
     }
@@ -78,7 +78,7 @@ public class BrokerTest {
     public void testGetClients() {
         System.out.println("getClients");
         User practitioner = new User();
-        ArrayList<User> expResult = new ArrayList();
+        ArrayList<User> expResult = new ArrayList<>();
         expResult.add(practitioner);
         ArrayList<User> result = Broker.getClients(practitioner);
         assertEquals(expResult, result);
