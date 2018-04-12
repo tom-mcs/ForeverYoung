@@ -21,15 +21,13 @@ import javax.swing.JPanel;
  * it displays a logo and has two buttons, one of which will launch a log in interface,
  * the other will launch a create new user interface. 
  * When a button is selected, the "action" variable is altered. this variable is
- * checked by the main method, in order to determine what action has occured.
+ * checked by the main method, in order to determine what action has occurred.
  * @author Thomas McSkimming
  */
 public class WelcomeInterface extends JPanel {
     
     private final JButton loginButton = new JButton("Log In");
     private final JButton createAccountButton = new JButton("Create Practitioner Account");
-    private final boolean selectionMade = false;
-    private String action;
     private JLabel dialog = new JLabel();
     private boolean loginButtonClicked = false;
     private boolean CNAButtonClicked = false;

@@ -1,7 +1,6 @@
 package foreveryoung;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,7 +14,10 @@ import java.util.logging.Logger;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+/**
+ *
+ * @author Matt
+ */
 public class Broker {
  
 /**
@@ -114,10 +116,6 @@ public class Broker {
 
 /**
  * 
- * @param username
- * @param password
- * @param firstName
- * @param lastName
  * @return 
  * 
  * The addUser method uses statements to add a newly created user to the database.
@@ -151,7 +149,7 @@ public class Broker {
  * 
  * @param username
  * @return
- * Similar to the addUSer method, this method also uses a statement to retrieve
+ * Similar to the addUser method, this method also uses a statement to retrieve
  * both the username and password from the database. The method also utilizes get
  * methods to retrieve the appropriate information.
  * @author Ryan
@@ -179,8 +177,8 @@ public class Broker {
 /**
  * 
  * @return
- * The getAllUsers method used an ArrayList to store all of the pulled into a list,
- * which then can be displayed to the user.
+ * The getAllUsers method used an ArrayList to store all of the pulled from the datbase 
+ * into a list, which then can be displayed to the user.
  * @author Ryan
  */         
      
