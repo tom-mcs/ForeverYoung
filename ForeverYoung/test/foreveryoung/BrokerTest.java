@@ -5,7 +5,10 @@
  */
 package foreveryoung;
 
+import static foreveryoung.Broker.statement;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import org.junit.AfterClass;
@@ -59,15 +62,15 @@ public class BrokerTest {
         assertEquals(expResult, result);
     }
 
-    /**0
+    /**
      * Test of getUser method, of class Broker.
      */
     
     @Test
     public void testGetUser() {
         System.out.println("getUser");
-        String username = "Royal";
-        User expResult = new User("Royal", "fqac", "Elizabeth", "Mary", "Ryan");
+        String username = "Ryan";
+        String expResult = "Ryan";
         User result = Broker.getUser(username);
         assertEquals(expResult, result);
     }
@@ -76,11 +79,10 @@ public class BrokerTest {
      * Test of getClients method, of class Broker.
      */
     @Test
-    public void testGetClients() {
+    public void testGetClients() throws SQLException {
         System.out.println("getClients");
-        User practitioner = new User("Ryan", "pass", "Ryan", "Chao", null);
-        ArrayList<User> expResult = new ArrayList<>();
-        expResult.add(practitioner);
+        User practitioner = new User();       
+        ArrayList<User> expResult = null;
         ArrayList<User> result = Broker.getClients(practitioner);
         assertEquals(expResult, result); 
     }
