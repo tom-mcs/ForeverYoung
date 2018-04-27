@@ -36,9 +36,11 @@ public class BrokerTest {
      * @author Ryan
      */
     
+    Broker broke;
     
     @Before
-    public void setUp() {
+    public void setUp() throws SQLException {
+        broke = new Broker();
     }
 
     /**
@@ -47,7 +49,7 @@ public class BrokerTest {
     @Test
     public void testShutdown() {
         System.out.println("shutdown");
-        Broker.shutdown();
+        broke.shutdown();
     }
 
     /**
@@ -58,7 +60,7 @@ public class BrokerTest {
         System.out.println("addUser");
         User user = new User("Royal", "fqac", "Elizabeth", "Mary", "Ryan");
         boolean expResult = true;
-        boolean result = Broker.addUser(user);
+        boolean result = broke.addUser(user);
         assertEquals(expResult, result);
     }
 
@@ -71,7 +73,7 @@ public class BrokerTest {
         System.out.println("getUser");
         String username = "Ryan";
         String expResult = "Ryan";
-        User result = Broker.getUser(username);
+        User result = broke.getUser(username);
         assertEquals(expResult, result);
     }
 
@@ -81,9 +83,9 @@ public class BrokerTest {
     @Test
     public void testGetClients() throws SQLException {
         System.out.println("getClients");
-        User practitioner = new User();       
+        User practitioner = new User(); 
         ArrayList<User> expResult = null;
-        ArrayList<User> result = Broker.getClients(practitioner);
+        ArrayList<User> result = broke.getClients(practitioner);
         assertEquals(expResult, result); 
     }
     

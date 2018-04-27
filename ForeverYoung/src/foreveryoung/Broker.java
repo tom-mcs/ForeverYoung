@@ -93,7 +93,7 @@ public class Broker {
  */  
      
     //closes all connections to the database
-    public static void shutdown()
+    public void shutdown()
     {
         try
         {
@@ -125,7 +125,7 @@ public class Broker {
  */
     
     //adds practitioner with username, password, first name, and last name as argument
-     public static boolean addUser(User user){
+     public boolean addUser(User user){
         if(user.getUserName().isEmpty() || user.getPassword().isEmpty() || user.getFirstName().isEmpty() || user.getLastName().isEmpty()){
             return false;
         }
@@ -157,7 +157,7 @@ public class Broker {
      
      //looks up username in db and returns their info as a user object
      //returns null if the user isn't found
-     public static User getUser(String username){  
+     public User getUser(String username){  
         try{
             ResultSet rs = statement.executeQuery("SELECT * FROM users WHERE username='" + username + "'");
             
@@ -182,7 +182,7 @@ public class Broker {
  * @author Ryan
  */         
      
-    public static ArrayList<User> getClients(User practitioner){
+    public ArrayList<User> getClients(User practitioner){
         try{
             ResultSet rs = statement.executeQuery("SELECT * FROM users WHERE parent='" + practitioner.getUserName() + "'");
             ArrayList<User> Users = new ArrayList<>();

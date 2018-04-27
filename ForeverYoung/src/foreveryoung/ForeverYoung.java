@@ -28,7 +28,7 @@ public class ForeverYoung {
         @Override
         public void windowClosing(WindowEvent we)
         {
-            Broker.shutdown();
+            broker.shutdown();
             System.exit(0);    
         }
         });
