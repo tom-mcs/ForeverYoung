@@ -27,18 +27,19 @@ import javax.swing.border.TitledBorder;
  *
  * @author Thomas McSkimming
  */
-public class DisplayUsers extends JPanel {
+public class PractitionerMenu extends JPanel {
 
     private final JButton logout = new JButton("logout");
     private boolean logoutClicked = false;
     private final JButton createAccountButton = new JButton("Create Client Account");
     private boolean CNAButtonClicked = false;
-    private User user;
-    
+    private Practitioner practitioner;
+    private JTable jTable;
+    private JPanel userPanel;
     
     //constructor
-    public DisplayUsers(User user) {
-        this.user = user;
+    public PractitionerMenu(Practitioner practitioner) {
+        this.practitioner = practitioner;
         init();
     }
         
@@ -47,7 +48,7 @@ public class DisplayUsers extends JPanel {
         this.setLayout(new GridLayout(2, 1));
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
         JPanel logoPanel = new JPanel(new BorderLayout());
-        JPanel userPanel = new JPanel(new BorderLayout());
+        userPanel = new JPanel(new BorderLayout());
         JPanel buttonPanel = new JPanel(new FlowLayout());         
         //import logo
         ImageIcon logo = new ImageIcon("./lph.png");
@@ -56,34 +57,18 @@ public class DisplayUsers extends JPanel {
         JLabel loginInfo= new JLabel();
         Font loginInfoFont = new Font(Font.SANS_SERIF, Font.PLAIN, 18);
         loginInfo.setFont(loginInfoFont);
-        loginInfo.setText("logged in as Practitioner " + user.getFirstName());
+        loginInfo.setText("logged in as Practitioner " + practitioner.getFirstName());
         logoPanel.add(loginInfo, BorderLayout.NORTH);
         
         //add action listener to logout button
         logout.addActionListener(logoutAL);
         createAccountButton.addActionListener(CNAButtonAL);
         
-        userPanel.setBorder (BorderFactory.createTitledBorder (BorderFactory.createEtchedBorder (),
-                                                                                "Clients",
-                                                                                TitledBorder.CENTER,
-                                                                                TitledBorder.TOP));
+        userPanel.setBorder (BorderFactory.createTitledBorder (BorderFactory.createEtchedBorder (), "Clients", TitledBorder.CENTER, TitledBorder.TOP));
         
-        //create table of all users
-        ArrayList<User> users = Broker.getClients(this.user);
-        String[][] table = new String[users.size()][3];
-        for (int i = 0; i < users.size(); i++) {
-            table[i][0] = users.get(i).getUserName();
-            table[i][1] = users.get(i).getFirstName();
-            table[i][2] = users.get(i).getLastName();
-        }
-        String[] titles = {"Username", "FirstName", "LastName"};
-        JTable jTable = new JTable(table, titles);
-              
         //add elements
         logoPanel.add(label, BorderLayout.CENTER);
-        userPanel.add(jTable, BorderLayout.CENTER);
         
-        userPanel.add(jTable.getTableHeader(), BorderLayout.NORTH);
         //Add panels main panel
         this.add(logoPanel);
         this.add(userPanel);
@@ -94,20 +79,36 @@ public class DisplayUsers extends JPanel {
         logout.addActionListener(logoutAL);
         createAccountButton.addActionListener(CNAButtonAL);  
     }
-       
-    public boolean getLogoutClicked() {
-        return logoutClicked;
+    
+    public void setTable(ArrayList<Client> users){
+        //create table of all clients of this practitioner
+        String[][] table = new String[users.size()][3];
+        for (int i = 0; i < users.size(); i++) {
+            table[i][0] = users.get(i).getUsername();
+            table[i][1] = users.get(i).getFirstName();
+            table[i][2] = users.get(i).getLastName();
+        }
+        String[] titles = {"Username", "FirstName", "LastName"};
+        jTable = new JTable(table, titles);
+        userPanel.add(jTable, BorderLayout.CENTER);
+        userPanel.add(jTable.getTableHeader(), BorderLayout.NORTH);
+        this.repaint();
+        this.revalidate();
     }
-
+       
     public void setLogoutClicked(boolean bool){
         logoutClicked = bool;
     }
     
+    public boolean isLogoutClicked() {
+        return logoutClicked;
+    }
+
      public void setCNAButtonClicked(boolean bool){
         CNAButtonClicked = bool;
     }
     
-    public boolean getCNAButtonClicked(){
+    public boolean isCNAButtonClicked(){
         return CNAButtonClicked;
     }
     

@@ -11,25 +11,21 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 /**
  *
  * @author Matt
  */
 public class ClientMenu extends JPanel{
-     private final JButton logout = new JButton("logout");
+    private final JButton logout = new JButton("logout");
     private boolean logoutClicked = false;
-    private final boolean selectionMade = false;
-    private String action;
-    private User user;
+    private Client client;
     
     
     //constructor
-    public ClientMenu(User user) {
-        this.user = user;
+    public ClientMenu(Client client) {
+        this.client = client;
         init();
     }
         
@@ -47,7 +43,7 @@ public class ClientMenu extends JPanel{
         JLabel loginInfo= new JLabel();
         Font loginInfoFont = new Font(Font.SANS_SERIF, Font.PLAIN, 18);
         loginInfo.setFont(loginInfoFont);
-        loginInfo.setText("logged in as Client " + user.getFirstName());
+        loginInfo.setText("logged in as Client " + client.getFirstName());
         logoPanel.add(loginInfo, BorderLayout.NORTH);
         
         //add action listener to logout button
@@ -65,7 +61,7 @@ public class ClientMenu extends JPanel{
         logout.addActionListener(logoutAL);
     }
        
-    public boolean getLogoutClicked() {
+    public boolean isLogoutClicked() {
         return logoutClicked;
     }
 

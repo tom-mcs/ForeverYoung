@@ -10,20 +10,18 @@ package foreveryoung;
  * @author Thomas McSkimming
  */
 public class User {
-    private String userName;
-    private String password;
-    private String firstName;
-    private String lastName;
-    private String parent;
-    private boolean isLoggedIn;
+    protected String username;
+    protected String password;
+    protected String firstName;
+    protected String lastName;
+    protected boolean isLoggedIn;
     
     //create a user with username and password
-    public User(String username, String password, String firstName, String lastName, String parent){
-        this.userName = username;
+    public User(String username, String password, String firstName, String lastName){
+        this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.parent = parent;
         isLoggedIn = false;
     }
     
@@ -44,25 +42,20 @@ public class User {
         return isLoggedIn;
     }
 
-    public String getParent() {
-        return parent;
+    public boolean isPractitioner(){
+        return false;
     }
     
-    public boolean isPractitioner(){
-        if(parent==null){
-            return true;
-        }
-        else{
-            return false;
-        }        
+    public boolean isClient(){
+        return false;
     }
             
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.username = userName;
     }
 
     public String getFirstName() {
@@ -79,6 +72,11 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+    @Override
+    public String toString(){
+        return username;
     }
 
 }

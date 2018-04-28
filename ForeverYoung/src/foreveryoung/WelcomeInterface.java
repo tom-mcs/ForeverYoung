@@ -108,4 +108,8 @@ public class WelcomeInterface extends JPanel {
         }
     };
     
+    public void setDefaultButton()throws NullPointerException{
+        this.getRootPane().setDefaultButton(loginButton);
+    }
+    
 }

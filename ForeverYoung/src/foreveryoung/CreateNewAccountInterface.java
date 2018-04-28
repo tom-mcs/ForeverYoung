@@ -101,34 +101,24 @@ public class CreateNewAccountInterface extends JPanel{
         cancel.addActionListener(cancelButtonAL);
     }
     
-    /**
-     * returns true if a user is created
-     * otherwise displays an error message and returns false
-     */
-    public boolean create(){
-
-        String username = userNameTextField.getText();
-        String firstName = firstNameTextField.getText();
-        String lastName = lastNameTextField.getText();
-        String password1 = passwordField1.getText();
-        String password2 = passwordField2.getText();
-        
-        //if passwords match, adds the user. if user already exists returns an error
-        if (password1.equals(password2)){
-            User user = new User(username, password1, firstName, lastName, parent);
-            if(Broker.addUser(user)){
-                setMessage("user added successfully");
-                System.out.println("user added, parent is " + parent);
-                return true;
-            }
-            else{
-                setMessage("error: username already exists or fields were left empty");
-            }
-        }
-        else{
-            setMessage("passwords do not match");
-        }
-        return false;
+    public String getUsernameText(){
+        return userNameTextField.getText();
+    }
+    
+    public String getPassword1Text(){
+        return passwordField1.getText();
+    }
+    
+    public String getPassword2Text(){
+        return passwordField2.getText();
+    }
+    
+    public String getFirstNameText(){
+        return firstNameTextField.getText();
+    }
+    
+    public String getLastNameText(){
+        return lastNameTextField.getText();
     }
 
     public boolean isCreateButtonClicked() {
@@ -151,11 +141,20 @@ public class CreateNewAccountInterface extends JPanel{
         this.getRootPane().setDefaultButton(createButton);
     }
     
-    private void setMessage(String message){
+    public void setMessage(String message){
         dialog.setText(message);
     }
-    private void clearMessage(){
+    
+    public void clearMessage(){
         dialog.setText("");
+    }
+    
+    public void clearFields(){
+        userNameTextField.setText("");
+        firstNameTextField.setText("");
+        lastNameTextField.setText("");
+        passwordField1.setText("");
+        passwordField2.setText("");
     }
     
     private ActionListener createButtonAL = new ActionListener(){

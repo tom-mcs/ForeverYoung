@@ -77,7 +77,8 @@ public class Broker {
 */
         
         try{
-            statement.execute("CREATE TABLE users (username VARCHAR(15) PRIMARY KEY NOT NULL, password VARCHAR(15) NOT NULL, firstName VARCHAR(15), lastName VARCHAR(15), parent VARCHAR(15))");
+            statement.execute("CREATE TABLE users (username VARCHAR(15) PRIMARY KEY NOT NULL, "
+                    + "password VARCHAR(15) NOT NULL, firstName VARCHAR(15), lastName VARCHAR(15), practitioner VARCHAR(15))");
             System.out.println("user table created");
         }
         catch(SQLException sqlExcept2){
@@ -124,26 +125,39 @@ public class Broker {
  * @author Ryan
  */
     
-    //adds practitioner with username, password, first name, and last name as argument
-     public boolean addUser(User user){
-        if(user.getUserName().isEmpty() || user.getPassword().isEmpty() || user.getFirstName().isEmpty() || user.getLastName().isEmpty()){
-            return false;
-        }
-        else{
-            try{
-                statement = connection.createStatement();
-                if(user.isPractitioner()){
-                    statement.execute("INSERT INTO users VALUES ('" + user.getUserName() + "', '" + user.getPassword() + "', '" + user.getFirstName() + "', '" + user.getLastName() + "', NULL)");
-                }else{
-                    statement.execute("INSERT INTO users VALUES ('" + user.getUserName() + "', '" + user.getPassword() + "', '" + user.getFirstName() + "', '" + user.getLastName() + "', '" + user.getParent() + "')");
-                }
-                return true;
-            }
-            catch (SQLException ex) {
-                return false;
-            }
-        }
-     }
+   //adds practitioner with username, password, first name, and last name as argument
+    public boolean addPractitioner(Practitioner user){
+       if(user.getUsername().isEmpty() || user.getPassword().isEmpty() || user.getFirstName().isEmpty()|| user.getLastName().isEmpty()){
+           return false;
+       }
+       else{
+           try{
+               statement = connection.createStatement();
+               statement.execute("INSERT INTO users VALUES ('" + user.getUsername() + "', '" + user.getPassword() + "', '" + user.getFirstName() + "', '" + user.getLastName() + "', NULL)");
+               return true;
+           }
+           catch (SQLException ex) {
+               return false;
+           }
+       }
+    }
+     
+    //adds client with username, password, first name, last name and practitioner name as argument
+    public boolean addClient(Client user){
+       if(user.getUsername().isEmpty() || user.getPassword().isEmpty() || user.getFirstName().isEmpty()|| user.getLastName().isEmpty()){
+           return false;
+       }
+       else{
+           try{
+               statement = connection.createStatement();
+               statement.execute("INSERT INTO users VALUES ('" + user.getUsername() + "', '" + user.getPassword() + "', '" + user.getFirstName() + "', '" + user.getLastName() + "', '" + user.getPractitionerName() + "')");
+               return true;
+           }
+           catch (SQLException ex) {
+               return false;
+           }
+       }
+    }
 
 /**
  * 
@@ -160,17 +174,25 @@ public class Broker {
      public User getUser(String username){  
         try{
             ResultSet rs = statement.executeQuery("SELECT * FROM users WHERE username='" + username + "'");
-            
+            User user = new User();
             if(rs.next()){
-                User user = new User(rs.getString("username"),rs.getString("password"), rs.getString("firstName"), rs.getString("lastName"), rs.getString("parent"));
-                return user;
+                if (rs.getString("practitioner") == null){
+                    user = new Practitioner(rs.getString("username"),rs.getString("password"), rs.getString("firstName"), rs.getString("lastName"));
+                    ArrayList<Client> clients = getClients((Practitioner)user);
+                    for(Client client : clients){
+                        ((Practitioner)user).addClient(client);
+                    }
+                }
+                else{
+                    System.out.println("ELSEEEE");
+                    user = new Client(rs.getString("username"),rs.getString("password"), rs.getString("firstName"), rs.getString("lastName"), rs.getString("practitioner"));
+                }
+                
             }
-            else{
-                return null;
-            }
+            return user;
         }
         catch(SQLException ex){
-            return null;
+            return new User();
         }
     }    
  
@@ -182,15 +204,15 @@ public class Broker {
  * @author Ryan
  */         
      
-    public ArrayList<User> getClients(User practitioner){
+    public ArrayList<Client> getClients(Practitioner practitioner){
         try{
-            ResultSet rs = statement.executeQuery("SELECT * FROM users WHERE parent='" + practitioner.getUserName() + "'");
-            ArrayList<User> Users = new ArrayList<>();
+            ResultSet rs = statement.executeQuery("SELECT * FROM users WHERE practitioner='" + practitioner.getUsername() + "'");
+            ArrayList<Client> clients = new ArrayList<>();
             
             while(rs.next()){
-                Users.add(new User(rs.getString("username"),rs.getString("password"), rs.getString("firstName"), rs.getString("lastName"), rs.getString("parent")));
+                clients.add(new Client(rs.getString("username"),rs.getString("password"), rs.getString("firstName"), rs.getString("lastName"), rs.getString("practitioner")));
             }
-            return Users;
+            return clients;
         }
         catch(SQLException ex){
            return null; 

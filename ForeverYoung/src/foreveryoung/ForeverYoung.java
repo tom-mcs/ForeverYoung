@@ -3,6 +3,7 @@ package foreveryoung;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import static java.lang.Thread.sleep;
+import static java.lang.Thread.sleep;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -20,18 +21,18 @@ public class ForeverYoung {
         Broker broker = new Broker();
         MainFrame mainFrame = new MainFrame();
         User user = new User();
-        WelcomeInterface WInterface = new WelcomeInterface();
-        mainFrame.setVisible(true);
-        
+      
         //program terminates and database is shut down when the main frame is closed
         mainFrame.addWindowListener(new WindowAdapter(){
-        @Override
-        public void windowClosing(WindowEvent we)
-        {
+        @Override 
+        public void windowClosing(WindowEvent we){
             broker.shutdown();
             System.exit(0);    
-        }
-        });
+        }});
+        
+        WelcomeController welcomeController = new WelcomeController(mainFrame);
+        LoginController loginController = new LoginController(broker, mainFrame);
+        CreateNewPractitionerController CNPController = new CreateNewPractitionerController(broker, mainFrame);
          
         //loop forever
         while(true){
@@ -41,105 +42,46 @@ public class ForeverYoung {
              * checks if a button is clicked and creates the relevant interface
              **/
             while (!user.isLoggedIn()){
-                mainFrame.setPanel(WInterface);
-                sleep(50);  //delay to reduce frequency of checking
-                
-                //create login interface
-                if (WInterface.getLoginButtonClicked()){
-                    WInterface.setLoginButtonClicked(false);
-                    LoginInterface loginInterface = new LoginInterface();
-                    mainFrame.setPanel(loginInterface);
-                    loginInterface.setDefaultButton();
-                    boolean done = false;
-                    
-                    //continues until user is logged in or cancel is clicked
-                    while (!done){
-                        sleep(50);
-                        if(loginInterface.getLoginButtonClicked()){
-                            loginInterface.setLoginButtonClicked(false);
-                            if(loginInterface.login()){
-                                user = loginInterface.getUser();
-                                done = true;
-                            }
-                        }
-                        if(loginInterface.getCancelButtonClicked()){
-                            loginInterface.setCancelButtonClicked(false);
-                            done = true;
-                        }
-                    }
+                sleep(50);
+                welcomeController.activate();
+                //login clicked
+                if (welcomeController.getAction().equals("login")){
+                    loginController.activate();
+                    user = loginController.getUser();   
                 }
-
-                //create CNA interface
-                if (WInterface.getCNAButtonClicked()){
-                    WInterface.setCNAButtonClicked(false);
-                    CreateNewAccountInterface CNAInterface = new CreateNewAccountInterface();
-                    mainFrame.setPanel(CNAInterface);
-                    CNAInterface.setDefaultButton();
-                    boolean done = false;
-                    
-                    //continues until account is created or cancel is pressed
-                    while(!done){
-                        sleep(50);
-                        if(CNAInterface.isCreateButtonClicked()){
-                            CNAInterface.setCreateButtonClicked(false);
-                            done = CNAInterface.create();
-                        }
-                        if(CNAInterface.isCancelButtonClicked()){
-                            CNAInterface.setCancelButtonClicked(false);
-                            done = true;
-                        }
-                    }
+                //CNA clicked
+                if (welcomeController.getAction().equals("CNP")){
+                    CNPController.activate();
+                }
+            }
+    
+            System.out.println(user.getUsername() + " is logged in");
+            /**
+             * user is logged in. create display users interface
+             */
+            System.out.println(user.getFirstName() + user.getLastName());
+            if(user instanceof Practitioner){
+                PractitionerMenuController menuController = new PractitionerMenuController((Practitioner)user, broker, mainFrame);
+                menuController.activate();
+                System.out.println(((Practitioner)user).getClients());
+                if(menuController.getAction().equals("logout")){
+                    user.logout();
+                }
+                if(menuController.getAction().equals("CNA")){
+                    NewClientController newClientController = new NewClientController(broker, mainFrame, (Practitioner)user);
+                    newClientController.activate();
                 }
             }
             
-            /**
-             * user is logged in create display users interface
-             */
-            DisplayUsers displayUsers = new DisplayUsers(user);
-            ClientMenu clientMenu = new ClientMenu(user);
-            //continues until user is logs out
-            while(user.isLoggedIn()){
-                if(user.isPractitioner()){
-                    mainFrame.setPanel(displayUsers);
-                    sleep(50);
-                    if(displayUsers.getLogoutClicked()){
-                        displayUsers.setLogoutClicked(false);
-                        System.out.println("logging out");
-                        user.logout();
-                    }
-                    if(displayUsers.getCNAButtonClicked()){
-                        displayUsers.setCNAButtonClicked(false);
-                        CreateNewAccountInterface CNAInterface = new CreateNewAccountInterface(user.getUserName());
-                        mainFrame.setPanel(CNAInterface);
-                        CNAInterface.setDefaultButton();
-                        boolean done = false;
-                        //continues until account is created or cancel is pressed
-                        while(!done){
-                            sleep(50);
-                            if(CNAInterface.isCreateButtonClicked()){
-                                CNAInterface.setCreateButtonClicked(false);
-                                done = CNAInterface.create();
-                            }
-                            if(CNAInterface.isCancelButtonClicked()){
-                                CNAInterface.setCancelButtonClicked(false);
-                                done = true;
-                            }                     
-                        }
-                        //refreshes display users after a user has been added
-                        displayUsers = new DisplayUsers(user);
-                        mainFrame.setPanel(displayUsers); 
-                    }
-                }
-                else{
-                    mainFrame.setPanel(clientMenu);
-                    sleep(50);
-                    if(clientMenu.getLogoutClicked()){
-                        clientMenu.setLogoutClicked(false);
-                        System.out.println("logging out");
-                        user.logout();
-                    }
+            if(user instanceof Client){
+                ClientMenuController menuController = new ClientMenuController((Client)user, broker, mainFrame);
+                menuController.activate();
+                if(menuController.getAction().equals("logout")){
+                    user.logout();
                 }
             }
+            
+            
         }
     }
 }

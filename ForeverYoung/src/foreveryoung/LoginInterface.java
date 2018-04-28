@@ -31,7 +31,7 @@ import javax.swing.border.EmptyBorder;
  */
 class LoginInterface extends JPanel {
 
-    private JTextField userNameTextField = new JTextField();
+    private JTextField usernameField = new JTextField();
     private JPasswordField passwordField = new JPasswordField();
     private JLabel dialog = new JLabel();
     private JButton loginButton = new JButton("login");
@@ -66,7 +66,7 @@ class LoginInterface extends JPanel {
         ButtonPanel.add(loginButton);
         ButtonPanel.add(cancelButton);
         LabelPanel.add(uLabel);
-        TextFieldPanel.add(userNameTextField);
+        TextFieldPanel.add(usernameField);
         LabelPanel.add(pLabel);
         TextFieldPanel.add(passwordField);
         
@@ -89,31 +89,12 @@ class LoginInterface extends JPanel {
         cancelButton.addActionListener(cancelButtonAL);
     }
     
-    private User user;
-    public User getUser(){
-        return user;
+    public String getUsernameText(){
+        return usernameField.getText();
     }
     
-    public boolean login(){
-        //gets user from the typed username, and checks the typed password with the one in the database
-        //first checks to see if user exists, then if password matches, user is logged in, if not then prints that the password doesn't match
-        String username = userNameTextField.getText();
-        String password = passwordField.getText();  //java doesn't like that the password isn't encrypted, so might have to change this later
-        user = Broker.getUser(username);  
-        if(user == null){
-            displayMessage("User not found");
-        }
-        else{
-            if (password.equals(user.getPassword())){
-                user.login();
-                System.out.println("user is logged in as " + user.getUserName());
-                return true;
-            }
-            else{
-                displayMessage("Incorrect password");
-            }  
-        }
-        return false;
+    public String getPasswordText(){
+        return passwordField.getText();
     }
     
     public boolean getLoginButtonClicked(){
@@ -139,7 +120,17 @@ class LoginInterface extends JPanel {
         dialog.setText("");
     }
     
-    public void setDefaultButton()throws NullPointerException{
+    public void clearAll(){
+        clearMessage();
+        clearFields();
+    }
+    
+    public void clearFields(){
+        passwordField.setText("");
+        usernameField.setText("");
+    }
+    
+    public void setDefaultButton(){
         this.getRootPane().setDefaultButton(loginButton);
     }
     
