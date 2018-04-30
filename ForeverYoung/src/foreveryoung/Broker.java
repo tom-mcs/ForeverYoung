@@ -219,15 +219,15 @@ public class Broker {
         }        
     }
     
-    public void removeUser(String username) throws SQLException {
+    //this isn't working
+    public void removeUser(String username) {
         try {
-            
             statement = connection.createStatement();
-            statement.executeQuery("DELETE * FROM users WHERE username='" + username + "'");
+            statement.executeQuery("DELETE FROM users WHERE username = " + username + "");
             System.out.println("User successfully removed from database");
         }
         catch(SQLException ex) {
-            throw ex;
+            System.out.println(username + " does not exist");
         }
         
         

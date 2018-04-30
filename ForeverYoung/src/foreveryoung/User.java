@@ -78,5 +78,10 @@ public class User {
     public String toString(){
         return username;
     }
+    
+    public String getName(){
+        String string = getFirstName() + " " + getLastName();
+        return string;
+    }
 
 }

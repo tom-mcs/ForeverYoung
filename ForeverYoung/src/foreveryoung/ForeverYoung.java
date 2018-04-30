@@ -71,6 +71,10 @@ public class ForeverYoung {
                     NewClientController newClientController = new NewClientController(broker, mainFrame, (Practitioner)user);
                     newClientController.activate();
                 }
+                if(menuController.getAction().equals("view")){
+                    PractitionerClientMenuController PCMenuController = new PractitionerClientMenuController(menuController.getSelectedClient(), broker, mainFrame);
+                    PCMenuController.activate();
+                }
             }
             
             if(user instanceof Client){

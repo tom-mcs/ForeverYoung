@@ -18,7 +18,8 @@ public class PractitionerMenuController {
     private PractitionerMenu menu;
     private MainFrame mainFrame;
     private String action;
-    
+    private boolean done;
+   
     public PractitionerMenuController(Practitioner pract, Broker broker, MainFrame mainFrame){
         practitioner = pract;
         this.broker = broker;
@@ -27,10 +28,11 @@ public class PractitionerMenuController {
     }
     
     public void activate(){
+        done = false;
         menu.setTable(practitioner.getClients());
         action = null;
         mainFrame.setPanel(menu);
-        while(action == null){
+        while(!done){
             try{sleep(50);}catch(InterruptedException ie){}
             check();
         }
@@ -38,13 +40,32 @@ public class PractitionerMenuController {
     
     private void check(){
         if(menu.isCNAButtonClicked()){
+            done = true;
             menu.setCNAButtonClicked(false);
             action = "CNA";
         }
         if(menu.isLogoutClicked()){
+            done = true;
             menu.setLogoutClicked(false);
             action = "logout";
         }
+        if(menu.isDeleteClientClicked()){
+            System.out.println("delete client: " + menu.getSelectedClient().getName());
+            menu.setDeleteClientClicked(false);
+            broker.removeUser(menu.getSelectedClient().getUsername());
+            practitioner.removeClient(menu.getSelectedClient());
+            menu.setTable(practitioner.getClients());
+        }
+        if(menu.isViewClientClicked()){
+            done = true;
+            menu.setViewClientClicked(false);
+            System.out.println("view client: " + menu.getSelectedClient().getName());
+            action = "view";
+        }
+    }
+    
+    public Client getSelectedClient(){
+        return menu.getSelectedClient();
     }
     
     public String getAction(){
