@@ -78,7 +78,7 @@ public class LoginController {
         String username = loginInterface.getUsernameText();
         String password = loginInterface.getPasswordText();  //java doesn't like that the password isn't encrypted, so might have to change this later
         user = broker.getUser(username);  
-        if(user.getUsername() == null){
+        if(user.getUsername() == null){    
             loginInterface.displayMessage("User not found");
         }
         else{

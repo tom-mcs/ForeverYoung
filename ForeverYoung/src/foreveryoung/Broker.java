@@ -173,8 +173,8 @@ public class Broker {
      //returns null if the user isn't found
      public User getUser(String username){  
         try{
-            ResultSet rs = statement.executeQuery("SELECT * FROM users WHERE username='" + username + "'");
             User user = new User();
+            ResultSet rs = statement.executeQuery("SELECT * FROM users WHERE username='" + username + "'");          
             if(rs.next()){
                 if (rs.getString("practitioner") == null){
                     user = new Practitioner(rs.getString("username"),rs.getString("password"), rs.getString("firstName"), rs.getString("lastName"));
@@ -218,4 +218,21 @@ public class Broker {
            return null; 
         }        
     }
+    
+    public void removeUser(String username) throws SQLException {
+        try {
+            
+            statement = connection.createStatement();
+            statement.executeQuery("DELETE * FROM users WHERE username='" + username + "'");
+            System.out.println("User successfully removed from database");
+        }
+        catch(SQLException ex) {
+            throw ex;
+        }
+        
+        
+        
+    }
+    
+    
 }
