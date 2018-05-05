@@ -85,8 +85,42 @@ public class Broker {
         catch(SQLException sqlExcept2){
             System.out.println("error creating user table");
         }
+        
+        
+        try{
+            statement.execute("CREATE TABLE goals (goal VARCHAR(15) PRIMARY KEY NOT NULL)");
+            System.out.println("goals table created");
+        }
+        catch(SQLException sqlExcept2){
+            System.out.println("error creating goals table");
+        }
+          
+        try{
+            statement.execute("CREATE TABLE pedometer (dates VARCHAR(15) PRIMARY KEY NOT NULL, steps INT NOT NULL)");
+            System.out.println("pedometer table created");
+        }
+        catch(SQLException sqlExcept2){
+            System.out.println("error creating pedometer table");
+        }
+        
+        try{
+            statement.execute("DROP TABLE goals");
+            System.out.println("goals table dropped");
+        }
+        catch(SQLException sqlExcept){
+            System.out.println("error dropping goals table");
+        } 
+        
+        try{
+            statement.execute("DROP TABLE pedometer");
+            System.out.println("pedometer table dropped");
+        }
+        catch(SQLException sqlExcept){
+            System.out.println("error dropping pedometer table");
+        } 
+        
      }
-
+ 
 /**
  * The program again makes use of the SQL imports, in order to close the connection
  * to the database. The method makes use of the stated booleans above to detect when
