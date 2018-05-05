@@ -11,23 +11,22 @@ import static java.lang.Thread.sleep;
  *
  * @author Admin
  */
-public class PractitionerClientMenuController {
+public class AddExerciseMenuController {
     private Client client;
     private Broker broker;
     private MainFrame mainFrame;
-    private PractitionerClientMenu menu;
+    private AddExerciseMenu menu;
     private String action;
     
-    public PractitionerClientMenuController(Client client, Broker broker, MainFrame mainFrame){
+    public AddExerciseMenuController(Client client, Broker broker, MainFrame mainFrame){
         this.client = client;
         this.broker = broker;
         this.mainFrame = mainFrame;
-        menu = new PractitionerClientMenu(this.client);
+        menu = new AddExerciseMenu(this.client);
     }
     
     public void activate(){
         action = null;
-        menu.updateTable();
         mainFrame.setPanel(menu);
         while(action == null){
             try{sleep(50);}catch(InterruptedException ie){}
@@ -40,13 +39,10 @@ public class PractitionerClientMenuController {
             menu.setBackClicked(false);
             action = "back";
         }
-        if(menu.isAddExerciseClicked()){
-            menu.setAddExerciseClicked(false);
-            action = "addExercise";
-        }
-        if(menu.isAddGoalClicked()){
-            menu.setAddGoalClicked(false);
-            action = "addGoal";
+        if(menu.isAddClicked()){
+            menu.setAddClicked(false);
+            client.addAerobicExercise(new AerobicExercise("exercise"));
+            System.out.println(client.getAerobicExercises());
         }
     }
     

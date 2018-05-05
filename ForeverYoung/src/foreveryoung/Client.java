@@ -14,6 +14,9 @@ import java.util.ArrayList;
 public class Client extends User{
     
     private String practitionerName;
+    private Pedometer pedometer;
+    private ArrayList<AerobicExercise> aerobicExercises;
+    private ArrayList<Goal> goals;
     
     public Client(User user, String practitionerName){
         this(user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName(), practitionerName);
@@ -26,9 +29,27 @@ public class Client extends User{
         this.lastName = lastName;
         this.isLoggedIn = false;
         this.practitionerName = practitionerName;
+        aerobicExercises = new ArrayList<>();
+        goals = new ArrayList<>();
     }
     
     public String getPractitionerName(){
         return practitionerName;
+    }
+    
+    public boolean addAerobicExercise(AerobicExercise ae){
+        return aerobicExercises.add(ae);
+    }
+    
+    public boolean addGoal(Goal goal){
+        return goals.add(goal);
+    }
+    
+    public ArrayList<Goal> getGoals(){
+        return goals;
+    }
+    
+    public ArrayList<AerobicExercise> getAerobicExercises(){
+        return aerobicExercises;
     }
 }

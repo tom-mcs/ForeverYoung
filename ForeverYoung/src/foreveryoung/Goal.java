@@ -20,7 +20,7 @@ public class Goal {
         completed = false;
     }
 
-    public String getGoal() {
+    public String getName() {
         return name;
     }
 

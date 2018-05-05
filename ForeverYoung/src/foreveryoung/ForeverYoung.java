@@ -73,14 +73,21 @@ public class ForeverYoung {
                         newClientController.activate();
                     }
                     if(menuController.getAction().equals("view")){
-                        PractitionerClientMenuController PCMenuController = new PractitionerClientMenuController(menuController.getSelectedClient(), broker, mainFrame);
+                        Client client = menuController.getSelectedClient();
+                        PractitionerClientMenuController PCMenuController = new PractitionerClientMenuController(client, broker, mainFrame);
                         while(true){
                             PCMenuController.activate();
                             if(PCMenuController.getAction().equals("back")){
                                 break;
                             }
                             if(PCMenuController.getAction().equals("addExercise")){
-                                System.out.println("go to add exercise menu");
+                                AddExerciseMenuController AEMController = new AddExerciseMenuController(client, broker, mainFrame);
+                                while(true){
+                                    AEMController.activate();
+                                    if(AEMController.getAction().equals("back")){
+                                        break;
+                                    }
+                                }
                             }
                             if(PCMenuController.getAction().equals("addGoal")){
                                 System.out.println("go to add goal menu");

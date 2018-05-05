@@ -18,7 +18,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
@@ -37,7 +36,6 @@ public class PractitionerMenu extends JPanel {
     private final JButton createAccountButton = new JButton("Create Client Account");
     private boolean CNAButtonClicked = false;
     private Practitioner practitioner;
-    private JTable jTable;
     private JPanel userPanel;
     private JButton deleteClientButton;
     private JButton viewClientButton;
