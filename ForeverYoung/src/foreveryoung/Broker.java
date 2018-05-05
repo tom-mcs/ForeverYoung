@@ -2,6 +2,7 @@ package foreveryoung;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -132,7 +133,6 @@ public class Broker {
        }
        else{
            try{
-               statement = connection.createStatement();
                statement.execute("INSERT INTO users VALUES ('" + user.getUsername() + "', '" + user.getPassword() + "', '" + user.getFirstName() + "', '" + user.getLastName() + "', NULL)");
                return true;
            }
@@ -199,7 +199,7 @@ public class Broker {
 /**
  * 
  * @return
- * The getAllUsers method used an ArrayList to store all of the pulled from the datbase 
+ * The getAllUsers method used an ArrayList to store all of the pulled from the database 
  * into a list, which then can be displayed to the user.
  * @author Ryan
  */         
@@ -220,18 +220,35 @@ public class Broker {
     }
     
     //this isn't working
-    public void removeUser(String username) {
-        try {
-            statement = connection.createStatement();
-            statement.executeQuery("DELETE FROM users WHERE username = " + username + "");
-            System.out.println("User successfully removed from database");
+    public void removeUser(Client user) {
+        try {   
+                ResultSet rs;  
+                System.out.println(user.getUsername());
+                String username = user.getUsername();
+                rs = statement.executeQuery("SELECT * FROM users WHERE username='" + username + "'"); 
+              
+                    String sql = "DELETE FROM users WHERE username'=" + username + "'";
+                    statement.executeUpdate(sql);
+                    //rs.deleteRow();
+                
+                
+                
+                   //rs.next();
+                   
+                   //rs.deleteRow();
+                   //rs.close();
+                   
+//                 Connection conn = DriverManager.getConnection(protocol + dbName + ";create=true");
+//                 String sql = "DELETE * FROM rs WHERE username='" + user.getUsername() + "'";
+//                 PreparedStatement state = conn.prepareStatement(sql);
+//                 state.executeUpdate();
+                    
+                 System.out.println("User successfully removed from database");
+            
         }
         catch(SQLException ex) {
-            System.out.println(username + " does not exist");
+            System.out.println(user+ " does not exist");
         }
-        
-        
-        
     }
     
     

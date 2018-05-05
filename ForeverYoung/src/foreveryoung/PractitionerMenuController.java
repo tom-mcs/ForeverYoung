@@ -52,7 +52,8 @@ public class PractitionerMenuController {
         if(menu.isDeleteClientClicked()){
             System.out.println("delete client: " + menu.getSelectedClient().getName());
             menu.setDeleteClientClicked(false);
-            broker.removeUser(menu.getSelectedClient().getUsername());
+        //    broker.removeUser(menu.getSelectedClient().getUsername());
+            broker.removeUser(menu.getSelectedClient());
             practitioner.removeClient(menu.getSelectedClient());
             menu.setTable(practitioner.getClients());
         }
