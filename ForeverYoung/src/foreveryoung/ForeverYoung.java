@@ -75,30 +75,23 @@ public class ForeverYoung {
                     if(menuController.getAction().equals("view")){
                         Client client = menuController.getSelectedClient();
                         PractitionerClientMenuController PCMenuController = new PractitionerClientMenuController(client, broker, mainFrame);
-                        while(true){
+                        while(!PCMenuController.isDone()){
                             PCMenuController.activate();
-                            if(PCMenuController.getAction().equals("back")){
-                                break;
-                            }
-                            if(PCMenuController.getAction().equals("addExercise")){
-                                AddExerciseMenuController AEMController = new AddExerciseMenuController(client, broker, mainFrame);
-                                while(true){
-                                    AEMController.activate();
-                                    if(AEMController.getAction().equals("back")){
-                                        break;
-                                    }
-                                }
-                            }
-                            if(PCMenuController.getAction().equals("addGoal")){
-                                System.out.println("go to add goal menu");
                             }
 
-                        }
+                        
                     }
                 }
             }
             
             if(user instanceof Client){
+                Client client = (Client)user;
+                client.addAerobicExercise(new AerobicExercise("dancing"));
+                client.addAerobicExercise(new AerobicExercise("swimming"));
+                client.addGoal(new Goal("running", "run 10km without stopping by march"));
+                client.addGoal(new Goal("weightloss", "lose 5kg by december 15th"));
+                
+                
                 ClientMenuController menuController = new ClientMenuController((Client)user, broker, mainFrame);
                 menuController.activate();
                 if(menuController.getAction().equals("logout")){

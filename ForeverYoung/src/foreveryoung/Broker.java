@@ -284,6 +284,14 @@ public class Broker {
             System.out.println(user+ " does not exist");
         }
     }
+
+    void addAerobicExercise(AerobicExercise exercise, Client client) {
+        System.out.println("implement add Aerobic Exercise in Broker");
+    }
+
+    void addGoal(Goal goal) {
+        System.out.println("implement add Goal in Broker");
+    }
     
     
 }

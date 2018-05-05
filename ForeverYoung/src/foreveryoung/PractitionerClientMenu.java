@@ -17,8 +17,13 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -48,18 +53,16 @@ public class PractitionerClientMenu extends JPanel{
         //formatting
         this.setLayout(new GridLayout(1, 2));
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
-        JPanel logoPanel = new JPanel(new BorderLayout());
-        userPanel = new JPanel(new GridLayout(4,1));
-        JPanel buttonPanel = new JPanel(new FlowLayout());         
+        userPanel = new JPanel(new GridLayout(2,1,10,10));
+        JPanel buttonPanel = new JPanel(new GridLayout(2,1,10,10));         
         //import logo
         ImageIcon logo = new ImageIcon("./lph.png");
         JLabel label = new JLabel(logo);
         
-        JLabel loginInfo= new JLabel();
-        Font loginInfoFont = new Font(Font.SANS_SERIF, Font.PLAIN, 18);
-        loginInfo.setFont(loginInfoFont);
-        loginInfo.setText("Viewing Client " + client.getFirstName() + " " + client.getLastName());
-        logoPanel.add(loginInfo, BorderLayout.NORTH);
+        JLabel message= new JLabel();
+        Font messageFont = new Font(Font.SANS_SERIF, Font.PLAIN, 18);
+        message.setFont(messageFont);
+        message.setText("Viewing Client: " + client.getFirstName() + " " + client.getLastName());
         
         //add action listener to logout button
         backButton.addActionListener(backAL);
@@ -67,11 +70,21 @@ public class PractitionerClientMenu extends JPanel{
         addExerciseButton.addActionListener(AddExerciseAL);
 
         //add elements
-        logoPanel.add(label, BorderLayout.CENTER);
-        buttonPanel.add(backButton);
+        JPanel exerciseButtonPanel = new JPanel(new FlowLayout());
+        exerciseButtonPanel.add(addExerciseButton);
+        JPanel goalButtonPanel = new JPanel(new FlowLayout());
+        goalButtonPanel.add(addGoalButton);
+        buttonPanel.add(exerciseButtonPanel);
+        buttonPanel.add(goalButtonPanel);
         
-        //Add panels main panel
-        this.add(logoPanel);
+        JPanel homePanel = new JPanel(new GridLayout(2,1));
+        homePanel.add(new JLabel("Client: " + client.getFirstName() + " " + client.getLastName()), new Font(Font.SANS_SERIF, Font.PLAIN, 17));
+        JPanel backPanel = new JPanel(new FlowLayout());
+        backPanel.add(backButton);
+        homePanel.add(backPanel);
+        
+        
+        this.add(homePanel);
         this.add(userPanel);
         this.add(buttonPanel);
 
@@ -80,7 +93,7 @@ public class PractitionerClientMenu extends JPanel{
   
     }
     
-    public void updateTable(){
+    public void updateTables(){
         userPanel.removeAll();
         ArrayList<AerobicExercise> exercises = client.getAerobicExercises();
         exerciseTable = new JTable(exercises.size(), 2);
@@ -91,6 +104,8 @@ public class PractitionerClientMenu extends JPanel{
         }
         ArrayList<Goal> goals = client.getGoals();
         goalTable = new JTable(goals.size(), 3);
+        String columnNames[] = {"Goal","Description","Completed"};
+       
         for(int i = 0 ; i < goals.size(); i++){
             goalTable.setValueAt(goals.get(i).getName(), i, 0);
             goalTable.setValueAt(goals.get(i).getDescription(), i, 1);
@@ -99,12 +114,9 @@ public class PractitionerClientMenu extends JPanel{
         
         
         userPanel.add(exerciseTable);
-        userPanel.add(addExerciseButton);
         userPanel.add(goalTable);
-        userPanel.add(addGoalButton);
         userPanel.repaint();
         userPanel.revalidate();
-        this.revalidate();
     }
    
     public boolean isAddGoalClicked() {

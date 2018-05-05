@@ -56,5 +56,10 @@ public class AerobicExercise {
         entries.remove(i);
         return true;
     }
+    
+    @Override
+    public String toString(){
+        return name;
+    }
  
 }

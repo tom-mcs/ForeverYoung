@@ -52,4 +52,9 @@ public class Client extends User{
     public ArrayList<AerobicExercise> getAerobicExercises(){
         return aerobicExercises;
     }
+    
+    @Override 
+       public String toString(){
+        return firstName + " "  + lastName;
+    }
 }

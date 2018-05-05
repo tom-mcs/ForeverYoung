@@ -5,7 +5,10 @@
  */
 package foreveryoung;
 
+
 import static java.lang.Thread.sleep;
+import static java.lang.Thread.sleep;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -29,6 +32,7 @@ public class ClientMenuController {
     public void activate(){
         action = null;
         mainFrame.setPanel(menu);
+        menu.updateTables();
         while(action == null){
             try{sleep(50);}catch(InterruptedException ie){}
             check();
@@ -40,9 +44,31 @@ public class ClientMenuController {
             menu.setLogoutClicked(false);
             action = "logout";
         }
+        if(menu.isAddEntryClicked()){
+            AerobicExercise exercise = menu.getExercise();
+            try{
+                exercise.addEntry(Integer.parseInt(new addAerobicEntryPane().getMinutes()));
+            }
+            catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(null, "Enter A number", "Whoops!", JOptionPane.ERROR_MESSAGE);
+                check();
+            }
+            menu.setAddEntryClicked(false);
+            menu.updateTables();
+        }
+        if(menu.isCompleteGoalClicked()){
+            menu.setCompleteGoalClicked(false);
+            Goal goal = menu.getGoal();
+            goal.setCompleted(true);
+            menu.updateTables();
+        }
     }
     
     public String getAction(){
         return action;
+    }
+
+    private Object LocalDateTime() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

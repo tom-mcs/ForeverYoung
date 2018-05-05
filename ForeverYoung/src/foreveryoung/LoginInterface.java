@@ -55,7 +55,7 @@ class LoginInterface extends JPanel {
         JPanel LabelPanel = new JPanel(new GridLayout(0,1,2,20));
         JPanel TextFieldPanel = new JPanel(new GridLayout(0,1,2,20));
         JPanel ButtonPanel = new JPanel(new FlowLayout());
-        Font dialogFont = new Font(Font.SANS_SERIF, Font.PLAIN, 11);
+        Font dialogFont = new Font(Font.SANS_SERIF, Font.PLAIN, 15);
         dialog.setFont(dialogFont);
         
         //create Labels

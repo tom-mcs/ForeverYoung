@@ -6,6 +6,7 @@
 package foreveryoung;
 
 import static java.lang.Thread.sleep;
+import static java.lang.Thread.sleep;
 
 /**
  *
@@ -16,7 +17,7 @@ public class PractitionerClientMenuController {
     private Broker broker;
     private MainFrame mainFrame;
     private PractitionerClientMenu menu;
-    private String action;
+    private boolean done;
     
     public PractitionerClientMenuController(Client client, Broker broker, MainFrame mainFrame){
         this.client = client;
@@ -26,10 +27,10 @@ public class PractitionerClientMenuController {
     }
     
     public void activate(){
-        action = null;
-        menu.updateTable();
+        done = false;
+        menu.updateTables();
         mainFrame.setPanel(menu);
-        while(action == null){
+        while(done == false){
             try{sleep(50);}catch(InterruptedException ie){}
             check();
         }
@@ -38,19 +39,32 @@ public class PractitionerClientMenuController {
     private void check(){
         if(menu.isBackClicked()){
             menu.setBackClicked(false);
-            action = "back";
+            done = true;
         }
         if(menu.isAddExerciseClicked()){
             menu.setAddExerciseClicked(false);
-            action = "addExercise";
+            String name = new addExerciseOP().getExerciseName();
+            AerobicExercise exercise = new AerobicExercise(name);
+            client.addAerobicExercise(exercise);
+            broker.addAerobicExercise(exercise, client);
+            menu.updateTables();
         }
         if(menu.isAddGoalClicked()){
             menu.setAddGoalClicked(false);
-            action = "addGoal";
+            AddGoalOP addGoalOP = new AddGoalOP();
+            String name = addGoalOP.getGoalName();
+            String description = addGoalOP.getDescription();
+            Goal goal = new Goal(name, description);
+            client.addGoal(goal);
+            broker.addGoal(goal);
+            menu.updateTables();
         }
     }
-    
-    public String getAction(){
-        return action;
+
+    public boolean isDone() {
+        return done;
     }
+    
+    
+    
 }

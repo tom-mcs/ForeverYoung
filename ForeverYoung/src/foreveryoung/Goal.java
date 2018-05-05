@@ -44,4 +44,8 @@ public class Goal {
         this.completed = completed;
     }
     
+    @Override
+    public String toString(){
+        return name;
+    }
 }
