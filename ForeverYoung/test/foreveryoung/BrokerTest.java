@@ -56,11 +56,11 @@ public class BrokerTest {
      * Test of addUser method, of class Broker.
      */
     @Test
-    public void testAddUser() {
-        System.out.println("addUser");
+    public void testAddClient() {
+        System.out.println("addClient");
         User user = new User("Royal", "fqac", "Elizabeth", "Mary", "Ryan");
         boolean expResult = true;
-        boolean result = broke.addUser(user);
+        boolean result = broke.addClient(user);
         assertEquals(expResult, result);
     }
 
@@ -80,6 +80,7 @@ public class BrokerTest {
     /**
      * Test of getClients method, of class Broker.
      */
+    
     @Test
     public void testGetClients() throws SQLException {
         System.out.println("getClients");
