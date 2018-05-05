@@ -23,7 +23,13 @@ import javax.swing.border.EmptyBorder;
  */
 public class PractitionerClientMenu extends JPanel{
     private final JButton back = new JButton("Back");
+    private final JButton recordsteps = new JButton("Record Pedometer");
+    private final JButton addgoals = new JButton("Add Goals");
+    private final JButton addexercise = new JButton("Add exercises");
     private boolean logoutClicked = false;
+    private boolean stepsClicked = false;
+    private boolean goalsClicked = false;
+    private boolean exerciseClicked = false;
     private Client client;
     
     
@@ -52,6 +58,9 @@ public class PractitionerClientMenu extends JPanel{
         
         //add action listener to logout button
         back.addActionListener(backAL);
+        recordsteps.addActionListener(stepsAL);
+        addgoals.addActionListener(goalsAL);
+        addexercise.addActionListener(exerciseAL);
              
         //add elements
         logoPanel.add(label, BorderLayout.CENTER);
@@ -61,6 +70,9 @@ public class PractitionerClientMenu extends JPanel{
         this.add(userPanel);
         this.add(buttonPanel);
         buttonPanel.add(back);
+        buttonPanel.add(recordsteps);
+        buttonPanel.add(addgoals);
+        buttonPanel.add(addexercise);
   
     }
        
@@ -71,7 +83,31 @@ public class PractitionerClientMenu extends JPanel{
     public void setLogoutClicked(boolean bool){
         logoutClicked = bool;
     }
-      
+    
+    public boolean isStepsClicked() {
+        return stepsClicked;
+    }
+    
+    public void setStepsClicked(boolean bool) {
+        stepsClicked = bool;
+    }
+    
+    public boolean isGoalsClicked() {
+        return goalsClicked;
+    }
+    
+    public void setGoalsClicked(boolean bool) {
+        goalsClicked = bool;
+    }
+    
+    public boolean isExerciseClicked() {
+        return exerciseClicked;
+    }
+    
+    public void setExerciseClicked(boolean bool) {
+        exerciseClicked = bool;
+    }
+    
     //logout actionListener
     private ActionListener backAL = new ActionListener() {
         @Override
@@ -79,4 +115,29 @@ public class PractitionerClientMenu extends JPanel{
             logoutClicked = true;
         }
     };
+    
+    //steps actionListener
+    private ActionListener stepsAL = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            stepsClicked = true;
+        }
+    };
+    
+    //goals actionListener
+    private ActionListener goalsAL = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            goalsClicked = true;
+        }
+    };
+    
+    //exercise actionListener
+    private ActionListener exerciseAL = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            exerciseClicked = true;
+        }
+    };
+    
 }
