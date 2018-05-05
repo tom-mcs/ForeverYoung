@@ -62,18 +62,32 @@ public class ForeverYoung {
             System.out.println(user.getFirstName() + user.getLastName());
             if(user instanceof Practitioner){
                 PractitionerMenuController menuController = new PractitionerMenuController((Practitioner)user, broker, mainFrame);
-                menuController.activate();
-                System.out.println(((Practitioner)user).getClients());
-                if(menuController.getAction().equals("logout")){
-                    user.logout();
-                }
-                if(menuController.getAction().equals("CNA")){
-                    NewClientController newClientController = new NewClientController(broker, mainFrame, (Practitioner)user);
-                    newClientController.activate();
-                }
-                if(menuController.getAction().equals("view")){
-                    PractitionerClientMenuController PCMenuController = new PractitionerClientMenuController(menuController.getSelectedClient(), broker, mainFrame);
-                    PCMenuController.activate();
+                while(true){
+                    menuController.activate();
+                    if(menuController.getAction().equals("logout")){
+                        user.logout();
+                        break;
+                    }
+                    if(menuController.getAction().equals("CNA")){
+                        NewClientController newClientController = new NewClientController(broker, mainFrame, (Practitioner)user);
+                        newClientController.activate();
+                    }
+                    if(menuController.getAction().equals("view")){
+                        PractitionerClientMenuController PCMenuController = new PractitionerClientMenuController(menuController.getSelectedClient(), broker, mainFrame);
+                        while(true){
+                            PCMenuController.activate();
+                            if(PCMenuController.getAction().equals("back")){
+                                break;
+                            }
+                            if(PCMenuController.getAction().equals("addExercise")){
+                                System.out.println("go to add exercise menu");
+                            }
+                            if(PCMenuController.getAction().equals("addGoal")){
+                                System.out.println("go to add goal menu");
+                            }
+
+                        }
+                    }
                 }
             }
             

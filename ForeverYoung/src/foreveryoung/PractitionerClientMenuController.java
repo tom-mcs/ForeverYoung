@@ -35,9 +35,17 @@ public class PractitionerClientMenuController {
     }
     
     private void check(){
-        if(menu.isLogoutClicked()){
-            menu.setLogoutClicked(false);
-            action = "logout";
+        if(menu.isBackClicked()){
+            menu.setBackClicked(false);
+            action = "back";
+        }
+        if(menu.isAddExerciseClicked()){
+            menu.setAddExerciseClicked(false);
+            action = "addExercise";
+        }
+        if(menu.isAddGoalClicked()){
+            menu.setAddGoalClicked(false);
+            action = "addGoal";
         }
     }
     
