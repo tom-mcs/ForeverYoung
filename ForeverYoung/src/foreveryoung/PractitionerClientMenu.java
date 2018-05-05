@@ -65,7 +65,7 @@ public class PractitionerClientMenu extends JPanel{
         backButton.addActionListener(backAL);
         addGoalButton.addActionListener(AddGoalAL);
         addExerciseButton.addActionListener(AddExerciseAL);
-             
+
         //add elements
         logoPanel.add(label, BorderLayout.CENTER);
         buttonPanel.add(backButton);
@@ -75,8 +75,8 @@ public class PractitionerClientMenu extends JPanel{
         this.add(userPanel);
         this.add(buttonPanel);
 
-        
-        
+
+  
   
     }
     
@@ -154,5 +154,5 @@ public class PractitionerClientMenu extends JPanel{
             addExerciseClicked = true;
         }
     };
-    
-}
+
+        }

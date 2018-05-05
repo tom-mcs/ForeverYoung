@@ -66,7 +66,7 @@ public class Broker {
 /**
  * Dropping the table will prevent data from being saved into the derby database
  * @author Ryan
- */       
+ */     
 /*
         try{
             statement.execute("DROP TABLE users");

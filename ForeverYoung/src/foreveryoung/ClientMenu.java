@@ -19,7 +19,9 @@ import javax.swing.border.EmptyBorder;
  */
 public class ClientMenu extends JPanel{
     private final JButton logout = new JButton("logout");
+    private final JButton recordsteps = new JButton("Record steps");
     private boolean logoutClicked = false;
+    private boolean stepsClicked = false;
     private Client client;
     
     
@@ -48,7 +50,7 @@ public class ClientMenu extends JPanel{
         
         //add action listener to logout button
         logout.addActionListener(logoutAL);
-             
+        recordsteps.addActionListener(stepsAL);    
         //add elements
         logoPanel.add(label, BorderLayout.CENTER);
         
@@ -57,6 +59,7 @@ public class ClientMenu extends JPanel{
         this.add(userPanel);
         this.add(buttonPanel);
         buttonPanel.add(logout);
+        buttonPanel.add(recordsteps);
          //add action listener to logout button
         logout.addActionListener(logoutAL);
     }
@@ -68,12 +71,28 @@ public class ClientMenu extends JPanel{
     public void setLogoutClicked(boolean bool){
         logoutClicked = bool;
     }
+    
+    public boolean isStepsClicked() {
+        return stepsClicked;
+    }
+    
+    public void setStepsClicked(boolean bool) {
+        stepsClicked = bool;
+    }
       
     //logout actionListener
     private ActionListener logoutAL = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             logoutClicked = true;
+        }
+    };
+      
+    //steps actionListener
+    private ActionListener stepsAL = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            stepsClicked = true;
         }
     };
 }
