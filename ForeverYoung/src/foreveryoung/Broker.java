@@ -33,6 +33,7 @@ public class Broker {
     final String dbName = "derbyDB";
     static Connection connection = null;
     static Statement statement = null;
+    final int versionNum = 1;   //increment every time the database is substantially changed and requires a rebuild
 
 /**
  * @throws SQLException 
@@ -63,70 +64,108 @@ public class Broker {
         System.out.println("=====    Started/Connected DB    =====");
         
         statement = connection.createStatement();
-/**
- * Dropping the table will prevent data from being saved into the derby database
- * @author Ryan
- */     
-/*
+       
+        //rebuilds database if versionNum is different
+        if(getDBVersionNum() != versionNum){
+            System.out.println("db versionNum is different or doesn't exist");
+            System.out.println("dropping all tables");
+            deleteDB();
+            System.out.println("creating new tables");
+            buildDB();
+        }
+        else{
+            System.out.println("DB versionNum is up to date");
+        }
+
+     }
+      
+    /**
+     * Builds all tables of the database
+     * tables are users, goals, and exercises, where goals and exercises are linked to the users table via the foreign key 'username'
+     * additionally there is a versionNum table used to keep track of the DB version (this is an haphazard solution and will likely need to be changed)
+     * @author Matt
+     */ 
+    public void buildDB(){        
         try{
-            statement.execute("DROP TABLE users");
-            System.out.println("table dropped");
+            statement.execute("CREATE TABLE versionNum ("
+                    + "version INTEGER NOT NULL, "
+                    + "CONSTRAINT versionNumPK PRIMARY KEY (version))");            
+            statement.execute("INSERT INTO versionNum VALUES (" + versionNum + ")");
         }
         catch(SQLException sqlExcept){
-            System.out.println("error dropping user table");
+            System.out.println("error creating versionNumber: " + sqlExcept);
+        }        
+        try{
+            statement.execute("CREATE TABLE users ("
+                    + "username VARCHAR(15), "
+                    + "password VARCHAR(15) NOT NULL, "
+                    + "firstName VARCHAR(15), "
+                    + "lastName VARCHAR(15), "
+                    + "practitioner VARCHAR(15), "
+                    + "CONSTRAINT usersPK PRIMARY KEY (username))");
+        }
+        catch(SQLException sqlExcept){
+            System.out.println("error creating user table: " + sqlExcept);
+        }
+        
+        try{
+            statement.execute("CREATE TABLE goals ("
+                    + "goalID INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),"
+                    + "goal VARCHAR(15), "
+                    + "description VARCHAR(50), "
+                    + "username VARCHAR(15) REFERENCES users(username), "
+                    + "CONSTRAINT goalsPK PRIMARY KEY (goalID))");
+        }
+        catch(SQLException sqlExcept){
+            System.out.println("error creating goals table: " + sqlExcept);
+        }
+        
+        try{
+            statement.execute("CREATE TABLE exercises ("
+                    + "exerciseID INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),"
+                    + "exerciseName VARCHAR(15), "
+                    + "exerciseType VARCHAR (15), "
+                    + "username VARCHAR(15) REFERENCES users(username), "
+                    + "CONSTRAINT exercisesPK PRIMARY KEY (exerciseID))");
+        }
+        catch(SQLException sqlExcept){
+            System.out.println("error creating exercises table: " + sqlExcept);
+        }
+    } 
+   
+    /**
+     * Drops all tables from the database
+     * Currently each table must manually be specified to be dropped and due to the nature of the foreign key constraints must be dropped in a certain order
+     * In future updates, this process should be cleaned up so all tables can be dropped easily without having to modify this code for every new table added to the DB
+     * @author Matt
+     */ 
+    public void deleteDB(){  
+        try{
+            statement.execute("DROP TABLE versionNum");
+        }
+        catch(SQLException sqlExcept){
+            System.out.println("error dropping version table: " + sqlExcept);
         } 
-*/
-        
-        try{
-            statement.execute("CREATE TABLE users (username VARCHAR(15) PRIMARY KEY NOT NULL, "
-                    + "password VARCHAR(15) NOT NULL, firstName VARCHAR(15), lastName VARCHAR(15), practitioner VARCHAR(15))");
-            System.out.println("user table created");
-        }
-        catch(SQLException sqlExcept2){
-            System.out.println("error creating user table");
-        }
-        
-        
-        try{
-            statement.execute("CREATE TABLE goals (goal VARCHAR(15) PRIMARY KEY NOT NULL)");
-            System.out.println("goals table created");
-        }
-        catch(SQLException sqlExcept2){
-            System.out.println("error creating goals table");
-        }
-          
-        try{
-            statement.execute("CREATE TABLE pedometer (dates VARCHAR(15) PRIMARY KEY NOT NULL, steps INT NOT NULL)");
-            System.out.println("pedometer table created");
-        }
-        catch(SQLException sqlExcept2){
-            System.out.println("error creating pedometer table");
-        }
-        
         try{
             statement.execute("DROP TABLE goals");
-            System.out.println("goals table dropped");
         }
         catch(SQLException sqlExcept){
-            System.out.println("error dropping goals table");
+            System.out.println("error dropping goals table: " + sqlExcept);
         } 
-        
         try{
-            statement.execute("DROP TABLE pedometer");
-            System.out.println("pedometer table dropped");
+            statement.execute("DROP TABLE exercises");
         }
         catch(SQLException sqlExcept){
-            System.out.println("error dropping pedometer table");
+            System.out.println("error exercises table: " + sqlExcept);
         } 
-        
-     }
- 
-/**
- * The program again makes use of the SQL imports, in order to close the connection
- * to the database. The method makes use of the stated booleans above to detect when
- * to terminate the connection.
- * @author Ryan
- */  
+        try{
+            statement.execute("DROP TABLE users");
+        }
+        catch(SQLException sqlExcept){
+            System.out.println(sqlExcept);
+            System.out.println("error dropping user table: " + sqlExcept);
+        } 
+    }
      
     //closes all connections to the database
     public void shutdown()
@@ -148,6 +187,19 @@ public class Broker {
         {
             System.out.print(sqlExcept);
         }
+    }
+    
+    public int getDBVersionNum(){
+        try{
+        ResultSet rs = statement.executeQuery("SELECT * FROM versionNum");          
+            if(rs.next()){
+                return Integer.parseInt(rs.getString(1));
+            }
+        }
+        catch (SQLException sqlExcept){
+            return 0;
+        }
+        return 0;
     }
 
 /**
@@ -255,17 +307,14 @@ public class Broker {
     
     //this isn't working
     public void removeUser(Client user) {
-            System.out.println(user.getUsername());
-                String username = user.getUsername();
-        
         try {   
                 ResultSet rs;  
-                
-                rs = statement.executeQuery("SELECT * FROM users WHERE username='" + user + "'"); 
+                System.out.println(user.getUsername());
+                String username = user.getUsername();
+                rs = statement.executeQuery("SELECT * FROM users WHERE username='" + username + "'"); 
               
                     String sql = "DELETE FROM users WHERE username'=" + username + "'";
-                    statement.executeQuery(sql);
-                //    statement.executeUpdate(sql);
+                    statement.executeUpdate(sql);
                     //rs.deleteRow();
                 
                 
@@ -284,7 +333,7 @@ public class Broker {
             
         }
         catch(SQLException ex) {
-            System.out.println(username + " does not exist");
+            System.out.println(user+ " does not exist");
         }
     }
 
