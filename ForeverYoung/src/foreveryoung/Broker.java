@@ -308,28 +308,12 @@ public class Broker {
     //this isn't working
     public void removeUser(Client user) {
         try {   
-                ResultSet rs;  
                 System.out.println(user.getUsername());
                 String username = user.getUsername();
-                rs = statement.executeQuery("SELECT * FROM users WHERE username='" + username + "'"); 
               
-                    String sql = "DELETE FROM users WHERE username'=" + username + "'";
-                    statement.executeUpdate(sql);
-                    //rs.deleteRow();
-                
-                
-                
-                   //rs.next();
-                   
-                   //rs.deleteRow();
-                   //rs.close();
-                   
-//                 Connection conn = DriverManager.getConnection(protocol + dbName + ";create=true");
-//                 String sql = "DELETE * FROM rs WHERE username='" + user.getUsername() + "'";
-//                 PreparedStatement state = conn.prepareStatement(sql);
-//                 state.executeUpdate();
-                    
-                 System.out.println("User successfully removed from database");
+                    String sql = "DELETE FROM users WHERE username='" + username + "'";
+                    statement.executeUpdate(sql);          
+                    System.out.println("User successfully removed from database");
             
         }
         catch(SQLException ex) {
@@ -343,7 +327,5 @@ public class Broker {
 
     void addGoal(Goal goal) {
         System.out.println("implement add Goal in Broker");
-    }
-    
-    
+    }  
 }

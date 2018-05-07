@@ -58,18 +58,15 @@ public class PractitionerMenuController {
             practitioner.removeClient(menu.getSelectedClient());
             }
             menu.setTable(practitioner.getClients());
-        }
-        
-        if(menu.getSelectedClient() != null) {
-        
+        }    
+        if(menu.getSelectedClient() != null) {      
             if(menu.isViewClientClicked()){
                 done = true;
                 menu.setViewClientClicked(false);
                 System.out.println("view client: " + menu.getSelectedClient().getName());
                 action = "view";          
             }   
-        }     
-        
+        }           
     }
     
     public Client getSelectedClient(){
