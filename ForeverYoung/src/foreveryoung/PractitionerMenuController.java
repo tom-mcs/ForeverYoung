@@ -49,20 +49,27 @@ public class PractitionerMenuController {
             menu.setLogoutClicked(false);
             action = "logout";
         }
-        if(menu.isDeleteClientClicked()){
+        if(menu.isDeleteClientClicked()){   
+            if(menu.getSelectedClient() != null) {    
             System.out.println("delete client: " + menu.getSelectedClient().getName());
             menu.setDeleteClientClicked(false);
         //    broker.removeUser(menu.getSelectedClient().getUsername());
-            broker.removeUser(menu.getSelectedClient());
+            broker.removeUser(menu.getSelectedClient());      
             practitioner.removeClient(menu.getSelectedClient());
+            }
             menu.setTable(practitioner.getClients());
         }
-        if(menu.isViewClientClicked()){
-            done = true;
-            menu.setViewClientClicked(false);
-            System.out.println("view client: " + menu.getSelectedClient().getName());
-            action = "view";
-        }
+        
+        if(menu.getSelectedClient() != null) {
+        
+            if(menu.isViewClientClicked()){
+                done = true;
+                menu.setViewClientClicked(false);
+                System.out.println("view client: " + menu.getSelectedClient().getName());
+                action = "view";          
+            }   
+        }     
+        
     }
     
     public Client getSelectedClient(){

@@ -33,7 +33,7 @@ public class PractitionerMenu extends JPanel {
     private boolean logoutClicked = false;
     private boolean viewClientClicked = false;
     private boolean deleteClientClicked = false;
-    private final JButton createAccountButton = new JButton("Create Client Account");
+private final JButton createAccountButton = new JButton("Create Client Account");
     private boolean CNAButtonClicked = false;
     private Practitioner practitioner;
     private JPanel userPanel;

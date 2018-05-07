@@ -255,14 +255,17 @@ public class Broker {
     
     //this isn't working
     public void removeUser(Client user) {
+            System.out.println(user.getUsername());
+                String username = user.getUsername();
+        
         try {   
                 ResultSet rs;  
-                System.out.println(user.getUsername());
-                String username = user.getUsername();
-                rs = statement.executeQuery("SELECT * FROM users WHERE username='" + username + "'"); 
+                
+                rs = statement.executeQuery("SELECT * FROM users WHERE username='" + user + "'"); 
               
                     String sql = "DELETE FROM users WHERE username'=" + username + "'";
-                    statement.executeUpdate(sql);
+                    statement.executeQuery(sql);
+                //    statement.executeUpdate(sql);
                     //rs.deleteRow();
                 
                 
@@ -281,7 +284,7 @@ public class Broker {
             
         }
         catch(SQLException ex) {
-            System.out.println(user+ " does not exist");
+            System.out.println(username + " does not exist");
         }
     }
 
