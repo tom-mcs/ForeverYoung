@@ -66,15 +66,7 @@ public class UserTest {
      * for the expected results to be null.
      * @author Ryan
      */
-    @Test
-    public void testGetParent() {
-        System.out.println("getParent");
-        User user = new User();
-        String expResult = null;
-        String result = user.getParent();
-        assertEquals(expResult, result);
-    }
-
+ 
     /**
      * Test of isPractitioner method, of class User.
      */
@@ -82,7 +74,7 @@ public class UserTest {
     public void testIsPractitioner() {
         System.out.println("isPractitioner");
         User instance = new User();
-        boolean expResult = true;
+        boolean expResult = false;
         boolean result = instance.isPractitioner();
         assertEquals(expResult, result);
     }
@@ -95,7 +87,7 @@ public class UserTest {
         System.out.println("getUserName");
         User user = new User();
         String expResult = null;
-        String result = user.getUserName();
+        String result = user.getUsername();
         assertEquals(expResult, result);
     }
 

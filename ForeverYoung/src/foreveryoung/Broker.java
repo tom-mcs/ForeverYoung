@@ -305,7 +305,6 @@ public class Broker {
         }        
     }
     
-    //this isn't working
     public void removeUser(Client user) {
         try {   
                 System.out.println(user.getUsername());
