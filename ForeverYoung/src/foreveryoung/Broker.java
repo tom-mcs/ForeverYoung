@@ -33,7 +33,7 @@ public class Broker {
     final String dbName = "derbyDB";
     static Connection connection = null;
     static Statement statement = null;
-    final int versionNum = 1;   //increment every time the database is substantially changed and requires a rebuild
+    final int versionNum = 2;   //increment every time the database is substantially changed and requires a rebuild
 
 /**
  * @throws SQLException 
@@ -76,7 +76,6 @@ public class Broker {
         else{
             System.out.println("DB versionNum is up to date");
         }
-
      }
       
     /**
@@ -110,11 +109,10 @@ public class Broker {
         
         try{
             statement.execute("CREATE TABLE goals ("
-                    + "goalID INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),"
                     + "goal VARCHAR(15), "
                     + "description VARCHAR(50), "
                     + "username VARCHAR(15) REFERENCES users(username), "
-                    + "CONSTRAINT goalsPK PRIMARY KEY (goalID))");
+                    + "CONSTRAINT goalsPK PRIMARY KEY (goal, username))");
         }
         catch(SQLException sqlExcept){
             System.out.println("error creating goals table: " + sqlExcept);
@@ -122,11 +120,10 @@ public class Broker {
         
         try{
             statement.execute("CREATE TABLE exercises ("
-                    + "exerciseID INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),"
                     + "exerciseName VARCHAR(15), "
                     + "exerciseType VARCHAR (15), "
                     + "username VARCHAR(15) REFERENCES users(username), "
-                    + "CONSTRAINT exercisesPK PRIMARY KEY (exerciseID))");
+                    + "CONSTRAINT exercisesPK PRIMARY KEY (exerciseName, username))");
         }
         catch(SQLException sqlExcept){
             System.out.println("error creating exercises table: " + sqlExcept);
@@ -320,11 +317,32 @@ public class Broker {
         }
     }
 
-    void addAerobicExercise(AerobicExercise exercise, Client client) {
+    void addExercise(AerobicExercise exercise, Client client) {
         System.out.println("implement add Aerobic Exercise in Broker");
     }
 
-    void addGoal(Goal goal) {
-        System.out.println("implement add Goal in Broker");
+    public boolean addGoal(Goal goal) {
+         try{
+               statement.execute("INSERT INTO goals(goal, description, username) VALUES ('" + goal.getName() + "', '" + goal.getDescription() + "', '" + goal.getClientsUsername() + "')");
+               return true;
+           }
+           catch (SQLException ex) {
+               return false;
+           }
     }  
+    
+    public ArrayList<Goal> getGoals(Client client){
+        try{
+            ResultSet rs = statement.executeQuery("SELECT * FROM goals WHERE username='" + client.getUsername() + "'");
+            ArrayList<Goal> goals = new ArrayList<>();
+            
+            while(rs.next()){
+                goals.add(new Goal(rs.getString("goal"),rs.getString("description"), rs.getString("username")));
+            }
+            return goals;
+        }
+        catch(SQLException ex){
+           return null; 
+        }        
+    }
 }
