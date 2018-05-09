@@ -53,6 +53,6 @@ public class Goal {
     
     @Override
     public String toString(){
-        return name + ":" + isCompleted();
+        return name;
     }
 }
