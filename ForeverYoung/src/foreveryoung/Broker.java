@@ -37,7 +37,7 @@ public class Broker {
     final String dbName = "derbyDB";
     static Connection connection = null;
     static Statement statement = null;
-    final int versionNum = 2;   //increment every time the database is substantially changed and requires a rebuild
+    final int versionNum = 3;   //increment every time the database is substantially changed and requires a rebuild
 
 /**
  * @throws SQLException 
@@ -70,7 +70,7 @@ public class Broker {
         statement = connection.createStatement();
        
         //rebuilds database if versionNum is different
-        if(true){
+        if(getDBVersionNum() !=versionNum){
             System.out.println("db versionNum is different or doesn't exist");
             System.out.println("dropping all tables");
             deleteDB();
