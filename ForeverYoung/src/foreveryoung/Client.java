@@ -33,6 +33,22 @@ public class Client extends User{
         goals = new ArrayList<>();
     }
     
+    public boolean loadStats(Broker broker){
+        ArrayList<AerobicExercise> aeList = broker.getAllAerobicExercisesOfClient(this);
+        for(AerobicExercise a : aeList){
+            if(!addAerobicExercise(a)){
+                return false;
+            }
+        }
+        ArrayList<Goal> gList = broker.getGoals(this);
+        for(Goal g : gList){
+            if (!addGoal(g)){
+                return false;
+            }
+        }
+        return true;
+    }
+    
     public String getPractitionerName(){
         return practitionerName;
     }

@@ -94,7 +94,7 @@ private final JButton createAccountButton = new JButton("Create Client Account")
         deleteClientButton.addActionListener(deleteClientAL);
         userPanel.removeAll();
         userPanel.add(comboBox, BorderLayout.NORTH);
-        userPanel.add(deleteClientButton);
+        //userPanel.add(deleteClientButton);        //functionality not implemented
         userPanel.add(viewClientButton);
         userPanel.repaint();
         userPanel.revalidate();

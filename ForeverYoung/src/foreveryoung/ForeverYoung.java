@@ -74,6 +74,7 @@ public class ForeverYoung {
                     }
                     if(menuController.getAction().equals("view")){
                         Client client = menuController.getSelectedClient();
+                        client.loadStats(broker);
                         PractitionerClientMenuController PCMenuController = new PractitionerClientMenuController(client, broker, mainFrame);
                         while(!PCMenuController.isDone()){
                             PCMenuController.activate();
@@ -86,11 +87,7 @@ public class ForeverYoung {
             
             if(user instanceof Client){
                 Client client = (Client)user;
-                client.addAerobicExercise(new AerobicExercise("dancing"));
-                client.addAerobicExercise(new AerobicExercise("swimming"));
-                client.addGoal(new Goal("running", "run 10km without stopping by march"));
-                client.addGoal(new Goal("weightloss", "lose 5kg by december 15th"));
-                
+                client.loadStats(broker);
                 
                 ClientMenuController menuController = new ClientMenuController((Client)user, broker, mainFrame);
                 menuController.activate();

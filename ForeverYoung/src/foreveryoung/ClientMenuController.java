@@ -6,6 +6,7 @@
 package foreveryoung;
 
 
+import foreveryoung.AerobicExercise.Entry;
 import static java.lang.Thread.sleep;
 import static java.lang.Thread.sleep;
 import javax.swing.JOptionPane;
@@ -47,7 +48,8 @@ public class ClientMenuController {
         if(menu.isAddEntryClicked()){
             AerobicExercise exercise = menu.getExercise();
             try{
-                exercise.addEntry(Integer.parseInt(new addAerobicEntryPane().getMinutes()));
+                Entry entry = exercise.addEntry(Integer.parseInt(new addAerobicEntryPane().getMinutes()));
+                broker.addExerciseEntry(exercise, entry , client);
             }
             catch(NumberFormatException e){
                 JOptionPane.showMessageDialog(null, "Enter A number", "Whoops!", JOptionPane.ERROR_MESSAGE);
@@ -60,6 +62,7 @@ public class ClientMenuController {
             menu.setCompleteGoalClicked(false);
             Goal goal = menu.getGoal();
             goal.setCompleted(true);
+            broker.setGoalAsCompleted(goal, client);
             menu.updateTables();
         }
     }

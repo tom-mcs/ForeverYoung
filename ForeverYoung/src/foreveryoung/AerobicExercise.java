@@ -49,9 +49,11 @@ public class AerobicExercise {
         return name;
     }
     
-    public boolean addEntry(int minutes){
+    public Entry addEntry(int minutes){
         LocalDateTime date = LocalDateTime.now();
-        return entries.add(new Entry(date, minutes));
+        Entry entry = new Entry(date, minutes);
+        entries.add(entry);
+        return entry;
     }
     
     //overloaded method for when the date needs to be specified rather than just being the current time
