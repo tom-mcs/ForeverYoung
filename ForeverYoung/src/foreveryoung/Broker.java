@@ -322,8 +322,9 @@ public class Broker {
     }
 
     public boolean addGoal(Goal goal) {
-         try{
-               statement.execute("INSERT INTO goals(goal, description, username) VALUES ('" + goal.getName() + "', '" + goal.getDescription() + "', '" + goal.getClientsUsername() + "')");
+         try{  
+               User client = new User();
+               statement.execute("INSERT INTO goals(goal, description, username) VALUES ('" + goal.getName() + "', '" + goal.getDescription() + "', '" + client.getUsername() + "')");
                return true;
            }
            catch (SQLException ex) {

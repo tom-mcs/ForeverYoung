@@ -83,13 +83,13 @@ public class BrokerTest {
      * Test of getClients method, of class Broker.
      */
     
-//    @Test
-//    public void testGetClients() throws SQLException {
-//        System.out.println("getClients");
-//        User practitioner = new User(); 
-//        ArrayList<User> expResult = null;
-//        ArrayList<User> result = broke.getClients(practitioner);
-//        assertEquals(expResult, result); 
-//    }
-//    
+    @Test
+    public void testGetClients(Client prac) throws SQLException {
+        System.out.println("getClients");
+        prac.getUsername(); 
+        ArrayList<User> expResult = null;
+        ArrayList<User> result = broke.getClients(prac);
+        assertEquals(expResult, result); 
+    }
+    
 }

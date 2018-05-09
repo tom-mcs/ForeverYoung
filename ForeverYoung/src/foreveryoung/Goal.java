@@ -13,10 +13,12 @@ public class Goal {
     private String name;
     private String description;
     private boolean completed;
+    private String user;
     
-    public Goal(String goal, String description){
+    public Goal(String goal, String description, String user){
         this.name = goal;
         this.description = description;
+        this.user = user;
         completed = false;
     }
 
