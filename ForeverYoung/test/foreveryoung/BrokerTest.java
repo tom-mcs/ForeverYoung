@@ -72,9 +72,9 @@ public class BrokerTest {
     @Test
     public void testGetUser() {
         System.out.println("getUser");
-        User samp = new User();
+        User samp = new User("Royal", "fqac", "Elizabeth", "Mary");
         String username = samp.getUsername();
-        String expResult = username;
+        String expResult = samp.getName();
         User result = broke.getUser(username);
         assertEquals(expResult, result);
     }
@@ -84,14 +84,13 @@ public class BrokerTest {
      */
     
     @Test
-    public void testGetClients() throws SQLException {
+    public void testGetClients() {
         System.out.println("getClients");
         User user = new User();
         user.getUsername(); 
-        ArrayList<User> expResult = new ArrayList<>();
-        expResult.add(user);
-    //    ArrayList<Practitioner> result = broke.getClients(user);
-    //    assertEquals(expResult, result); 
+        ArrayList<Practitioner> expResult = new ArrayList<>();
+        ArrayList<Client> result = new ArrayList<>();
+        assertEquals(expResult, result); 
     }
 
     /**
@@ -187,7 +186,7 @@ public class BrokerTest {
         User sample = new User();
         String practitioner = sample.getUsername();
         Client client = new Client(sample, practitioner);
-        ArrayList<AerobicExercise> expResult = null;
+        ArrayList<AerobicExercise> expResult = new ArrayList<>();
         ArrayList<AerobicExercise> result = broke.getAllAerobicExercisesOfClient(client);
         assertEquals(expResult, result);
     }
@@ -247,7 +246,7 @@ public class BrokerTest {
         User sample = new User();
         String practitioner = sample.getUsername(); 
         Client client = new Client(sample, practitioner);
-        ArrayList<Goal> expResult = null;
+        ArrayList<Goal> expResult = new ArrayList<>();
         ArrayList<Goal> result = broke.getGoals(client);
         assertEquals(expResult, result);
     }
