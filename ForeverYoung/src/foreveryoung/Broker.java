@@ -37,7 +37,7 @@ public class Broker {
     final String dbName = "derbyDB";
     static Connection connection = null;
     static Statement statement = null;
-    final int versionNum = 3;   //increment every time the database is substantially changed and requires a rebuild
+    final int versionNum = 4;   //increment every time the database is substantially changed and requires a rebuild
 
 /**
  * @throws SQLException 
@@ -116,7 +116,7 @@ public class Broker {
                     + "goal VARCHAR(15), "
                     + "description VARCHAR(50), "
                     + "isCompleted BOOLEAN, "
-                    + "username VARCHAR(15) REFERENCES users(username), "
+                    + "username VARCHAR(15) REFERENCES users(username) ON DELETE CASCADE, "
                     + "CONSTRAINT goalsPK PRIMARY KEY (goal, username))");
         }
         catch(SQLException sqlExcept){
@@ -126,7 +126,7 @@ public class Broker {
         try{
             statement.execute("CREATE TABLE exercises ("
                     + "exerciseName VARCHAR(15), "
-                    + "username VARCHAR(15) REFERENCES users(username), "
+                    + "username VARCHAR(15) REFERENCES users(username) ON DELETE CASCADE, "
                     + "CONSTRAINT exercisesPK PRIMARY KEY (exerciseName, username))");
         }
         catch(SQLException sqlExcept){
@@ -141,7 +141,7 @@ public class Broker {
                     + "lengthOfExerciseInMinutes INTEGER, "
                     + "exerciseName VARCHAR(15), "
                     + "username VARCHAR(15), "
-                    + "CONSTRAINT exerciseEntriesFK FOREIGN KEY(exerciseName, username) REFERENCES exercises (exerciseName, username), "
+                    + "CONSTRAINT exerciseEntriesFK FOREIGN KEY(exerciseName, username) REFERENCES exercises (exerciseName, username) ON DELETE CASCADE, "
                     + "CONSTRAINT exerciseEntriesPK PRIMARY KEY (exerciseEntryID))");
         }
         catch(SQLException sqlExcept){
