@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class AerobicExercise {
     
-    private class Entry{
+    public class Entry{
         public LocalDateTime date;
         public int minutes;
         
@@ -22,6 +22,11 @@ public class AerobicExercise {
             this.date = date;
             this.minutes = minutes;
         }
+
+        @Override
+        public String toString() {
+            return "Entry{" + "date=" + date + ", minutes=" + minutes + '}';
+        }        
     }
     
     private ArrayList<Entry> entries;
@@ -49,6 +54,11 @@ public class AerobicExercise {
         return entries.add(new Entry(date, minutes));
     }
     
+    //overloaded method for when the date needs to be specified rather than just being the current time
+    public boolean addEntry(int minutes, LocalDateTime date){
+        return entries.add(new Entry(date, minutes));
+    }
+    
     public boolean RemoveEntry(int i){
         if (entries.size()<= i){
             return false;
@@ -56,6 +66,8 @@ public class AerobicExercise {
         entries.remove(i);
         return true;
     }
+    
+    
     
     @Override
     public String toString(){

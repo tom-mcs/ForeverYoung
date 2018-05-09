@@ -88,8 +88,8 @@ public class ForeverYoung {
                 Client client = (Client)user;
                 client.addAerobicExercise(new AerobicExercise("dancing"));
                 client.addAerobicExercise(new AerobicExercise("swimming"));
-                client.addGoal(new Goal("running", "run 10km without stopping by march", client.username));
-                client.addGoal(new Goal("weightloss", "lose 5kg by december 15th", client.username));
+                client.addGoal(new Goal("running", "run 10km without stopping by march"));
+                client.addGoal(new Goal("weightloss", "lose 5kg by december 15th"));
                 
                 
                 ClientMenuController menuController = new ClientMenuController((Client)user, broker, mainFrame);

@@ -6,7 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,7 +70,7 @@ public class Broker {
         statement = connection.createStatement();
        
         //rebuilds database if versionNum is different
-        if(getDBVersionNum() != versionNum){
+        if(true){
             System.out.println("db versionNum is different or doesn't exist");
             System.out.println("dropping all tables");
             deleteDB();
@@ -76,7 +80,7 @@ public class Broker {
         else{
             System.out.println("DB versionNum is up to date");
         }
-     }
+    }
       
     /**
      * Builds all tables of the database
@@ -111,6 +115,7 @@ public class Broker {
             statement.execute("CREATE TABLE goals ("
                     + "goal VARCHAR(15), "
                     + "description VARCHAR(50), "
+                    + "isCompleted BOOLEAN, "
                     + "username VARCHAR(15) REFERENCES users(username), "
                     + "CONSTRAINT goalsPK PRIMARY KEY (goal, username))");
         }
@@ -121,12 +126,26 @@ public class Broker {
         try{
             statement.execute("CREATE TABLE exercises ("
                     + "exerciseName VARCHAR(15), "
-                    + "exerciseType VARCHAR (15), "
                     + "username VARCHAR(15) REFERENCES users(username), "
                     + "CONSTRAINT exercisesPK PRIMARY KEY (exerciseName, username))");
         }
         catch(SQLException sqlExcept){
             System.out.println("error creating exercises table: " + sqlExcept);
+        }
+        
+        try{
+            statement.execute("CREATE TABLE exerciseEntries ("
+                    + "exerciseEntryID INTEGER not null GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),"
+                    + "date DATE, "
+                    + "time TIME, "
+                    + "lengthOfExerciseInMinutes INTEGER, "
+                    + "exerciseName VARCHAR(15), "
+                    + "username VARCHAR(15), "
+                    + "CONSTRAINT exerciseEntriesFK FOREIGN KEY(exerciseName, username) REFERENCES exercises (exerciseName, username), "
+                    + "CONSTRAINT exerciseEntriesPK PRIMARY KEY (exerciseEntryID))");
+        }
+        catch(SQLException sqlExcept){
+            System.out.println("error creating exercisesEntries table: " + sqlExcept);
         }
     } 
    
@@ -142,6 +161,12 @@ public class Broker {
         }
         catch(SQLException sqlExcept){
             System.out.println("error dropping version table: " + sqlExcept);
+        } 
+        try{
+            statement.execute("DROP TABLE exerciseEntries");
+        }
+        catch(SQLException sqlExcept){
+            System.out.println("error dropping exerciseEntries table: " + sqlExcept);
         } 
         try{
             statement.execute("DROP TABLE goals");
@@ -237,6 +262,7 @@ public class Broker {
                return true;
            }
            catch (SQLException ex) {
+               System.out.println(ex);
                return false;
            }
        }
@@ -313,32 +339,140 @@ public class Broker {
             
         }
         catch(SQLException ex) {
-            System.out.println(user+ " does not exist");
+            System.out.println(ex);
         }
     }
 
-    void addExercise(AerobicExercise exercise, Client client) {
-        System.out.println("implement add Aerobic Exercise in Broker");
+/**
+ * adds an exercise with an associated client to the DB
+ * returns true if successful
+ * @param exercise
+ * @param client
+ * @return 
+ */
+    public boolean addAerobicExercise(AerobicExercise exercise, Client client) {
+        try{  
+            statement.execute("INSERT INTO exercises(exerciseName, username) VALUES ('" + exercise.getName() + "', '" + client.getUsername() + "')");
+            return true;
+        }
+        catch (SQLException ex) {
+            System.out.println(ex);
+            return false;
+        }
     }
 
-    public boolean addGoal(Goal goal) {
-         try{  
-               User client = new User();
-               statement.execute("INSERT INTO goals(goal, description, username) VALUES ('" + goal.getName() + "', '" + goal.getDescription() + "', '" + client.getUsername() + "')");
+/**
+ * returns an aerobic exercise relating to the exercise name and the associated client
+ * @param exerciseName
+ * @param client
+ * @return 
+ */    
+    public AerobicExercise getAerobicExercise(String exerciseName, Client client){
+        try{           
+            ResultSet exerciseRS = statement.executeQuery("SELECT exerciseName FROM exercises WHERE exerciseName='" + exerciseName + "' AND username='" + client.getUsername() + "'");
+            AerobicExercise exercise = null;
+            
+            if(exerciseRS.next()){
+                exercise = new AerobicExercise(exerciseRS.getString("exerciseName"));
+            }
+            
+            ResultSet entryRS = statement.executeQuery("SELECT * FROM exerciseEntries WHERE exerciseName='" + exerciseName + "' AND username='" + client.getUsername() + "'");     
+            if (exercise != null){
+                while(entryRS.next()){
+                    exercise.addEntry(entryRS.getInt("lengthOfExerciseInMinutes"), LocalDateTime.parse(entryRS.getString("date") + "T" + entryRS.getString("time")));
+                }
+                return exercise;
+            }
+            else{
+                return null;
+            }
+        }
+        catch(SQLException ex){
+            System.out.println(ex);
+            return null; 
+        } 
+    }
+    
+ /**
+ * returns an aerobic exercise relating to the exercise name and the associated client
+ * @param exerciseName
+ * @param client
+ * @return 
+ */    
+    public ArrayList<AerobicExercise> getAllAerobicExercisesOfClient(Client client){
+        try{           
+            ResultSet exerciseRS = statement.executeQuery("SELECT exerciseName FROM exercises WHERE username='" + client.getUsername() + "'");
+            ArrayList<AerobicExercise> exercises = new ArrayList<AerobicExercise>();
+
+            ResultSet entryRS;
+            while(exerciseRS.next()){
+                exercises.add(new AerobicExercise(exerciseRS.getString("exerciseName")));
+            }
+            int i = 0;
+            while(i<exercises.size()){
+                entryRS = statement.executeQuery("SELECT * FROM exerciseEntries WHERE exerciseName='" + exercises.get(i)  + "' AND username='" + client.getUsername() + "'");  
+                while(entryRS.next()){
+                        exercises.get(i).addEntry(entryRS.getInt("lengthOfExerciseInMinutes"), LocalDateTime.parse(entryRS.getString("date") + "T" + entryRS.getString("time")));
+                    }
+                    i++;
+            }
+            return exercises;
+        }
+        catch(SQLException ex){
+            System.out.println(ex);
+            return null; 
+        } 
+    }
+    
+/**
+ * adds an exercise entry to the DB including how long the exercise went for in minutes and the date and time it occurred
+ * returns true if successful
+ * @param exercise
+ * @param entry
+ * @param client
+ * @return 
+ */
+    public boolean addExerciseEntry(AerobicExercise exercise, AerobicExercise.Entry entry, Client client){
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:MM");
+        try{  
+            statement.execute("INSERT INTO exerciseEntries(date, time, lengthOfExerciseInMinutes, exerciseName, username) VALUES ('" + entry.date.format(dateFormatter) + "', '" + entry.date.format(timeFormatter) + "', " + entry.minutes + ", '" + exercise.getName() + "' ,'" + client.getUsername() + "')");
+            return true;
+        }
+        catch (SQLException ex) {
+            System.out.println(ex);
+            return false;
+        }
+    }
+
+    public boolean addGoal(Goal goal, Client client) {
+        try{  
+               statement.execute("INSERT INTO goals(goal, description, isCompleted, username) VALUES ('" + goal.getName() + "', '" + goal.getDescription() + "', false, '" + client.getUsername() + "')");
                return true;
-           }
-           catch (SQLException ex) {
-               return false;
-           }
+            }
+            catch (SQLException ex) {
+                
+                return false;
+        }
     }  
+    
+    public boolean setGoalAsCompleted(Goal goal, Client client) {
+        try{  
+               statement.execute("UPDATE goals SET isCompleted=true WHERE username='" + client.getUsername() + "' AND goal='" + goal.getName() + "'");
+               return true;
+            }
+        catch (SQLException ex) {
+                System.out.println(ex);
+                return false;
+        }
+    } 
     
     public ArrayList<Goal> getGoals(Client client){
         try{
             ResultSet rs = statement.executeQuery("SELECT * FROM goals WHERE username='" + client.getUsername() + "'");
             ArrayList<Goal> goals = new ArrayList<>();
-            
             while(rs.next()){
-                goals.add(new Goal(rs.getString("goal"),rs.getString("description"), rs.getString("username")));
+                goals.add(new Goal(rs.getString("goal"),rs.getString("description"),rs.getBoolean("isCompleted")));
             }
             return goals;
         }

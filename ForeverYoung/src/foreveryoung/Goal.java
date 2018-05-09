@@ -13,13 +13,18 @@ public class Goal {
     private String name;
     private String description;
     private boolean completed;
-    private String user;
+
     
-    public Goal(String goal, String description, String user){
+    public Goal(String goal, String description){
         this.name = goal;
         this.description = description;
-        this.user = user;
         completed = false;
+    }
+    
+    public Goal(String goal, String description, boolean completion){
+        this.name = goal;
+        this.description = description;
+        this.completed = completion;
     }
 
     public String getName() {
@@ -48,6 +53,6 @@ public class Goal {
     
     @Override
     public String toString(){
-        return name;
+        return name + ":" + isCompleted();
     }
 }
