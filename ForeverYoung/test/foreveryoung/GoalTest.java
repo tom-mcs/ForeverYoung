@@ -81,7 +81,7 @@ public class GoalTest {
     public void testIsCompleted() {
         System.out.println("isCompleted");
         Goal goal = new Goal("sell burgers","sell 2 burgers");
-        boolean expResult = true;
+        boolean expResult = false;
         boolean result = goal.isCompleted();
         assertEquals(expResult, result);
     }

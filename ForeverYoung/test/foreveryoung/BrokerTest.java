@@ -59,7 +59,7 @@ public class BrokerTest {
     public void testAddClient() {
         System.out.println("addClient");
         User user = new User("Royal", "fqac", "Elizabeth", "Mary");
-        Client sample = new Client(user, "Ryan");      
+        Client sample = new Client(user, "Practitioner01");      
         boolean result = broke.addClient(sample);
         boolean expResult = false;
         assertEquals(expResult, result);
@@ -73,7 +73,7 @@ public class BrokerTest {
     public void testGetUser() {
         System.out.println("getUser");
         Practitioner samp = new Practitioner("Practitioner01", "Richard", "Scary", "apple"); 
-        User expResult = broke.getUser(samp.getUsername());
+        User expResult = samp;
         User result = broke.getUser(samp.getUsername());
         assertEquals(expResult, result);
     }
