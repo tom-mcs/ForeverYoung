@@ -14,7 +14,9 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author Ryan_Lancer
+ * @author Ryan
+ * This is the test class for the AerobicExercise class. The class manipulates code
+ * to check if the methods from the AerobicExcerise class are performing as they should. 
  */
 public class AerobicExerciseTest {
     

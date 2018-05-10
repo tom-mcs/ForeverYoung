@@ -5,15 +5,15 @@
  */
 package foreveryoung;
 
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
- * @author Ryan_Lancer
+ * This is the class used to test the User class. It is essential that this class
+ * is performing to a satisfactory level, as both practitioners and clients base some
+ * parameters from the class.
+ * @author Ryan
  */
 public class UserTest {
  

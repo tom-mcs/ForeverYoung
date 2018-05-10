@@ -7,15 +7,14 @@ package foreveryoung;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
- * @author Ryan_Lancer
+ * This is the Client test class. Like the other test classes, this test class 
+ * specifies some code and verifies if the code is functioning correctly
+ * @author Ryan
  */
 public class ClientTest {
     

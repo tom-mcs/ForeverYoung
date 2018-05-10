@@ -11,8 +11,9 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
- * @author Ryan_Lancer
+ * This class is used to test the pedometer class. It proves that the program can 
+ * record the steps a senior takes in an exercise or session.
+ * @author Ryan
  */
 public class PedometerTest {
     

@@ -11,8 +11,9 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
- * @author Ryan_Lancer
+ * This is the goal test class. The tests help to verify if the program can add, set, get
+ * and remove goals properly. 
+ * @author Ryan
  */
 public class GoalTest {
     

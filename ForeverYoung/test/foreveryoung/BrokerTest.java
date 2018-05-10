@@ -5,15 +5,9 @@
  */
 package foreveryoung;
 
-import static foreveryoung.Broker.statement;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -27,12 +21,9 @@ public class BrokerTest {
     }
     
     /**
-     * Only the shutdown method appears to be working in the JUNIT testing.
-     * For some unknown reason is showing NullPointerExceptions every time
-     * the broker class is called or trying to obtain information.
-     * 
-     * The failures appear to only occur in this test but the program runs 
-     * perfectly fine outside of these tests in particular. 
+     * This is the test class for the Broker class. This test class can be considered the most
+     * essential of all the test classes, as the program actually relies on the broker class
+     * for main functionality
      * @author Ryan
      */
     
