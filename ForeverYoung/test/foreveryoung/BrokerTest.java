@@ -72,10 +72,9 @@ public class BrokerTest {
     @Test
     public void testGetUser() {
         System.out.println("getUser");
-        User samp = new User("Royal", "fqac", "Elizabeth", "Mary");
-        String username = samp.getUsername();
-        String expResult = samp.getName();
-        User result = broke.getUser(username);
+        Practitioner samp = new Practitioner("Practitioner01", "Richard", "Scary", "apple"); 
+        User expResult = broke.getUser(samp.getUsername());
+        User result = broke.getUser(samp.getUsername());
         assertEquals(expResult, result);
     }
 
@@ -197,7 +196,7 @@ public class BrokerTest {
     @Test
     public void testAddExerciseEntry() {
         System.out.println("addExerciseEntry");
-        AerobicExercise exercise = new AerobicExercise("");
+        AerobicExercise exercise = new AerobicExercise("Walk");
         AerobicExercise.Entry entry = null;
         User sample = new User();
         String practitioner = sample.getUsername();
