@@ -31,22 +31,18 @@ public class PractitionerTest {
      * Test of newClient method, of class Practitioner.
      */
     @Test
-    public void testNewClient() {
-        System.out.println("newClient");
-        String username = "client1";
-        String password = "111";
-        String firstName = "Charles";
-        String lastName = "Darwin";
+    public void testNewClient() {        
         Practitioner pract = new Practitioner("Ryan", "pass", "R","C");
-        User user = new User(username, password, firstName, lastName);
-        Client client = new Client(user, "Ryan");
+        Client client = new Client("client011", "password", "John", "Doe", "Ryan");
         Client expResult = client;
-        Client result = pract.newClient(username, password, firstName, lastName);
+        Client result = pract.newClient("client011", "password", "John", "Doe");
         assertEquals(expResult, result);
     }
 
     /**
      * Test of addClient method, of class Practitioner.
+     * This test is expected to fail, due to the program unable to return a client. 
+     * The test is actually dealing with two separate objects
      */
     @Test
     public void testAddClient() {
@@ -64,10 +60,9 @@ public class PractitionerTest {
      */
     @Test
     public void testRemoveClient() {
-        System.out.println("removeClient");
-        User user = new User();
-        Client client = new Client(user, "Ryan");
+        Client client = new Client("client01", "password", "John", "Doe", "Ryan");
         Practitioner pract = new Practitioner("Ryan", "pass", "R","C");
+        pract.addClient(client);
         boolean expResult = true;
         boolean result = pract.removeClient(client);
         assertEquals(expResult, result);
