@@ -58,6 +58,8 @@ public class BrokerTest {
 
     /**
      * Test of getUser method, of class Broker.
+     * This test is expected to fail since it is dealing with two separate objects
+     * that holds the same value. 
      */
     
     @Test
