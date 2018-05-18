@@ -37,7 +37,7 @@ public class Broker {
     final String dbName = "derbyDB";
     static Connection connection = null;
     static Statement statement = null;
-    final int versionNum = 4;   //increment every time the database is substantially changed and requires a rebuild
+    final int versionNum = 5;   //increment every time the database is substantially changed and requires a rebuild
 
 /**
  * @throws SQLException 
@@ -50,8 +50,7 @@ public class Broker {
     
     //constructer connects to db and creates username table
     //if a username table already exists it will drop the table and create a new one
-     public Broker() throws SQLException{
-   
+     public Broker() throws SQLException{   
         try{
             Class.forName(driver).newInstance();
         }
@@ -80,6 +79,7 @@ public class Broker {
         else{
             System.out.println("DB versionNum is up to date");
         }
+        
     }
       
     /**
@@ -147,6 +147,19 @@ public class Broker {
         catch(SQLException sqlExcept){
             System.out.println("error creating exercisesEntries table: " + sqlExcept);
         }
+        
+        try{
+            statement.execute("CREATE TABLE pedEntries ("
+                    + "date DATE, "
+                    + "time TIME, "
+                    + "steps INTEGER, "
+                    + "username VARCHAR(15), "
+                    + "CONSTRAINT pedEntriesFK FOREIGN KEY(username) REFERENCES users (username) ON DELETE CASCADE, "
+                    + "CONSTRAINT pedEntriesPK PRIMARY KEY (username, date))");
+        }
+        catch(SQLException sqlExcept){
+            System.out.println("error creating pedEntries table: " + sqlExcept);
+        }
     } 
    
     /**
@@ -158,6 +171,12 @@ public class Broker {
     public void deleteDB(){  
         try{
             statement.execute("DROP TABLE versionNum");
+        }
+        catch(SQLException sqlExcept){
+            System.out.println("error dropping version table: " + sqlExcept);
+        } 
+        try{
+            statement.execute("DROP TABLE pedEntries");
         }
         catch(SQLException sqlExcept){
             System.out.println("error dropping version table: " + sqlExcept);
@@ -445,6 +464,52 @@ public class Broker {
         }
     }
 
+    /**
+     * Adds a entry to the pedometer table associated with the username of the client and the steps and date of the pedometer entry
+     * A pedometer entry can only be created by a user for a unique date (ie multiple pedometer entries by a user for the same date are not allowed)
+     * Therefore if a pedometer entry with the same date is found the pedometer entry is updated to the new step value
+     * @param client
+     * @param entry
+     * @return 
+     */
+    public boolean addPedometerEntry(Client client, Pedometer.Entry entry){
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:MM");
+        try{
+            //checks if there is an entry with same username and date then updates the entry with new value and returns true
+            ResultSet rs = statement.executeQuery("SELECT * FROM pedEntries WHERE username='" + client.getUsername() + "' AND date ='" + entry.date.format(dateFormatter) + "'");            
+            while(rs.next()){
+                statement.execute("UPDATE pedEntries SET steps =" + entry.steps + " WHERE username='" + client.getUsername() + "' AND date ='" + entry.date.format(dateFormatter) + "'");  
+                return true;
+            }  
+            
+            //if no entry was found adds the entry with username and date
+            statement.execute("INSERT INTO pedEntries(date, time, steps, username) VALUES ('" + entry.date.format(dateFormatter) + "', '" + entry.date.format(timeFormatter) + "', " + entry.steps +", '" + client.getUsername() + "')");
+            
+            return true;
+            
+        } catch (SQLException ex) {
+            System.out.println(ex);
+            return false;
+        }
+    }
+    
+    public Pedometer getPedometer(Client client){
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:MM");
+        Pedometer pedometer = new Pedometer();
+        try{
+            ResultSet rs = statement.executeQuery("SELECT * FROM pedEntries WHERE username='" + client.getUsername() + "'");            
+            while(rs.next()){
+                pedometer.addEntry(rs.getInt("steps"), LocalDateTime.parse(rs.getString("date") + "T" + rs.getString("time")));
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        
+        return pedometer;
+    }
+    
     public boolean addGoal(Goal goal, Client client) {
         try{  
                statement.execute("INSERT INTO goals(goal, description, isCompleted, username) VALUES ('" + goal.getName() + "', '" + goal.getDescription() + "', false, '" + client.getUsername() + "')");

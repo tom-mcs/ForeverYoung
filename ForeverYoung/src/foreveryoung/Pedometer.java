@@ -17,7 +17,7 @@ import java.util.Date;
  */
 public class Pedometer {
     
-    private class Entry{
+    public class Entry{
         public LocalDateTime date;
         public int steps;
         
@@ -25,18 +25,29 @@ public class Pedometer {
             this.date = date;
             this.steps = steps;
         }
+        
+        @Override
+        public String toString() {
+            return "Entry{" + "date=" + date + ", steps=" + steps + '}';
+        }
     }
     
     private ArrayList<Entry> entries;
-    private String name;
+
+    public ArrayList<Entry> getEntries() {
+        return entries;
+    }
     
-    public Pedometer(String name){
-        this.name = name;
+    public Pedometer(){
         entries = new ArrayList<>();
     }
     
     public boolean addEntry(int steps){
         LocalDateTime date = LocalDateTime.now();
+        return entries.add(new Entry(date, steps));
+    }
+    
+    public boolean addEntry(int steps, LocalDateTime date){
         return entries.add(new Entry(date, steps));
     }
     
@@ -47,5 +58,10 @@ public class Pedometer {
         entries.remove(i);
         return true;
     }
- 
+
+    @Override
+    public String toString() {
+        return "Pedometer{" + "entries=" + entries + '}';
+    }
+    
 }
