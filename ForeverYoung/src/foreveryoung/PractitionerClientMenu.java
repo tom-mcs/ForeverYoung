@@ -33,16 +33,23 @@ public class PractitionerClientMenu extends JPanel{
     private final JButton backButton = new JButton("Back");
     private final JButton addGoalButton = new JButton("Add Goal");
     private final JButton addExerciseButton = new JButton("Add exercise");
+    private final JButton addRepsButton = new JButton("Add rep exercise");
+    private final JButton addWeightsButton = new JButton("Add weight exercise");
+    private final JButton addSetButton = new JButton("Add set exercise");
     private JTable exerciseTable;
     private JTable goalTable;
+    private JTable repsTable;
+    private JTable weightsTable;
+    private JTable setTable;
     private JPanel userPanel;
     private boolean addGoalClicked = false;
     private boolean addExerciseClicked = false;
     private boolean backClicked = false;
+    private boolean addRepsClicked = false;
+    private boolean addWeightsClicked = false;
+    private boolean addSetClicked = false;
     private Client client;
    
-    
-    
     //constructor
     public PractitionerClientMenu(Client client) {
         this.client = client;
@@ -68,14 +75,27 @@ public class PractitionerClientMenu extends JPanel{
         backButton.addActionListener(backAL);
         addGoalButton.addActionListener(AddGoalAL);
         addExerciseButton.addActionListener(AddExerciseAL);
-
+        addRepsButton.addActionListener(AddRepsAL);
+        addWeightsButton.addActionListener(AddWeightsAL);
+        addSetButton.addActionListener(AddSetAL);
         //add elements
         JPanel exerciseButtonPanel = new JPanel(new FlowLayout());
         exerciseButtonPanel.add(addExerciseButton);
         JPanel goalButtonPanel = new JPanel(new FlowLayout());
         goalButtonPanel.add(addGoalButton);
+        
+        JPanel RepsButtonPanel = new JPanel(new FlowLayout());
+        RepsButtonPanel.add(addRepsButton);
+        JPanel WeightsButtonPanel = new JPanel(new FlowLayout());
+        WeightsButtonPanel.add(addWeightsButton);
+        JPanel SetButtonPanel = new JPanel(new FlowLayout());
+        SetButtonPanel.add(addSetButton);
+        
         buttonPanel.add(exerciseButtonPanel);
         buttonPanel.add(goalButtonPanel);
+        buttonPanel.add(RepsButtonPanel);
+        buttonPanel.add(WeightsButtonPanel);
+        buttonPanel.add(SetButtonPanel);
         
         JPanel homePanel = new JPanel(new GridLayout(2,1));
         homePanel.add(new JLabel("Client: " + client.getFirstName() + " " + client.getLastName()), new Font(Font.SANS_SERIF, Font.PLAIN, 17));
@@ -83,14 +103,9 @@ public class PractitionerClientMenu extends JPanel{
         backPanel.add(backButton);
         homePanel.add(backPanel);
         
-        
         this.add(homePanel);
         this.add(userPanel);
         this.add(buttonPanel);
-
-
-  
-  
     }
     
     public void updateTables(){
@@ -115,6 +130,9 @@ public class PractitionerClientMenu extends JPanel{
         
         userPanel.add(exerciseTable);
         userPanel.add(goalTable);
+//        userPanel.add(repsTable);
+//        userPanel.add(weightsTable);
+//        userPanel.add(setTable);
         userPanel.repaint();
         userPanel.revalidate();
     }
@@ -143,6 +161,30 @@ public class PractitionerClientMenu extends JPanel{
         this.backClicked = backClicked;
     }
     
+    public boolean isRepsClicked() {
+        return addRepsClicked;
+    }
+    
+    public void setAddRepsClicked(boolean bool) {
+        addRepsClicked = bool;
+    }
+    
+    public boolean isWeightsClicked() {
+        return addWeightsClicked;
+    }
+    
+    public void setAddWeightsClicked(boolean bool) {
+        addWeightsClicked = bool;
+    }
+    
+    public boolean isSetClicked() {
+        return addSetClicked;
+    }
+    
+    public void setAddSetClicked(boolean bool) {
+        addSetClicked = bool;
+    }
+    
     //logout actionListener
     private ActionListener backAL = new ActionListener() {
         @Override
@@ -166,5 +208,31 @@ public class PractitionerClientMenu extends JPanel{
             addExerciseClicked = true;
         }
     };
-
+    
+    private ActionListener AddRepsAL;
+    
+//    private ActionListener AddRepsAL = new ActionListener() {
+//        @Override
+//        public void actionPerformed(ActionListener e) {
+//            addRepsClicked = true;
+//        }
+//    };
+    
+    private ActionListener AddWeightsAL;
+//    
+//    private ActionListener AddWeightsAL = new ActionListener() {
+//        @Override
+//        public void actionPerormed(ActionEvent e) {
+//            addWeightsClicked = true;
+//        }
+//    };
+    
+    private ActionListener AddSetAL = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            addSetClicked = true;
         }
+    };
+    
+    
+}
