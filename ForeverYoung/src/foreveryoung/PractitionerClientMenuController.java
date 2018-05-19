@@ -46,7 +46,7 @@ public class PractitionerClientMenuController {
             String name = new addExerciseOP().getExerciseName();
             AerobicExercise exercise = new AerobicExercise(name);
             client.addAerobicExercise(exercise);
-            broker.addAerobicExercise(exercise, client);
+            broker.addExercise(exercise, client);
             menu.updateTables();
         }
         if(menu.isAddGoalClicked()){

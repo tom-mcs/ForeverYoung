@@ -37,7 +37,7 @@ public class Broker {
     final String dbName = "derbyDB";
     static Connection connection = null;
     static Statement statement = null;
-    final int versionNum = 5;   //increment every time the database is substantially changed and requires a rebuild
+    final int versionNum = 6;   //increment every time the database is substantially changed and requires a rebuild
 
 /**
  * @throws SQLException 
@@ -69,7 +69,7 @@ public class Broker {
         statement = connection.createStatement();
        
         //rebuilds database if versionNum is different
-        if(getDBVersionNum() !=versionNum){
+        if(versionNum != getDBVersionNum()){
             System.out.println("db versionNum is different or doesn't exist");
             System.out.println("dropping all tables");
             deleteDB();
@@ -79,7 +79,7 @@ public class Broker {
         else{
             System.out.println("DB versionNum is up to date");
         }
-        
+               
     }
       
     /**
@@ -126,6 +126,7 @@ public class Broker {
         try{
             statement.execute("CREATE TABLE exercises ("
                     + "exerciseName VARCHAR(15), "
+                    + "type VARCHAR(15),"
                     + "username VARCHAR(15) REFERENCES users(username) ON DELETE CASCADE, "
                     + "CONSTRAINT exercisesPK PRIMARY KEY (exerciseName, username))");
         }
@@ -134,18 +135,36 @@ public class Broker {
         }
         
         try{
-            statement.execute("CREATE TABLE exerciseEntries ("
+            statement.execute("CREATE TABLE aerobicExerciseEntries ("
                     + "exerciseEntryID INTEGER not null GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),"
                     + "date DATE, "
                     + "time TIME, "
                     + "lengthOfExerciseInMinutes INTEGER, "
                     + "exerciseName VARCHAR(15), "
                     + "username VARCHAR(15), "
+                    + "CONSTRAINT aerobicExerciseEntriesFK FOREIGN KEY(exerciseName, username) REFERENCES exercises (exerciseName, username) ON DELETE CASCADE, "
+                    + "CONSTRAINT aerobicExerciseEntriesPK PRIMARY KEY (exerciseEntryID))");
+        }
+        catch(SQLException sqlExcept){
+            System.out.println("error creating aerobicExercisesEntries table: " + sqlExcept);
+        }
+        
+        try{
+            statement.execute("CREATE TABLE weightExerciseEntries ("
+                    + "exerciseEntryID INTEGER not null GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),"
+                    + "date DATE, "
+                    + "time TIME, "
+                    + "set1Weight INTEGER, "
+                    + "set1Reps INTEGER, "
+                    + "set2Weight INTEGER, "
+                    + "set2Reps INTEGER, "
+                    + "exerciseName VARCHAR(15), "
+                    + "username VARCHAR(15), "
                     + "CONSTRAINT exerciseEntriesFK FOREIGN KEY(exerciseName, username) REFERENCES exercises (exerciseName, username) ON DELETE CASCADE, "
                     + "CONSTRAINT exerciseEntriesPK PRIMARY KEY (exerciseEntryID))");
         }
         catch(SQLException sqlExcept){
-            System.out.println("error creating exercisesEntries table: " + sqlExcept);
+            System.out.println("error creating weightExercisesEntries table: " + sqlExcept);
         }
         
         try{
@@ -169,6 +188,7 @@ public class Broker {
      * @author Matt
      */ 
     public void deleteDB(){  
+        
         try{
             statement.execute("DROP TABLE versionNum");
         }
@@ -179,13 +199,19 @@ public class Broker {
             statement.execute("DROP TABLE pedEntries");
         }
         catch(SQLException sqlExcept){
-            System.out.println("error dropping version table: " + sqlExcept);
+            System.out.println("error pedentries table: " + sqlExcept);
         } 
         try{
-            statement.execute("DROP TABLE exerciseEntries");
+            statement.execute("DROP TABLE aerobicExerciseEntries");
         }
         catch(SQLException sqlExcept){
-            System.out.println("error dropping exerciseEntries table: " + sqlExcept);
+            System.out.println("error dropping aerobicExerciseEntries table: " + sqlExcept);
+        }  
+        try{
+            statement.execute("DROP TABLE weightExerciseEntries");
+        }
+        catch(SQLException sqlExcept){
+            System.out.println("error dropping weightExerciseEntries table: " + sqlExcept);
         } 
         try{
             statement.execute("DROP TABLE goals");
@@ -201,7 +227,7 @@ public class Broker {
         } 
         try{
             statement.execute("DROP TABLE users");
-        }
+        }        
         catch(SQLException sqlExcept){
             System.out.println(sqlExcept);
             System.out.println("error dropping user table: " + sqlExcept);
@@ -369,9 +395,9 @@ public class Broker {
  * @param client
  * @return 
  */
-    public boolean addAerobicExercise(AerobicExercise exercise, Client client) {
+    public boolean addExercise(Exercise exercise, Client client) {
         try{  
-            statement.execute("INSERT INTO exercises(exerciseName, username) VALUES ('" + exercise.getName() + "', '" + client.getUsername() + "')");
+            statement.execute("INSERT INTO exercises(exerciseName, type, username) VALUES ('" + exercise.getName() + "', '" + exercise.getType() + "', '" + client.getUsername() + "')");
             return true;
         }
         catch (SQLException ex) {
@@ -388,14 +414,14 @@ public class Broker {
  */    
     public AerobicExercise getAerobicExercise(String exerciseName, Client client){
         try{           
-            ResultSet exerciseRS = statement.executeQuery("SELECT exerciseName FROM exercises WHERE exerciseName='" + exerciseName + "' AND username='" + client.getUsername() + "'");
+            ResultSet exerciseRS = statement.executeQuery("SELECT exerciseName FROM exercises WHERE exerciseName='" + exerciseName + "' AND username='" + client.getUsername() + "' AND type = 'aerobic'");
             AerobicExercise exercise = null;
             
             if(exerciseRS.next()){
                 exercise = new AerobicExercise(exerciseRS.getString("exerciseName"));
             }
             
-            ResultSet entryRS = statement.executeQuery("SELECT * FROM exerciseEntries WHERE exerciseName='" + exerciseName + "' AND username='" + client.getUsername() + "'");     
+            ResultSet entryRS = statement.executeQuery("SELECT * FROM aerobicExerciseEntries WHERE exerciseName='" + exerciseName + "' AND username='" + client.getUsername() + "'");     
             if (exercise != null){
                 while(entryRS.next()){
                     exercise.addEntry(entryRS.getInt("lengthOfExerciseInMinutes"), LocalDateTime.parse(entryRS.getString("date") + "T" + entryRS.getString("time")));
@@ -418,9 +444,10 @@ public class Broker {
  * @param client
  * @return 
  */    
+            
     public ArrayList<AerobicExercise> getAllAerobicExercisesOfClient(Client client){
         try{           
-            ResultSet exerciseRS = statement.executeQuery("SELECT exerciseName FROM exercises WHERE username='" + client.getUsername() + "'");
+            ResultSet exerciseRS = statement.executeQuery("SELECT exerciseName FROM exercises WHERE username='" + client.getUsername() + "' AND type ='aerobic'");
             ArrayList<AerobicExercise> exercises = new ArrayList<AerobicExercise>();
 
             ResultSet entryRS;
@@ -429,7 +456,7 @@ public class Broker {
             }
             int i = 0;
             while(i<exercises.size()){
-                entryRS = statement.executeQuery("SELECT * FROM exerciseEntries WHERE exerciseName='" + exercises.get(i)  + "' AND username='" + client.getUsername() + "'");  
+                entryRS = statement.executeQuery("SELECT * FROM aerobicExerciseEntries WHERE exerciseName='" + exercises.get(i)  + "' AND username='" + client.getUsername() + "'");  
                 while(entryRS.next()){
                         exercises.get(i).addEntry(entryRS.getInt("lengthOfExerciseInMinutes"), LocalDateTime.parse(entryRS.getString("date") + "T" + entryRS.getString("time")));
                     }
@@ -443,19 +470,107 @@ public class Broker {
         } 
     }
     
+    /**
+ * returns a weight exercise relating to the exercise name and the associated client
+ * @param exerciseName
+ * @param client
+ * @return 
+ */    
+    public WeightExercise getWeightExercise(String exerciseName, Client client){
+        try{           
+            ResultSet exerciseRS = statement.executeQuery("SELECT exerciseName FROM exercises WHERE exerciseName='" + exerciseName + "' AND username='" + client.getUsername() + "' AND type = 'weight'");
+            WeightExercise exercise = null;
+            
+            if(exerciseRS.next()){
+                exercise = new WeightExercise(exerciseRS.getString("exerciseName"));
+            }
+            
+            ResultSet entryRS = statement.executeQuery("SELECT * FROM weightExerciseEntries WHERE exerciseName='" + exerciseName + "' AND username='" + client.getUsername() + "'");     
+            if (exercise != null){
+                while(entryRS.next()){
+                    exercise.addEntry(entryRS.getInt("set1Weight"), entryRS.getInt("set1Reps"), entryRS.getInt("set2Weight"), entryRS.getInt("set2Reps"), LocalDateTime.parse(entryRS.getString("date") + "T" + entryRS.getString("time")));
+                }
+                return exercise;
+            }
+            else{
+                return null;
+            }
+        }
+        catch(SQLException ex){
+            System.out.println(ex);
+            return null; 
+        } 
+    }
+    
+ /**
+ * returns an aerobic exercise relating to the exercise name and the associated client
+ * @param exerciseName
+ * @param client
+ * @return 
+ */    
+            
+    public ArrayList<WeightExercise> getAllWeightExercisesOfClient(Client client){
+        try{           
+            ResultSet exerciseRS = statement.executeQuery("SELECT exerciseName FROM exercises WHERE username='" + client.getUsername() + "' AND type ='weight'");
+            ArrayList<WeightExercise> exercises = new ArrayList<WeightExercise>();
+
+            ResultSet entryRS;
+            while(exerciseRS.next()){
+                exercises.add(new WeightExercise(exerciseRS.getString("exerciseName")));
+            }
+            int i = 0;
+            while(i<exercises.size()){
+                entryRS = statement.executeQuery("SELECT * FROM weightExerciseEntries WHERE exerciseName='" + exercises.get(i)  + "' AND username='" + client.getUsername() + "'");  
+                while(entryRS.next()){
+                        exercises.get(i).addEntry(entryRS.getInt("set1Weight"), entryRS.getInt("set1Reps"), entryRS.getInt("set2Weight"), entryRS.getInt("set2Reps"), LocalDateTime.parse(entryRS.getString("date") + "T" + entryRS.getString("time")));
+                    }
+                    i++;
+            }
+            return exercises;
+        }
+        catch(SQLException ex){
+            System.out.println(ex);
+            return null; 
+        } 
+    }
+    
+    public ArrayList<Exercise> getAllExercisesOfClient(Client client){
+        ArrayList<Exercise> exercises = new ArrayList<>();
+        
+        exercises.addAll(getAllAerobicExercisesOfClient(client));
+        exercises.addAll(getAllWeightExercisesOfClient(client));
+        
+        return exercises;    
+    }
+    
 /**
  * adds an exercise entry to the DB including how long the exercise went for in minutes and the date and time it occurred
  * returns true if successful
  * @param exercise
- * @param entry
+ * @param exerciseEntry
  * @param client
  * @return 
  */
-    public boolean addExerciseEntry(AerobicExercise exercise, AerobicExercise.Entry entry, Client client){
+    public boolean addAerobicExerciseEntry(AerobicExercise exercise, Exercise.Entry exerciseEntry, Client client){
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:MM");
+        AerobicExercise.Entry entry = (AerobicExercise.Entry) exerciseEntry;
         try{  
-            statement.execute("INSERT INTO exerciseEntries(date, time, lengthOfExerciseInMinutes, exerciseName, username) VALUES ('" + entry.date.format(dateFormatter) + "', '" + entry.date.format(timeFormatter) + "', " + entry.minutes + ", '" + exercise.getName() + "' ,'" + client.getUsername() + "')");
+            statement.execute("INSERT INTO aerobicExerciseEntries(date, time, lengthOfExerciseInMinutes, exerciseName, username) VALUES ('" + entry.date.format(dateFormatter) + "', '" + entry.date.format(timeFormatter) + "', " + entry.minutes + ", '" + exercise.getName() + "' ,'" + client.getUsername() + "')");
+            return true;
+        }
+        catch (SQLException ex) {
+            System.out.println(ex);
+            return false;
+        }
+    }
+    
+    public boolean addWeightExerciseEntry(WeightExercise exercise, Exercise.Entry exerciseEntry, Client client){
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:MM");
+        WeightExercise.Entry entry = (WeightExercise.Entry) exerciseEntry;
+        try{  
+            statement.execute("INSERT INTO weightExerciseEntries(date, time, set1Weight, set1Reps, set2Weight, set2Reps, exerciseName, username) VALUES ('" + entry.date.format(dateFormatter) + "', '" + entry.date.format(timeFormatter) + "', " + entry.set1.weight + ", " + entry.set1.reps + ", " + entry.set2.weight + ", " + entry.set2.reps + ", '" + exercise.getName() + "' ,'" + client.getUsername() + "')");
             return true;
         }
         catch (SQLException ex) {

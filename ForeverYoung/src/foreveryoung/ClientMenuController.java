@@ -49,7 +49,7 @@ public class ClientMenuController {
             AerobicExercise exercise = menu.getExercise();
             try{
                 Entry entry = exercise.addEntry(Integer.parseInt(new addAerobicEntryPane().getMinutes()));
-                broker.addExerciseEntry(exercise, entry , client);
+                broker.addAerobicExerciseEntry(exercise, entry , client);
             }
             catch(NumberFormatException e){
                 JOptionPane.showMessageDialog(null, "Enter A number", "Whoops!", JOptionPane.ERROR_MESSAGE);

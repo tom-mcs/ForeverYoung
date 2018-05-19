@@ -12,10 +12,16 @@ import java.util.ArrayList;
  *
  * @author Admin
  */
-public class AerobicExercise {
+public class AerobicExercise extends Exercise {
+
     
-    public class Entry{
-        public LocalDateTime date;
+    
+    public AerobicExercise(String name) {
+        super(name);
+        type = "aerobic";
+    }
+        
+    public class Entry extends Exercise.Entry{
         public int minutes;
         
         public Entry(LocalDateTime date, int minutes){
@@ -28,27 +34,7 @@ public class AerobicExercise {
             return "Entry{" + "date=" + date + ", minutes=" + minutes + '}';
         }        
     }
-    
-    private ArrayList<Entry> entries;
-    private String name;
-    
-    public AerobicExercise(String name){
-        this.name = name;
-        entries = new ArrayList<>();
-    }
-
-    public ArrayList<Entry> getEntries(){
-        return entries;
-    }
-    
-    public int getNumberOfEntries(){
-        return entries.size();
-    }
-    
-    public String getName() {
-        return name;
-    }
-    
+   
     public Entry addEntry(int minutes){
         LocalDateTime date = LocalDateTime.now();
         Entry entry = new Entry(date, minutes);
@@ -60,17 +46,7 @@ public class AerobicExercise {
     public boolean addEntry(int minutes, LocalDateTime date){
         return entries.add(new Entry(date, minutes));
     }
-    
-    public boolean RemoveEntry(int i){
-        if (entries.size()<= i){
-            return false;
-        }
-        entries.remove(i);
-        return true;
-    }
-    
-    
-    
+      
     @Override
     public String toString(){
         return name;
