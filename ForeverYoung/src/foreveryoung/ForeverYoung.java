@@ -4,6 +4,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import static java.lang.Thread.sleep;
 import static java.lang.Thread.sleep;
+import java.time.LocalDateTime;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -74,7 +75,28 @@ public class ForeverYoung {
                     }
                     if(menuController.getAction().equals("view")){
                         Client client = menuController.getSelectedClient();
-                        client.loadStats(broker);
+                        //client.loadStats(broker);
+                        AerobicExercise running = new AerobicExercise("running");
+                        AerobicExercise walking = new AerobicExercise("walking");
+                        AerobicExercise skipping = new AerobicExercise("skipping");
+                        running.addEntry(230);
+                        running.addEntry(240);
+                        running.addEntry(27);
+                        walking.addEntry(250);
+                        walking.addEntry(26);
+                        skipping.addEntry(2);
+                        running.addEntry(24);
+                        WeightExercise bench = new WeightExercise("Bench Press");
+                        bench.addEntry(40,9,20,7);
+                        bench.addEntry(50,10,70,9);
+                        WeightExercise curls = new WeightExercise("Bicep curls");
+                        curls.addEntry(11,3,34,6);
+                        curls.addEntry(23,4,34,6);
+                        client.addAerobicExercise(running);
+                        client.addAerobicExercise(walking);
+                        client.addAerobicExercise(skipping);
+                        client.addWeightExercise(bench);
+                        client.addWeightExercise(curls);
                         PractitionerClientMenuController PCMenuController = new PractitionerClientMenuController(client, broker, mainFrame);
                         while(!PCMenuController.isDone()){
                             PCMenuController.activate();
@@ -87,7 +109,28 @@ public class ForeverYoung {
             
             if(user instanceof Client){
                 Client client = (Client)user;
-                client.loadStats(broker);
+                //client.loadStats(broker);
+                AerobicExercise running = new AerobicExercise("running");
+                AerobicExercise walking = new AerobicExercise("walking");
+                AerobicExercise skipping = new AerobicExercise("skipping");
+                running.addEntry(230);
+                running.addEntry(240);
+                running.addEntry(27);
+                walking.addEntry(250);
+                walking.addEntry(26);
+                skipping.addEntry(2);
+                running.addEntry(24);
+                WeightExercise bench = new WeightExercise("Bench Press");
+                bench.addEntry(40,9,20,7);
+                bench.addEntry(50,10,70,9);
+                WeightExercise curls = new WeightExercise("Bicep curls");
+                curls.addEntry(11,3,34,6);
+                curls.addEntry(23,4,34,6);
+                client.addAerobicExercise(running);
+                client.addAerobicExercise(walking);
+                client.addAerobicExercise(skipping);
+                client.addWeightExercise(bench);
+                client.addWeightExercise(curls);
                 
                 ClientMenuController menuController = new ClientMenuController((Client)user, broker, mainFrame);
                 menuController.activate();

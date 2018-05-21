@@ -31,6 +31,7 @@ public class Client extends User{
         this.isLoggedIn = false;
         this.practitionerName = practitionerName;
         aerobicExercises = new ArrayList<>();
+        weightExercises = new ArrayList<>();
         goals = new ArrayList<>();
     }
     

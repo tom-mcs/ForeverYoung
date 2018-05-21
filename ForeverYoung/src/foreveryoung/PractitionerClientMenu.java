@@ -88,10 +88,11 @@ public class PractitionerClientMenu extends JPanel{
     }
     
     public void updateTables(){
+        userPanel.removeAll();
         ArrayList<AerobicExercise> exercises = client.getAerobicExercises();
         int numEntries = 0;
         for(AerobicExercise a : exercises){
-            if (a.getNumberOfEntries() < numEntries){
+            if (a.getNumberOfEntries() > numEntries){
                 numEntries = a.getNumberOfEntries();
             }
         }
@@ -119,27 +120,35 @@ public class PractitionerClientMenu extends JPanel{
         ArrayList<WeightExercise> weights = client.getWeightExercises();
         numEntries = 0;
         for(WeightExercise we : weights){
-            if (we.getNumberOfEntries() < numEntries){
+            if (we.getNumberOfEntries() > numEntries){
                 numEntries = we.getNumberOfEntries();
             }
         }
-        weightsTable = new JTable(2*weights.size(), 2*numEntries + 1);
+        weightsTable = new JTable(2*weights.size()+2, 2*numEntries + 2);
+        for(int x = 0 ; x < numEntries; x++){
+            weightsTable.setValueAt("Set 1", 0 , (x+1)*2);
+            weightsTable.setValueAt("Set 2", 0 , ((x+1)*2)+1);
+        }
         for(int i = 0 ; i < weights.size(); i++){
             WeightExercise exercise = weights.get(i);
             ArrayList<WeightExerciseEntry> entries = exercise.getEntries();
-            weightsTable.setValueAt(exercise.getName(), i, 0);
-            for(int e = 0 ; e < exercise.getNumberOfEntries(); e++){
-                weightsTable.setValueAt(entries.get(e).getSet1().weight,2*i-1,2*e-1);
-                weightsTable.setValueAt(entries.get(e).getSet1().reps,2*i,2*e-1);
-                weightsTable.setValueAt(entries.get(e).getSet2().weight,2*i-1,2*e);
-                weightsTable.setValueAt(entries.get(e).getSet2().reps,2*i,2*e);
+            weightsTable.setValueAt(exercise.getName(), (2*i)+1, 0);
+            weightsTable.setValueAt("weight",(2*i)+1,1);
+            weightsTable.setValueAt("reps",(2*i)+2,1); 
+            System.out.println(entries.size());
+            for(int e = 0 ; e < entries.size(); e++){
+                System.out.println(e);
+                weightsTable.setValueAt(entries.get(e).getSet1().weight,(2*i)+1,(2*e)+2);
+                weightsTable.setValueAt(entries.get(e).getSet1().reps,(2*i)+2,(2*e)+2);
+                weightsTable.setValueAt(entries.get(e).getSet2().weight,(2*i)+1,(2*e)+3);
+                weightsTable.setValueAt(entries.get(e).getSet2().reps,(2*i)+2,(2*e)+3);
             }
         }
         
         
         userPanel.add(exerciseTable);
-        userPanel.add(goalTable);
         userPanel.add(weightsTable);
+        userPanel.add(goalTable);
         userPanel.repaint();
         userPanel.revalidate();
     }

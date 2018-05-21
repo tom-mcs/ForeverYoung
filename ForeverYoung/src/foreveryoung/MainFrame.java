@@ -21,8 +21,8 @@ public class MainFrame extends JFrame{
     private final Dimension ScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private final int screenWidth = ScreenSize.width;
     private final int screenHeight = ScreenSize.height;
-    private final int frameHeight = screenHeight - 300;
-    private final int frameWidth = screenWidth - 600;
+    private final int frameHeight = screenHeight;
+    private final int frameWidth = screenWidth;
     private final Dimension frameSize = new Dimension(frameWidth,frameHeight);
     
     //constructor
