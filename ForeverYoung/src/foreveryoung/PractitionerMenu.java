@@ -5,6 +5,7 @@
  */
 package foreveryoung;
 
+import static foreveryoung.ForeverYoung.textFont;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -33,7 +34,7 @@ public class PractitionerMenu extends JPanel {
     private boolean logoutClicked = false;
     private boolean viewClientClicked = false;
     private boolean deleteClientClicked = false;
-private final JButton createAccountButton = new JButton("Create Client Account");
+    private final JButton createAccountButton = new JButton("Create Client Account");
     private boolean CNAButtonClicked = false;
     private Practitioner practitioner;
     private JPanel userPanel;
@@ -59,8 +60,7 @@ private final JButton createAccountButton = new JButton("Create Client Account")
         JLabel label = new JLabel(logo);
         
         JLabel loginInfo= new JLabel();
-        Font loginInfoFont = new Font(Font.SANS_SERIF, Font.PLAIN, 18);
-        loginInfo.setFont(loginInfoFont);
+        loginInfo.setFont(textFont);
         loginInfo.setText("logged in as Practitioner " + practitioner.getFirstName());
         logoPanel.add(loginInfo, BorderLayout.NORTH);
         
@@ -88,6 +88,7 @@ private final JButton createAccountButton = new JButton("Create Client Account")
     public void setTable(ArrayList<Client> users){
         //create table of all clients of this practitioner
         comboBox = new JComboBox(users.toArray());
+        comboBox.setFont(textFont);
         viewClientButton = new JButton("View Client");
         viewClientButton.addActionListener(viewClientAL);
         deleteClientButton = new JButton("Delete Client");
@@ -96,6 +97,10 @@ private final JButton createAccountButton = new JButton("Create Client Account")
         userPanel.add(comboBox, BorderLayout.NORTH);
         userPanel.add(deleteClientButton);        //functionality not implemented
         userPanel.add(viewClientButton);
+        createAccountButton.setFont(textFont);
+        logout.setFont(textFont);
+        deleteClientButton.setFont(textFont);
+        viewClientButton.setFont(textFont);
         userPanel.repaint();
         userPanel.revalidate();
     }

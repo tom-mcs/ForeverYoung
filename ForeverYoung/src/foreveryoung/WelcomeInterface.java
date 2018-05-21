@@ -5,12 +5,16 @@
  */
 package foreveryoung;
 
+import static foreveryoung.ForeverYoung.textFont;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import static javafx.scene.text.Font.font;
+import static javafx.scene.text.Font.font;
+import static javafx.scene.text.Font.font;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -32,6 +36,7 @@ public class WelcomeInterface extends JPanel {
     private boolean loginButtonClicked = false;
     private boolean CNAButtonClicked = false;
     
+    
     public WelcomeInterface(){
         init();
     }
@@ -44,7 +49,10 @@ public class WelcomeInterface extends JPanel {
         JPanel bottomPanel = new JPanel(new BorderLayout());
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 100));    
         JPanel dialogPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
-        dialog.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 11));
+        dialog.setFont(textFont);
+        loginButton.setFont(textFont);
+        createAccountButton.setFont(textFont);
+        
         
         //Import Logo and add to Logo Panel
         ImageIcon logo = new ImageIcon("./lph.png");

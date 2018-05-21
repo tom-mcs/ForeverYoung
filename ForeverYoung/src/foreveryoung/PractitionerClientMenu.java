@@ -5,6 +5,7 @@
  */
 package foreveryoung;
 
+import static foreveryoung.ForeverYoung.textFont;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -45,6 +46,11 @@ public class PractitionerClientMenu extends JPanel{
         
     private void init(){
         //formatting
+        addExerciseButton.setFont(textFont);
+        addGoalButton.setFont(textFont);
+        addWeightsButton.setFont(textFont);
+        backButton.setFont(textFont);
+        
         this.setLayout(new GridLayout(1, 2));
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
         userPanel = new JPanel(new GridLayout(3,1,10,10));
@@ -145,6 +151,12 @@ public class PractitionerClientMenu extends JPanel{
             }
         }
         
+        goalTable.setFont(textFont);
+        weightsTable.setFont(textFont);
+        exerciseTable.setFont(textFont);
+        weightsTable.setRowHeight(25);
+        exerciseTable.setRowHeight(25);
+        goalTable.setRowHeight(25);
         
         userPanel.add(exerciseTable);
         userPanel.add(weightsTable);

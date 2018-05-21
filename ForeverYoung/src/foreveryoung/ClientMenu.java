@@ -5,6 +5,7 @@
  */
 package foreveryoung;
 
+import static foreveryoung.ForeverYoung.textFont;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -26,8 +27,9 @@ import javax.swing.border.EmptyBorder;
  */
 public class ClientMenu extends JPanel{
     private final JButton logoutButton = new JButton("Logout");
-    private final JButton completeGoalButton = new JButton("complete Goal");
+    private final JButton completeGoalButton = new JButton("Complete Goal");
     private final JButton addEntryButton = new JButton("Add Entry");
+    private final JButton addWeightButton = new JButton("Add Weights");
     private JTable exerciseTable;
     private JTable weightsTable;
     private JTable goalTable;
@@ -35,9 +37,11 @@ public class ClientMenu extends JPanel{
     private boolean addGoalClicked = false;
     private boolean addExerciseClicked = false;
     private boolean LogoutClicked = false;
+    private boolean addWeightClicked = false;
     private Client client;
     private JComboBox exercisesCB;
     private JComboBox goalsCB;
+    private JComboBox weightsCB;
     
     
     //constructor
@@ -47,8 +51,21 @@ public class ClientMenu extends JPanel{
     }
         
     private void init(){
+        exercisesCB = new JComboBox(client.getAerobicExercises().toArray());
+        goalsCB = new JComboBox(client.getGoals().toArray());
+        weightsCB = new JComboBox(client.getWeightExercises().toArray());
+        
         //formatting
-        this.setLayout(new GridLayout(1, 2));
+        goalsCB.setFont(textFont);
+        exercisesCB.setFont(textFont);
+        weightsCB.setFont(textFont);
+        addEntryButton.setFont(textFont);
+        completeGoalButton.setFont(textFont);
+        addWeightButton.setFont(textFont);
+        logoutButton.setFont(textFont);
+       
+        
+        this.setLayout(new GridLayout(1, 3));
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
         userPanel = new JPanel(new GridLayout(3,1,10,10));
         JPanel buttonPanel = new JPanel(new GridLayout(3,1,10,10));         
@@ -57,45 +74,42 @@ public class ClientMenu extends JPanel{
         JLabel label = new JLabel(logo);
         
         JLabel message= new JLabel();
-        Font messageFont = new Font(Font.SANS_SERIF, Font.PLAIN, 18);
-        message.setFont(messageFont);
+        message.setFont(textFont);
         message.setText("Viewing Client: " + client.getFirstName() + " " + client.getLastName());
         
         //add action listener to logout button
         logoutButton.addActionListener(logoutAL);
         completeGoalButton.addActionListener(AddGoalAL);
         addEntryButton.addActionListener(AddExerciseAL);
-        
-        exercisesCB = new JComboBox(client.getAerobicExercises().toArray());
-        goalsCB = new JComboBox(client.getGoals().toArray());
+        addWeightButton.addActionListener(AddWeightsAL);
         
         //add elements
         JPanel exerciseButtonPanel = new JPanel(new FlowLayout());
         exerciseButtonPanel.add(exercisesCB);
         exerciseButtonPanel.add(addEntryButton);
+        
         JPanel goalButtonPanel = new JPanel(new FlowLayout());
         goalButtonPanel.add(goalsCB);
         goalButtonPanel.add(completeGoalButton);
-        buttonPanel.add(exerciseButtonPanel);
+         
+        
         JPanel weightButtonPanel = new JPanel();
-        weightButtonPanel.add(new JButton("Add weights entry"));
+        weightButtonPanel.add(weightsCB);
+        weightButtonPanel.add(addWeightButton);
+        
+        buttonPanel.add(exerciseButtonPanel);
         buttonPanel.add(weightButtonPanel);
         buttonPanel.add(goalButtonPanel);
         
         JPanel homePanel = new JPanel(new GridLayout(2,1));
-        homePanel.add(new JLabel("Client: " + client.getFirstName() + " " + client.getLastName()), new Font(Font.SANS_SERIF, Font.PLAIN, 17));
+        homePanel.add(message);
         JPanel backPanel = new JPanel(new FlowLayout());
         backPanel.add(logoutButton);
         homePanel.add(backPanel);
-        
-        
+            
         this.add(homePanel);
         this.add(userPanel);
         this.add(buttonPanel);
-
-
-  
-  
     }
     
     public void updateTables(){
@@ -155,8 +169,12 @@ public class ClientMenu extends JPanel{
                 weightsTable.setValueAt(entries.get(e).getSet2().reps,(2*i)+2,(2*e)+3);
             }
         }
-        
-        
+        goalTable.setFont(textFont);
+        weightsTable.setFont(textFont);
+        exerciseTable.setFont(textFont);
+        weightsTable.setRowHeight(25);
+        exerciseTable.setRowHeight(25);
+        goalTable.setRowHeight(25);
         userPanel.add(exerciseTable);
         userPanel.add(weightsTable);
         userPanel.add(goalTable);
@@ -188,6 +206,14 @@ public class ClientMenu extends JPanel{
         addExerciseClicked = bool;
     }
 
+    public boolean isAddWeightClicked() {
+        return addWeightClicked;
+    }
+
+    public void setAddWeightClicked(boolean addWeightClicked) {
+        this.addWeightClicked = addWeightClicked;
+    }
+    
     public boolean isLogoutClicked() {
         return LogoutClicked;
     }
@@ -217,6 +243,14 @@ public class ClientMenu extends JPanel{
         @Override
         public void actionPerformed(ActionEvent e) {
             addExerciseClicked = true;
+        }
+    };
+    
+    //add weight actionListener
+    private ActionListener AddWeightsAL = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            addWeightClicked = true;
         }
     };
 

@@ -1,10 +1,12 @@
 package foreveryoung;
 
+import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import static java.lang.Thread.sleep;
 import static java.lang.Thread.sleep;
 import java.time.LocalDateTime;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -17,6 +19,8 @@ import java.time.LocalDateTime;
  * @author Thomas McSkimming
  */
 public class ForeverYoung {
+    
+    public static Font textFont = new Font(Font.SANS_SERIF, Font.PLAIN, 22);
     
     public static void main(String[] args) throws Exception {
         Broker broker = new Broker();

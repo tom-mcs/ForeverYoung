@@ -1,5 +1,6 @@
 package foreveryoung;
 
+import static foreveryoung.ForeverYoung.textFont;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -38,6 +39,9 @@ class LoginInterface extends JPanel {
     private JButton cancelButton = new JButton("cancel");
     private boolean cancelButtonClicked = false;
     private boolean loginButtonClicked = false;
+    private JLabel uLabel = new JLabel("Username:", SwingConstants.RIGHT);
+    private JLabel pLabel = new JLabel("Password:", SwingConstants.RIGHT);
+    
     
     //constructor
     public LoginInterface(){
@@ -47,6 +51,13 @@ class LoginInterface extends JPanel {
     //initialises components
     private void init(){
         //formatting
+        loginButton.setFont(textFont);
+        cancelButton.setFont(textFont);
+        usernameField.setFont(textFont);
+        passwordField.setFont(textFont);
+        uLabel.setFont(textFont);
+        pLabel.setFont(textFont);
+        
         this.setLayout(new GridLayout(2,1));
         this.setBorder(new EmptyBorder(10,10,10,10));
         JPanel topPanel = new JPanel(new BorderLayout());
@@ -59,8 +70,7 @@ class LoginInterface extends JPanel {
         dialog.setFont(dialogFont);
         
         //create Labels
-        JLabel uLabel = new JLabel("Username:", SwingConstants.RIGHT);
-        JLabel pLabel = new JLabel("Password:", SwingConstants.RIGHT);
+
         
         //Add components to panels
         ButtonPanel.add(loginButton);

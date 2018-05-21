@@ -20,7 +20,7 @@ public class AerobicExercise extends Exercise {
         type = "aerobic";
     }
    
-    public Entry addEntry(int minutes){
+    public AerobicExerciseEntry addEntry(int minutes){
         LocalDateTime date = LocalDateTime.now();
         AerobicExerciseEntry entry = new AerobicExerciseEntry(date, minutes);
         entries.add(entry);
