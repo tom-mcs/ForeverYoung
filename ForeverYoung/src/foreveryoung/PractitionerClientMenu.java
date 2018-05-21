@@ -68,7 +68,7 @@ public class PractitionerClientMenu extends JPanel{
         backButton.addActionListener(backAL);
         addGoalButton.addActionListener(AddGoalAL);
         addExerciseButton.addActionListener(AddExerciseAL);
-        addWeightsButton.addActionListener(AddWeightAL);
+        addWeightsButton.addActionListener(AddWeightsAL);
         //add elements
         JPanel exerciseButtonPanel = new JPanel(new FlowLayout());
         exerciseButtonPanel.add(addExerciseButton);
@@ -225,15 +225,12 @@ public class PractitionerClientMenu extends JPanel{
         }
     };
  
-    
-    private ActionListener AddWeightAL;
-//    
-//    private ActionListener AddWeightsAL = new ActionListener() {
-//        @Override
-//        public void actionPerormed(ActionEvent e) {
-//            addWeightsClicked = true;
-//        }
-//    };
+    private ActionListener AddWeightsAL = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            addWeightsClicked = true;
+        }
+    };
 
     
     

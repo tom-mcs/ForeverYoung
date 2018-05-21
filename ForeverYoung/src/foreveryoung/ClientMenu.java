@@ -182,8 +182,12 @@ public class ClientMenu extends JPanel{
         userPanel.revalidate();
     }
    
-    public AerobicExercise getExercise(){
+    public AerobicExercise getAerobicExercise(){
         return (AerobicExercise)exercisesCB.getSelectedItem();
+    }
+    
+    public WeightExercise getWeightExercise(){
+        return (WeightExercise)weightsCB.getSelectedItem();
     }
     
     public Goal getGoal(){

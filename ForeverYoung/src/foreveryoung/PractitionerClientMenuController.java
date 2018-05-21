@@ -43,11 +43,21 @@ public class PractitionerClientMenuController {
         }
         if(menu.isAddExerciseClicked()){
             menu.setAddExerciseClicked(false);
-            String name = new addExerciseOP().getExerciseName();
+            String name = new addExerciseOP("aerobic").getExerciseName();
             AerobicExercise exercise = new AerobicExercise(name);
             client.addAerobicExercise(exercise);
             broker.addExercise(exercise, client);
             menu.updateTables();
+        }
+        if(menu.isWeightsClicked()){
+            menu.setAddWeightsClicked(false);
+            String name = new addExerciseOP("weight").getExerciseName();
+            WeightExercise exercise = new WeightExercise(name);
+            client.addWeightExercise(exercise);
+            broker.addExercise(exercise, client);
+            menu.updateTables();
+            System.out.println(client.getWeightExercises());
+            System.out.println(broker.getAllWeightExercisesOfClient(client));
         }
         if(menu.isAddGoalClicked()){
             menu.setAddGoalClicked(false);

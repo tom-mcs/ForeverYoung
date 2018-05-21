@@ -8,6 +8,7 @@ package foreveryoung;
 
 import static java.lang.Thread.sleep;
 import javax.swing.JOptionPane;
+import static java.lang.Thread.sleep;
 
 /**
  *
@@ -44,7 +45,7 @@ public class ClientMenuController {
             action = "logout";
         }
         if(menu.isAddEntryClicked()){
-            AerobicExercise exercise = menu.getExercise();
+            AerobicExercise exercise = menu.getAerobicExercise();
             try{
                 AerobicExerciseEntry entry = exercise.addEntry(Integer.parseInt(new addAerobicEntryPane().getMinutes()));
                 broker.addAerobicExerciseEntry(exercise, entry , client);
@@ -52,6 +53,25 @@ public class ClientMenuController {
             catch(NumberFormatException e){
                 JOptionPane.showMessageDialog(null, "Enter A number", "Whoops!", JOptionPane.ERROR_MESSAGE);
                 check();
+            }
+            catch(NullPointerException e){
+                System.out.println(e);
+            }
+            menu.setAddEntryClicked(false);
+            menu.updateTables();
+        }
+        if(menu.isAddWeightClicked()){
+            WeightExercise exercise = menu.getWeightExercise();
+            try{
+                WeightExerciseEntry entry = exercise.addEntry(10,101,10,300);
+                broker.addWeightExerciseEntry(exercise, entry , client);
+            }
+            catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(null, "Enter A number", "Whoops!", JOptionPane.ERROR_MESSAGE);
+                check();
+            }
+            catch(NullPointerException e){
+                System.out.println(e);
             }
             menu.setAddEntryClicked(false);
             menu.updateTables();
