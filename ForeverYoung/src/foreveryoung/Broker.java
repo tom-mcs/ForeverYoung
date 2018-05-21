@@ -37,7 +37,7 @@ public class Broker {
     final String dbName = "derbyDB";
     static Connection connection = null;
     static Statement statement = null;
-    final int versionNum = 8;   //increment every time the database is substantially changed and requires a rebuild
+    final int versionNum = 9;   //increment every time the database is substantially changed and requires a rebuild
 
 /**
  * @throws SQLException 
@@ -67,9 +67,9 @@ public class Broker {
         System.out.println("=====    Started/Connected DB    =====");
         
         statement = connection.createStatement();
-       
+        setUpSchema();        
         //rebuilds database if versionNum is different
-        if(versionNum != getDBVersionNum()){
+        if(versionNum!=getDBVersionNum()){
             System.out.println("db versionNum is different or doesn't exist");
             System.out.println("dropping all tables");
             deleteDB();
@@ -81,7 +81,20 @@ public class Broker {
         }
                
     }
-      
+     
+    public void setUpSchema(){
+        try {
+            statement.execute("CREATE SCHEMA FOREVERYOUNG");
+        } catch (SQLException ex) {
+
+        }
+        try {
+            statement.execute("SET SCHEMA FOREVERYOUNG");
+        } catch (SQLException ex) {
+            Logger.getLogger(Broker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+          
     /**
      * Builds all tables of the database
      * tables are users, goals, and exercises, where goals and exercises are linked to the users table via the foreign key 'username'
@@ -126,7 +139,7 @@ public class Broker {
         try{
             statement.execute("CREATE TABLE exercises ("
                     + "exerciseName VARCHAR(15), "
-                    + "type VARCHAR(15),"
+                    + "type VARCHAR(15), "
                     + "username VARCHAR(15) REFERENCES users(username) ON DELETE CASCADE, "
                     + "CONSTRAINT exercisesPK PRIMARY KEY (exerciseName, username))");
         }
@@ -188,43 +201,48 @@ public class Broker {
      * @author Matt
      */ 
     public void deleteDB(){  
-        
         try{
             statement.execute("DROP TABLE versionNum");
         }
         catch(SQLException sqlExcept){
             System.out.println("error dropping version table: " + sqlExcept);
         } 
+        
         try{
             statement.execute("DROP TABLE pedEntries");
         }
         catch(SQLException sqlExcept){
             System.out.println("error pedentries table: " + sqlExcept);
         } 
+        
         try{
             statement.execute("DROP TABLE aerobicExerciseEntries");
         }
         catch(SQLException sqlExcept){
             System.out.println("error dropping aerobicExerciseEntries table: " + sqlExcept);
-        }  
+        } 
+        
         try{
             statement.execute("DROP TABLE weightExerciseEntries");
         }
         catch(SQLException sqlExcept){
             System.out.println("error dropping weightExerciseEntries table: " + sqlExcept);
-        } 
+        }
+        
         try{
             statement.execute("DROP TABLE goals");
         }
         catch(SQLException sqlExcept){
             System.out.println("error dropping goals table: " + sqlExcept);
         } 
+        
         try{
             statement.execute("DROP TABLE exercises");
         }
         catch(SQLException sqlExcept){
             System.out.println("error exercises table: " + sqlExcept);
-        } 
+        }
+        
         try{
             statement.execute("DROP TABLE users");
         }        
@@ -232,8 +250,9 @@ public class Broker {
             System.out.println(sqlExcept);
             System.out.println("error dropping user table: " + sqlExcept);
         } 
+        
     }
-     
+         
     //closes all connections to the database
     public void shutdown()
     {
