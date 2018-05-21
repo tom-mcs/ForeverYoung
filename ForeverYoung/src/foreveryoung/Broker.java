@@ -37,7 +37,7 @@ public class Broker {
     final String dbName = "derbyDB";
     static Connection connection = null;
     static Statement statement = null;
-    final int versionNum = 6;   //increment every time the database is substantially changed and requires a rebuild
+    final int versionNum = 8;   //increment every time the database is substantially changed and requires a rebuild
 
 /**
  * @throws SQLException 
@@ -551,10 +551,10 @@ public class Broker {
  * @param client
  * @return 
  */
-    public boolean addAerobicExerciseEntry(AerobicExercise exercise, Exercise.Entry exerciseEntry, Client client){
+    public boolean addAerobicExerciseEntry(AerobicExercise exercise, AerobicExerciseEntry exerciseEntry, Client client){
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:MM");
-        AerobicExercise.Entry entry = (AerobicExercise.Entry) exerciseEntry;
+        AerobicExerciseEntry entry =  exerciseEntry;
         try{  
             statement.execute("INSERT INTO aerobicExerciseEntries(date, time, lengthOfExerciseInMinutes, exerciseName, username) VALUES ('" + entry.date.format(dateFormatter) + "', '" + entry.date.format(timeFormatter) + "', " + entry.minutes + ", '" + exercise.getName() + "' ,'" + client.getUsername() + "')");
             return true;
@@ -565,12 +565,12 @@ public class Broker {
         }
     }
     
-    public boolean addWeightExerciseEntry(WeightExercise exercise, Exercise.Entry exerciseEntry, Client client){
+    public boolean addWeightExerciseEntry(WeightExercise exercise, WeightExerciseEntry exerciseEntry, Client client){
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:MM");
-        WeightExercise.Entry entry = (WeightExercise.Entry) exerciseEntry;
+        WeightExerciseEntry entry = exerciseEntry;
         try{  
-            statement.execute("INSERT INTO weightExerciseEntries(date, time, set1Weight, set1Reps, set2Weight, set2Reps, exerciseName, username) VALUES ('" + entry.date.format(dateFormatter) + "', '" + entry.date.format(timeFormatter) + "', " + entry.set1.weight + ", " + entry.set1.reps + ", " + entry.set2.weight + ", " + entry.set2.reps + ", '" + exercise.getName() + "' ,'" + client.getUsername() + "')");
+            statement.execute("INSERT INTO weightExerciseEntries(date, time, set1Weight, set1Reps, set2Weight, set2Reps, exerciseName, username) VALUES ('" + entry.date.format(dateFormatter) + "', '" + entry.date.format(timeFormatter) + "', " + entry.getSet1().weight + ", " + entry.getSet1().reps + ", " + entry.getSet2().weight + ", " + entry.getSet2().reps + ", '" + exercise.getName() + "' ,'" + client.getUsername() + "')");
             return true;
         }
         catch (SQLException ex) {

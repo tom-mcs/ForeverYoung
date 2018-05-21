@@ -16,6 +16,7 @@ public class Client extends User{
     private String practitionerName;
     private Pedometer pedometer;
     private ArrayList<AerobicExercise> aerobicExercises;
+    private ArrayList<WeightExercise> weightExercises;
     private ArrayList<Goal> goals;
     
     public Client(User user, String practitionerName){
@@ -40,6 +41,12 @@ public class Client extends User{
                 return false;
             }
         }
+        ArrayList<WeightExercise> weList = broker.getAllWeightExercisesOfClient(this);
+        for(WeightExercise w : weList){
+            if(!addWeightExercise(w)){
+                return false;
+            }
+        }
         ArrayList<Goal> gList = broker.getGoals(this);
         for(Goal g : gList){
             if (!addGoal(g)){
@@ -57,6 +64,10 @@ public class Client extends User{
         return aerobicExercises.add(ae);
     }
     
+    public boolean addWeightExercise(WeightExercise we){
+        return weightExercises.add(we);
+    }
+    
     public boolean addGoal(Goal goal){
         return goals.add(goal);
     }
@@ -67,6 +78,10 @@ public class Client extends User{
     
     public ArrayList<AerobicExercise> getAerobicExercises(){
         return aerobicExercises;
+    }
+    
+    public ArrayList<WeightExercise> getWeightExercises(){
+        return weightExercises;
     }
     
     @Override 

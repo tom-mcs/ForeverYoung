@@ -13,38 +13,41 @@ import java.util.ArrayList;
  * @author Admin
  */
 public class AerobicExercise extends Exercise {
-
-    
     
     public AerobicExercise(String name) {
         super(name);
+        entries = new ArrayList<>();
         type = "aerobic";
-    }
-        
-    public class Entry extends Exercise.Entry{
-        public int minutes;
-        
-        public Entry(LocalDateTime date, int minutes){
-            this.date = date;
-            this.minutes = minutes;
-        }
-
-        @Override
-        public String toString() {
-            return "Entry{" + "date=" + date + ", minutes=" + minutes + '}';
-        }        
     }
    
     public Entry addEntry(int minutes){
         LocalDateTime date = LocalDateTime.now();
-        Entry entry = new Entry(date, minutes);
+        AerobicExerciseEntry entry = new AerobicExerciseEntry(date, minutes);
         entries.add(entry);
         return entry;
     }
     
     //overloaded method for when the date needs to be specified rather than just being the current time
     public boolean addEntry(int minutes, LocalDateTime date){
-        return entries.add(new Entry(date, minutes));
+        return entries.add(new AerobicExerciseEntry(date, minutes));
+    }
+    
+    private ArrayList<AerobicExerciseEntry> entries;
+    
+    public ArrayList<AerobicExerciseEntry> getEntries(){
+        return entries;
+    }
+    
+    public int getNumberOfEntries(){
+        return entries.size();
+    }
+    
+    public boolean RemoveEntry(int i){
+        if (entries.size()<= i){
+            return false;
+        }
+        entries.remove(i);
+        return true;
     }
       
     @Override

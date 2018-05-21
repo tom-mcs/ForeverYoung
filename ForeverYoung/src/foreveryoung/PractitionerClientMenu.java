@@ -5,7 +5,6 @@
  */
 package foreveryoung;
 
-import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -14,16 +13,10 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableColumnModel;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -33,21 +26,15 @@ public class PractitionerClientMenu extends JPanel{
     private final JButton backButton = new JButton("Back");
     private final JButton addGoalButton = new JButton("Add Goal");
     private final JButton addExerciseButton = new JButton("Add exercise");
-    private final JButton addRepsButton = new JButton("Add rep exercise");
     private final JButton addWeightsButton = new JButton("Add weight exercise");
-    private final JButton addSetButton = new JButton("Add set exercise");
     private JTable exerciseTable;
-    private JTable goalTable;
-    private JTable repsTable;
     private JTable weightsTable;
-    private JTable setTable;
+    private JTable goalTable;
     private JPanel userPanel;
     private boolean addGoalClicked = false;
     private boolean addExerciseClicked = false;
     private boolean backClicked = false;
-    private boolean addRepsClicked = false;
     private boolean addWeightsClicked = false;
-    private boolean addSetClicked = false;
     private Client client;
    
     //constructor
@@ -60,8 +47,8 @@ public class PractitionerClientMenu extends JPanel{
         //formatting
         this.setLayout(new GridLayout(1, 2));
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
-        userPanel = new JPanel(new GridLayout(2,1,10,10));
-        JPanel buttonPanel = new JPanel(new GridLayout(2,1,10,10));         
+        userPanel = new JPanel(new GridLayout(3,1,10,10));
+        JPanel buttonPanel = new JPanel(new GridLayout(3,1,10,10));         
         //import logo
         ImageIcon logo = new ImageIcon("./lph.png");
         JLabel label = new JLabel(logo);
@@ -75,27 +62,19 @@ public class PractitionerClientMenu extends JPanel{
         backButton.addActionListener(backAL);
         addGoalButton.addActionListener(AddGoalAL);
         addExerciseButton.addActionListener(AddExerciseAL);
-        addRepsButton.addActionListener(AddRepsAL);
-        addWeightsButton.addActionListener(AddWeightsAL);
-        addSetButton.addActionListener(AddSetAL);
+        addWeightsButton.addActionListener(AddWeightAL);
         //add elements
         JPanel exerciseButtonPanel = new JPanel(new FlowLayout());
         exerciseButtonPanel.add(addExerciseButton);
         JPanel goalButtonPanel = new JPanel(new FlowLayout());
         goalButtonPanel.add(addGoalButton);
-        
-        JPanel RepsButtonPanel = new JPanel(new FlowLayout());
-        RepsButtonPanel.add(addRepsButton);
         JPanel WeightsButtonPanel = new JPanel(new FlowLayout());
         WeightsButtonPanel.add(addWeightsButton);
-        JPanel SetButtonPanel = new JPanel(new FlowLayout());
-        SetButtonPanel.add(addSetButton);
         
         buttonPanel.add(exerciseButtonPanel);
-        buttonPanel.add(goalButtonPanel);
-        buttonPanel.add(RepsButtonPanel);
         buttonPanel.add(WeightsButtonPanel);
-        buttonPanel.add(SetButtonPanel);
+        buttonPanel.add(goalButtonPanel);
+        
         
         JPanel homePanel = new JPanel(new GridLayout(2,1));
         homePanel.add(new JLabel("Client: " + client.getFirstName() + " " + client.getLastName()), new Font(Font.SANS_SERIF, Font.PLAIN, 17));
@@ -109,12 +88,23 @@ public class PractitionerClientMenu extends JPanel{
     }
     
     public void updateTables(){
-        userPanel.removeAll();
         ArrayList<AerobicExercise> exercises = client.getAerobicExercises();
-        exerciseTable = new JTable(exercises.size(), 2);
+        int numEntries = 0;
+        for(AerobicExercise a : exercises){
+            if (a.getNumberOfEntries() < numEntries){
+                numEntries = a.getNumberOfEntries();
+            }
+        }
+        exerciseTable = new JTable(exercises.size()+1, numEntries + 1);
         for(int i = 0 ; i < exercises.size(); i++){
-            exerciseTable.setValueAt(exercises.get(i).getName(), i, 0);
-            exerciseTable.setValueAt(exercises.get(i).getNumberOfEntries(), i, 1);
+            exerciseTable.setValueAt("Exercise Name" , 0, 0);
+            exerciseTable.setValueAt(exercises.get(i).getName(), i+1, 0);
+            AerobicExercise ae = exercises.get(i);
+            ArrayList<AerobicExerciseEntry> entries = ae.getEntries();
+            for(int e = 0 ; e < entries.size(); e++){
+                AerobicExerciseEntry aee = entries.get(e);
+                exerciseTable.setValueAt(aee.minutes, i+1, e+1);
+            }
             
         }
         ArrayList<Goal> goals = client.getGoals();
@@ -126,13 +116,30 @@ public class PractitionerClientMenu extends JPanel{
             goalTable.setValueAt(goals.get(i).getDescription(), i, 1);
             goalTable.setValueAt(goals.get(i).isCompleted(), i, 2);
         }
+        ArrayList<WeightExercise> weights = client.getWeightExercises();
+        numEntries = 0;
+        for(WeightExercise we : weights){
+            if (we.getNumberOfEntries() < numEntries){
+                numEntries = we.getNumberOfEntries();
+            }
+        }
+        weightsTable = new JTable(2*weights.size(), 2*numEntries + 1);
+        for(int i = 0 ; i < weights.size(); i++){
+            WeightExercise exercise = weights.get(i);
+            ArrayList<WeightExerciseEntry> entries = exercise.getEntries();
+            weightsTable.setValueAt(exercise.getName(), i, 0);
+            for(int e = 0 ; e < exercise.getNumberOfEntries(); e++){
+                weightsTable.setValueAt(entries.get(e).getSet1().weight,2*i-1,2*e-1);
+                weightsTable.setValueAt(entries.get(e).getSet1().reps,2*i,2*e-1);
+                weightsTable.setValueAt(entries.get(e).getSet2().weight,2*i-1,2*e);
+                weightsTable.setValueAt(entries.get(e).getSet2().reps,2*i,2*e);
+            }
+        }
         
         
         userPanel.add(exerciseTable);
         userPanel.add(goalTable);
-//        userPanel.add(repsTable);
-//        userPanel.add(weightsTable);
-//        userPanel.add(setTable);
+        userPanel.add(weightsTable);
         userPanel.repaint();
         userPanel.revalidate();
     }
@@ -161,13 +168,7 @@ public class PractitionerClientMenu extends JPanel{
         this.backClicked = backClicked;
     }
     
-    public boolean isRepsClicked() {
-        return addRepsClicked;
-    }
     
-    public void setAddRepsClicked(boolean bool) {
-        addRepsClicked = bool;
-    }
     
     public boolean isWeightsClicked() {
         return addWeightsClicked;
@@ -177,13 +178,7 @@ public class PractitionerClientMenu extends JPanel{
         addWeightsClicked = bool;
     }
     
-    public boolean isSetClicked() {
-        return addSetClicked;
-    }
-    
-    public void setAddSetClicked(boolean bool) {
-        addSetClicked = bool;
-    }
+
     
     //logout actionListener
     private ActionListener backAL = new ActionListener() {
@@ -208,17 +203,9 @@ public class PractitionerClientMenu extends JPanel{
             addExerciseClicked = true;
         }
     };
+ 
     
-    private ActionListener AddRepsAL;
-    
-//    private ActionListener AddRepsAL = new ActionListener() {
-//        @Override
-//        public void actionPerformed(ActionListener e) {
-//            addRepsClicked = true;
-//        }
-//    };
-    
-    private ActionListener AddWeightsAL;
+    private ActionListener AddWeightAL;
 //    
 //    private ActionListener AddWeightsAL = new ActionListener() {
 //        @Override
@@ -226,13 +213,7 @@ public class PractitionerClientMenu extends JPanel{
 //            addWeightsClicked = true;
 //        }
 //    };
-    
-    private ActionListener AddSetAL = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            addSetClicked = true;
-        }
-    };
+
     
     
 }
