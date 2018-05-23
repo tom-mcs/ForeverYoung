@@ -37,7 +37,7 @@ public class Broker {
     final String dbName = "derbyDB";
     static Connection connection = null;
     static Statement statement = null;
-    final int versionNum = 9;   //increment every time the database is substantially changed and requires a rebuild
+    final int versionNum = 10;   //increment every time the database is substantially changed and requires a rebuild
 
 /**
  * @throws SQLException 
@@ -138,7 +138,7 @@ public class Broker {
         
         try{
             statement.execute("CREATE TABLE exercises ("
-                    + "exerciseName VARCHAR(15), "
+                    + "exerciseName VARCHAR(50), "
                     + "type VARCHAR(15), "
                     + "username VARCHAR(15) REFERENCES users(username) ON DELETE CASCADE, "
                     + "CONSTRAINT exercisesPK PRIMARY KEY (exerciseName, username))");
@@ -153,7 +153,7 @@ public class Broker {
                     + "date DATE, "
                     + "time TIME, "
                     + "lengthOfExerciseInMinutes INTEGER, "
-                    + "exerciseName VARCHAR(15), "
+                    + "exerciseName VARCHAR(50), "
                     + "username VARCHAR(15), "
                     + "CONSTRAINT aerobicExerciseEntriesFK FOREIGN KEY(exerciseName, username) REFERENCES exercises (exerciseName, username) ON DELETE CASCADE, "
                     + "CONSTRAINT aerobicExerciseEntriesPK PRIMARY KEY (exerciseEntryID))");
@@ -171,7 +171,7 @@ public class Broker {
                     + "set1Reps INTEGER, "
                     + "set2Weight INTEGER, "
                     + "set2Reps INTEGER, "
-                    + "exerciseName VARCHAR(15), "
+                    + "exerciseName VARCHAR(50), "
                     + "username VARCHAR(15), "
                     + "CONSTRAINT exerciseEntriesFK FOREIGN KEY(exerciseName, username) REFERENCES exercises (exerciseName, username) ON DELETE CASCADE, "
                     + "CONSTRAINT exerciseEntriesPK PRIMARY KEY (exerciseEntryID))");

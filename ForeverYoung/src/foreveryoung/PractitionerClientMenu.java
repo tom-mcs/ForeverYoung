@@ -130,11 +130,14 @@ public class PractitionerClientMenu extends JPanel{
                 numEntries = we.getNumberOfEntries();
             }
         }
+        
         weightsTable = new JTable(2*weights.size()+2, 2*numEntries + 2);
+        weightsTable.removeAll();
         for(int x = 0 ; x < numEntries; x++){
             weightsTable.setValueAt("Set 1", 0 , (x+1)*2);
             weightsTable.setValueAt("Set 2", 0 , ((x+1)*2)+1);
         }
+        
         for(int i = 0 ; i < weights.size(); i++){
             WeightExercise exercise = weights.get(i);
             ArrayList<WeightExerciseEntry> entries = exercise.getEntries();

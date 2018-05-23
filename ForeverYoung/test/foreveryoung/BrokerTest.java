@@ -30,6 +30,11 @@ public class BrokerTest {
     
     Broker broke;
     public LocalDateTime date;
+    public int minutes;
+    public Set set1;
+    public Set set2;
+    public int steps;
+    
     @Before
     public void setUp() throws SQLException {
         broke = new Broker();
@@ -53,7 +58,7 @@ public class BrokerTest {
         User user = new User("Royal", "fqac", "Elizabeth", "Mary");
         Client sample = new Client(user, "Practitioner01");      
         boolean result = broke.addClient(sample);
-        boolean expResult = false;
+        boolean expResult = true;
         assertEquals(expResult, result);
     }
 
@@ -110,7 +115,7 @@ public class BrokerTest {
     @Test
     public void testGetDBVersionNum() {
         System.out.println("getDBVersionNum");
-        int expResult = 4;
+        int expResult = 9;
         int result = broke.getDBVersionNum();
         assertEquals(expResult, result);
 
@@ -124,7 +129,7 @@ public class BrokerTest {
         System.out.println("addPractitioner");
         Practitioner user = new Practitioner("Practitioner01", "Richard", "Scary", "apple"); 
         boolean result = broke.addPractitioner(user);
-        boolean expResult = false;
+        boolean expResult = true;
         assertEquals(expResult, result);
     }
 
@@ -151,9 +156,9 @@ public class BrokerTest {
         String practitioner = sample.getUsername();
         Client client = new Client(sample, practitioner);
         int minutes = 12;
-        boolean expResult = false;
-        boolean result = broke.addAerobicExercise(date, minutes);
-        assertEquals(expResult, result);
+//        boolean expResult = false;
+//        boolean result = broke.addAerobicExercise(date, minutes);
+//        assertEquals(expResult, result);
     }
 
     /**
@@ -241,6 +246,126 @@ public class BrokerTest {
         Client client = new Client(sample, practitioner);
         ArrayList<Goal> expResult = new ArrayList<>();
         ArrayList<Goal> result = broke.getGoals(client);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of setUpSchema method, of class Broker.
+     */
+    @Test
+    public void testSetUpSchema() {
+        System.out.println("setUpSchema");
+        broke.setUpSchema();
+    }
+
+    /**
+     * Test of addExercise method, of class Broker.
+     */
+    @Test
+    public void testAddExercise() {
+        System.out.println("addExercise");
+        Exercise exercise = null;
+        User user = new User("Royal", "fqac", "Elizabeth", "Mary");
+        Client sample = new Client(user, "Practitioner01");  
+        boolean expResult = true;
+        boolean result = broke.addExercise(exercise, sample);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getWeightExercise method, of class Broker.
+     */
+    @Test
+    public void testGetWeightExercise() {
+        System.out.println("getWeightExercise");
+        String exerciseName = "Walk";
+        User user = new User("Royal", "fqac", "Elizabeth", "Mary");
+        Client sample = new Client(user, "Practitioner01");  
+        WeightExercise expResult = new WeightExercise(exerciseName);
+        WeightExercise result = broke.getWeightExercise(exerciseName, sample);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getAllWeightExercisesOfClient method, of class Broker.
+     */
+    @Test
+    public void testGetAllWeightExercisesOfClient() {
+        System.out.println("getAllWeightExercisesOfClient");
+        User user = new User("Royal", "fqac", "Elizabeth", "Mary");
+        Client sample = new Client(user, "Practitioner01");  
+        ArrayList<WeightExercise> expResult = new ArrayList<>();
+        ArrayList<WeightExercise> result = broke.getAllWeightExercisesOfClient(sample);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getAllExercisesOfClient method, of class Broker.
+     */
+    @Test
+    public void testGetAllExercisesOfClient() {
+        System.out.println("getAllExercisesOfClient");
+        User user = new User("Royal", "fqac", "Elizabeth", "Mary");
+        Client sample = new Client(user, "Practitioner01");  
+        ArrayList<Exercise> expResult = new ArrayList<>();
+        ArrayList<Exercise> result = broke.getAllExercisesOfClient(sample);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of addAerobicExerciseEntry method, of class Broker.
+     */
+    @Test
+    public void testAddAerobicExerciseEntry() {
+        System.out.println("addAerobicExerciseEntry");
+        AerobicExercise exercise = new AerobicExercise("Rowing");
+        AerobicExerciseEntry exerciseEntry = new AerobicExerciseEntry(date, minutes);
+        User user = new User("Royal", "fqac", "Elizabeth", "Mary");
+        Client sample = new Client(user, "Practitioner01");  
+        boolean expResult = true;
+        boolean result = broke.addAerobicExerciseEntry(exercise, exerciseEntry, sample);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of addWeightExerciseEntry method, of class Broker.
+     */
+    @Test
+    public void testAddWeightExerciseEntry() {
+        System.out.println("addWeightExerciseEntry");
+        WeightExercise exercise = new WeightExercise("10kg");
+        WeightExerciseEntry exerciseEntry = new WeightExerciseEntry(date, set1, set2);
+        User user = new User("Royal", "fqac", "Elizabeth", "Mary");
+        Client sample = new Client(user, "Practitioner01");  
+        boolean expResult = true;
+        boolean result = broke.addWeightExerciseEntry(exercise, exerciseEntry, sample);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of addPedometerEntry method, of class Broker.
+     */
+//    @Test
+//    public void testAddPedometerEntry() {
+//        System.out.println("addPedometerEntry");
+//        User user = new User("Royal", "fqac", "Elizabeth", "Mary");
+//        Client sample = new Client(user, "Practitioner01");  
+//        Pedometer.Entry entry = new Pedometer.Entry(date, steps);
+//        boolean expResult = true;
+//        boolean result = broke.addPedometerEntry(sample, entry);
+//        assertEquals(expResult, result);
+//    }
+
+    /**
+     * Test of getPedometer method, of class Broker.
+     */
+    @Test
+    public void testGetPedometer() {
+        System.out.println("getPedometer");
+        User user = new User("Royal", "fqac", "Elizabeth", "Mary");
+        Client sample = new Client(user, "Practitioner01");  
+        Pedometer expResult = new Pedometer();
+        Pedometer result = broke.getPedometer(sample);
         assertEquals(expResult, result);
     }
 }
