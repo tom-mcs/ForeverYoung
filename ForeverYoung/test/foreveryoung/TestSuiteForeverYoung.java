@@ -17,7 +17,8 @@ import org.junit.runners.Suite;
  * each individual test class
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({foreveryoung.UserTest.class, foreveryoung.PractitionerTest.class, foreveryoung.AerobicExerciseTest.class, foreveryoung.PedometerTest.class, foreveryoung.BrokerTest.class, foreveryoung.ClientTest.class, foreveryoung.GoalTest.class})
+@Suite.SuiteClasses({foreveryoung.UserTest.class, foreveryoung.PractitionerTest.class, foreveryoung.AerobicExerciseTest.class, foreveryoung.PedometerTest.class, foreveryoung.BrokerTest.class, foreveryoung.ClientTest.class, foreveryoung.GoalTest.class, foreveryoung.SetTest.class,
+                     foreveryoung.AerobicExerciseEntryTest.class, foreveryoung.WeightExerciseEntryTest.class, foreveryoung.WeightExerciseTest.class})
 public class TestSuiteForeverYoung {
 
     @Before

@@ -291,7 +291,7 @@ public class BrokerTest {
     @Test
     public void testGetAllExercisesOfClient() {
         System.out.println("getAllExercisesOfClient");
-        User user = new User("Royal", "fqac", "Elizabeth", "Mary");
+        User user = new User();
         Client sample = new Client(user, "Practitioner01");  
         ArrayList<Exercise> expResult = new ArrayList<>();
         ArrayList<Exercise> result = broke.getAllExercisesOfClient(sample);

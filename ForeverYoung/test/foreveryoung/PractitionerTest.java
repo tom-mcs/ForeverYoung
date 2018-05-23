@@ -21,7 +21,7 @@ public class PractitionerTest {
     }
     
     Broker broke;
-    
+    Client cli;
     @Before
     public void setUp() throws SQLException {
         broke = new Broker();
@@ -29,6 +29,7 @@ public class PractitionerTest {
 
     /**
      * Test of newClient method, of class Practitioner.
+     * Working with two objects with matching values. Expected to fail the test. 
      */
     @Test
     public void testNewClient() {        

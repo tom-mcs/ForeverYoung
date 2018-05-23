@@ -33,7 +33,7 @@ public class AerobicExerciseEntryTest {
     public void testToString() {
         System.out.println("toString");
         AerobicExerciseEntry instance = new AerobicExerciseEntry(date, minutes);
-        String expResult = instance.toString();
+        String expResult = "Entry{" + "date=" + date + ", minutes=" + minutes + '}';
         String result = instance.toString();
         assertEquals(expResult, result);
     }
