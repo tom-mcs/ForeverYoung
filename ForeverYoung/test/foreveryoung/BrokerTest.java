@@ -115,7 +115,7 @@ public class BrokerTest {
     @Test
     public void testGetDBVersionNum() {
         System.out.println("getDBVersionNum");
-        int expResult = 9;
+        int expResult = 10;
         int result = broke.getDBVersionNum();
         assertEquals(expResult, result);
 
@@ -145,22 +145,7 @@ public class BrokerTest {
         broke.removeUser(user);
     }
 
-    /**
-     * Test of addAerobicExercise method, of class Broker.
-     */
-    @Test
-    public void testAddAerobicExercise() {
-        System.out.println("addAerobicExercise");
-        AerobicExercise exercise = new AerobicExercise("Rowing");
-        User sample = new User();
-        String practitioner = sample.getUsername();
-        Client client = new Client(sample, practitioner);
-        int minutes = 12;
-//        boolean expResult = false;
-//        boolean result = broke.addAerobicExercise(date, minutes);
-//        assertEquals(expResult, result);
-    }
-
+ 
     /**
      * Test of getAerobicExercise method, of class Broker.
      */
@@ -260,11 +245,12 @@ public class BrokerTest {
 
     /**
      * Test of addExercise method, of class Broker.
+     * Expected to fail due to the exercise variable being abstract
      */
     @Test
     public void testAddExercise() {
         System.out.println("addExercise");
-        Exercise exercise = null;
+        AerobicExercise exercise = new AerobicExercise("Rowing");
         User user = new User("Royal", "fqac", "Elizabeth", "Mary");
         Client sample = new Client(user, "Practitioner01");  
         boolean expResult = true;
