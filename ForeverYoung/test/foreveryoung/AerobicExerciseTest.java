@@ -38,8 +38,8 @@ public class AerobicExerciseTest {
     public void testGetEntries() {
         System.out.println("getEntries");
         AerobicExercise instance = new AerobicExercise("Rowing");
-        ArrayList<AerobicExercise.Entry> expResult = new ArrayList<>();
-        ArrayList<AerobicExercise.Entry> result = instance.getEntries();
+        ArrayList<AerobicExerciseEntry> expResult = new ArrayList<>();
+        ArrayList<AerobicExerciseEntry> result = instance.getEntries();
         assertEquals(expResult, result);
     }
 
@@ -77,8 +77,8 @@ public class AerobicExerciseTest {
         System.out.println("addEntry");
         int minutes = 3;
         AerobicExercise instance = new AerobicExercise("Rowing");
-        AerobicExercise.Entry expResult = instance.addEntry(minutes);
-        AerobicExercise.Entry result = instance.addEntry(minutes);
+        AerobicExerciseEntry expResult = instance.addEntry(minutes);
+        AerobicExerciseEntry result = instance.addEntry(minutes);
         assertEquals(expResult, result);
     }
 
