@@ -120,5 +120,32 @@ public class ClientTest {
         String result = client.toString();
         assertEquals(expResult, result);
     }
+
+    /**
+     * Test of addWeightExercise method, of class Client.
+     */
+    @Test
+    public void testAddWeightExercise() {
+        System.out.println("addWeightExercise");
+        WeightExercise we = new WeightExercise("Rowing");
+        User user = new User("Royal", "fqac", "Elizabeth", "Mary");
+        Client sample = new Client(user, "Practitioner01"); 
+        boolean expResult = true;
+        boolean result = sample.addWeightExercise(we);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getWeightExercises method, of class Client.
+     */
+    @Test
+    public void testGetWeightExercises() {
+        System.out.println("getWeightExercises");
+        User user = new User("Royal", "fqac", "Elizabeth", "Mary");
+        Client sample = new Client(user, "Practitioner01"); 
+        ArrayList<WeightExercise> expResult = new ArrayList<>();
+        ArrayList<WeightExercise> result = sample.getWeightExercises();
+        assertEquals(expResult, result);
+    }
     
 }
