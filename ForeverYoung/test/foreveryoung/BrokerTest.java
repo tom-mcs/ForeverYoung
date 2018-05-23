@@ -6,6 +6,7 @@
 package foreveryoung;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +29,7 @@ public class BrokerTest {
      */
     
     Broker broke;
-    
+    public LocalDateTime date;
     @Before
     public void setUp() throws SQLException {
         broke = new Broker();
@@ -149,8 +150,9 @@ public class BrokerTest {
         User sample = new User();
         String practitioner = sample.getUsername();
         Client client = new Client(sample, practitioner);
+        int minutes = 12;
         boolean expResult = false;
-        boolean result = broke.addAerobicExercise(exercise, client);
+        boolean result = broke.addAerobicExercise(date, minutes);
         assertEquals(expResult, result);
     }
 
@@ -190,12 +192,11 @@ public class BrokerTest {
     public void testAddExerciseEntry() {
         System.out.println("addExerciseEntry");
         AerobicExercise exercise = new AerobicExercise("Walk");
-        AerobicExercise.Entry entry = null;
         User sample = new User();
         String practitioner = sample.getUsername();
         Client client = new Client(sample, practitioner);
         boolean expResult = false;
-        boolean result = broke.addExerciseEntry(exercise, entry, client);
+        boolean result = broke.addExercise(exercise, client);
         assertEquals(expResult, result);
     }
 

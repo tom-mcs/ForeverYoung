@@ -6,6 +6,7 @@
 package foreveryoung;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -21,7 +22,7 @@ public class PedometerTest {
     }
     
     Broker broke;
-    
+    public LocalDateTime date;
     @Before
     public void setUp() throws SQLException{
         broke = new Broker();
@@ -34,7 +35,7 @@ public class PedometerTest {
     public void testAddEntry() {
         System.out.println("addEntry");
         int steps = 10;
-        Pedometer instance = new Pedometer("entry01");
+        Pedometer instance = new Pedometer();
         boolean expResult = true;
         boolean result = instance.addEntry(steps);
         assertEquals(expResult, result);
@@ -47,7 +48,7 @@ public class PedometerTest {
     public void testRemoveEntry() {
         System.out.println("RemoveEntry");
         int i = 1;
-        Pedometer instance = new Pedometer("entry01");
+        Pedometer instance = new Pedometer();
         boolean expResult = false;
         boolean result = instance.RemoveEntry(i);
         assertEquals(expResult, result);
