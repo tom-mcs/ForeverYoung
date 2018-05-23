@@ -64,9 +64,11 @@ public class PractitionerClientMenuController {
             AddGoalOP addGoalOP = new AddGoalOP();
             String name = addGoalOP.getGoalName();
             String description = addGoalOP.getDescription();
-            Goal goal = new Goal(name, description);
-            client.addGoal(goal);
-            broker.addGoal(goal, client);
+            if(!name.isEmpty() && !description.isEmpty()){
+                Goal goal = new Goal(name, description);
+                client.addGoal(goal);
+                broker.addGoal(goal, client);
+            }
             menu.updateTables();
         }
     }

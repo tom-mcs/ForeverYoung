@@ -103,6 +103,7 @@ public class PractitionerClientMenu extends JPanel{
             }
         }
         exerciseTable = new JTable(exercises.size()+1, numEntries + 1);
+        exerciseTable.removeAll();
         for(int i = 0 ; i < exercises.size(); i++){
             exerciseTable.setValueAt("Exercise Name" , 0, 0);
             exerciseTable.setValueAt(exercises.get(i).getName(), i+1, 0);
@@ -116,6 +117,7 @@ public class PractitionerClientMenu extends JPanel{
         }
         ArrayList<Goal> goals = client.getGoals();
         goalTable = new JTable(goals.size(), 3);
+        goalTable.removeAll();
         String columnNames[] = {"Goal","Description","Completed"};
        
         for(int i = 0 ; i < goals.size(); i++){
@@ -123,8 +125,12 @@ public class PractitionerClientMenu extends JPanel{
             goalTable.setValueAt(goals.get(i).getDescription(), i, 1);
             goalTable.setValueAt(goals.get(i).isCompleted(), i, 2);
         }
-        ArrayList<WeightExercise> weights = client.getWeightExercises();
+        ArrayList<WeightExercise> weights = new ArrayList<>();
+        weights.clear();
+        System.out.println(weights);
+        weights = client.getWeightExercises();
         numEntries = 0;
+        System.out.println(weights);
         for(WeightExercise we : weights){
             if (we.getNumberOfEntries() > numEntries){
                 numEntries = we.getNumberOfEntries();

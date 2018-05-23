@@ -61,9 +61,11 @@ public class ClientMenuController {
             menu.updateTables();
         }
         if(menu.isAddWeightClicked()){
+            menu.setAddWeightClicked(false);
             WeightExercise exercise = menu.getWeightExercise();
             try{
-                WeightExerciseEntry entry = exercise.addEntry(10,101,10,300);
+                AddWeightEntryPane pane = new AddWeightEntryPane();
+                WeightExerciseEntry entry = exercise.addEntry(pane.getSet1weight(),pane.getSet1reps(),pane.getSet2weight(),pane.getSet2reps());
                 broker.addWeightExerciseEntry(exercise, entry , client);
             }
             catch(NumberFormatException e){
@@ -72,8 +74,7 @@ public class ClientMenuController {
             }
             catch(NullPointerException e){
                 System.out.println(e);
-            }
-            menu.setAddEntryClicked(false);
+            };
             menu.updateTables();
         }
         if(menu.isCompleteGoalClicked()){

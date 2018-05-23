@@ -36,6 +36,9 @@ public class Client extends User{
     }
     
     public boolean loadStats(Broker broker){
+        aerobicExercises.clear();
+        weightExercises.clear();
+        goals.clear();
         ArrayList<AerobicExercise> aeList = broker.getAllAerobicExercisesOfClient(this);
         for(AerobicExercise a : aeList){
             if(!addAerobicExercise(a)){
@@ -62,14 +65,29 @@ public class Client extends User{
     }
     
     public boolean addAerobicExercise(AerobicExercise ae){
+        for(AerobicExercise e : aerobicExercises){
+            if (e.getName().equals(ae.getName())){
+                return false;    
+            }
+        }
         return aerobicExercises.add(ae);
     }
     
     public boolean addWeightExercise(WeightExercise we){
+        for(WeightExercise e : weightExercises){
+            if (e.getName().equals(we.getName())){
+                return false;    
+            }
+        }
         return weightExercises.add(we);
     }
     
     public boolean addGoal(Goal goal){
+        for(Goal g : goals){
+            if (g.getName().equals(goal.getName())){
+                return false;    
+            }
+        }
         return goals.add(goal);
     }
     
