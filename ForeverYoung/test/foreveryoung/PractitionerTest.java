@@ -21,7 +21,7 @@ public class PractitionerTest {
     }
     
     Broker broke;
-    Client cli;
+  
     @Before
     public void setUp() throws SQLException {
         broke = new Broker();
@@ -34,8 +34,8 @@ public class PractitionerTest {
     @Test
     public void testNewClient() {        
         Practitioner pract = new Practitioner("Ryan", "pass", "R","C");
-        Client client = new Client("client011", "password", "John", "Doe", "Ryan");
-        Client expResult = client;
+        Client cli = new Client("client011", "password", "John", "Doe", "Ryan");
+        Client expResult = cli;
         Client result = pract.newClient("client011", "password", "John", "Doe");
         assertEquals(expResult, result);
     }
