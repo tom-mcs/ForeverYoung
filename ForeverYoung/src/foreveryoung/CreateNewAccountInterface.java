@@ -5,6 +5,7 @@
  */
 package foreveryoung;
 
+import static foreveryoung.ForeverYoung.textFont;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -71,6 +72,19 @@ public class CreateNewAccountInterface extends JPanel{
         JLabel lnLabel = new JLabel("Last Name:", SwingConstants.RIGHT);
         JLabel pLabel = new JLabel("Password:", SwingConstants.RIGHT);
         JLabel p2Label = new JLabel("Re-enter password", SwingConstants.RIGHT);
+        uLabel.setFont(textFont);
+        fnLabel.setFont(textFont);
+        lnLabel.setFont(textFont);
+        pLabel.setFont(textFont);
+        p2Label.setFont(textFont);
+        userNameTextField.setFont(textFont);
+        firstNameTextField.setFont(textFont);
+        lastNameTextField.setFont(textFont);
+        passwordField1.setFont(textFont);
+        passwordField2.setFont(textFont);
+        createButton.setFont(textFont);
+        cancel.setFont(textFont);
+        
         JLabel logo  = new JLabel(new ImageIcon("./lph.png"));
         
         //Add components to panels

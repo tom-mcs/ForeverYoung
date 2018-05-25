@@ -5,6 +5,7 @@
  */
 package foreveryoung;
 
+import static foreveryoung.ForeverYoung.textFont;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -25,7 +26,7 @@ public class AddGoalOP {
     private JPanel mainPanel;
     private JPanel fieldPanel;
     private JTextField nameField = new JTextField();
-    private JTextArea description = new JTextArea();
+    private JTextField description = new JTextField();
     private int n;
     
     public AddGoalOP(){
@@ -34,9 +35,17 @@ public class AddGoalOP {
         fieldPanel = new JPanel(new GridLayout(2,2));
         mainPanel.add(fieldPanel);
         
+        JLabel goalLabel = new JLabel("Goal Name: ");
+        JLabel descriptionLabel = new JLabel("Description: ");
+        goalLabel.setFont(textFont);
+        descriptionLabel.setFont(textFont);
+        
+        
         fieldPanel.add(new JLabel("Goal Name: "));
+        nameField.setFont(textFont);
         fieldPanel.add(nameField);
         fieldPanel.add(new JLabel("Description: "));
+        description.setFont(textFont);
         fieldPanel.add(description);
              
         
