@@ -22,6 +22,7 @@ public class addAerobicEntryPane {
     private JPanel mainPanel;
     private JPanel fieldPanel;
     private JTextField minutesField;
+    private int n;
         
     public addAerobicEntryPane(){
         mainPanel = new JPanel(new GridLayout(2, 1));
@@ -34,10 +35,13 @@ public class addAerobicEntryPane {
         fieldPanel.add(minutesField);
         
         JFrame frame = new JFrame();
-        JOptionPane.showConfirmDialog(frame, mainPanel, "Add Entry: " , JOptionPane.OK_CANCEL_OPTION);
+        n = JOptionPane.showConfirmDialog(frame, mainPanel, "Add Entry: " , JOptionPane.OK_CANCEL_OPTION);
     }
     
-    public String getMinutes(){
-        return minutesField.getText();
+    public int getMinutes(){
+        if(n == JOptionPane.OK_OPTION){
+            return Integer.parseInt(minutesField.getText());
+        }
+        return 0;
     }
 }

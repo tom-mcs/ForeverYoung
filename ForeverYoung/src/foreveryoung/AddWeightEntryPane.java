@@ -25,6 +25,7 @@ public class AddWeightEntryPane {
     private JTextField set2weight;
     private JTextField set1reps;
     private JTextField set2reps;
+    private int n;
         
     public AddWeightEntryPane(){
         mainPanel = new JPanel(new GridLayout(1, 1));
@@ -46,22 +47,34 @@ public class AddWeightEntryPane {
         fieldPanel.add(set2reps);
         
         JFrame frame = new JFrame();
-        JOptionPane.showConfirmDialog(frame, mainPanel, "Add Entry: " , JOptionPane.OK_CANCEL_OPTION);
+        n = JOptionPane.showConfirmDialog(frame, mainPanel, "Add Entry: " , JOptionPane.OK_CANCEL_OPTION);
     }
 
     public int getSet1weight() {
+        if(n == JOptionPane.CANCEL_OPTION){
+            return -1;
+        }
         return Integer.parseInt(set1weight.getText());
     }
 
     public int getSet2weight() {
+        if(n == JOptionPane.CANCEL_OPTION){
+            return -1;
+        }
         return Integer.parseInt(set2weight.getText());
     }
     
     public int getSet1reps() {
+        if(n == JOptionPane.CANCEL_OPTION){
+            return -1;
+        }
         return Integer.parseInt(set1reps.getText());
     }
     
     public int getSet2reps() {
+        if(n == JOptionPane.CANCEL_OPTION){
+            return -1;
+        }
         return Integer.parseInt(set2reps.getText());
     }
     

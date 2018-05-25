@@ -9,6 +9,7 @@ package foreveryoung;
 import static java.lang.Thread.sleep;
 import javax.swing.JOptionPane;
 import static java.lang.Thread.sleep;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -47,8 +48,12 @@ public class ClientMenuController {
         if(menu.isAddEntryClicked()){
             AerobicExercise exercise = menu.getAerobicExercise();
             try{
-                AerobicExerciseEntry entry = exercise.addEntry(Integer.parseInt(new addAerobicEntryPane().getMinutes()));
-                broker.addAerobicExerciseEntry(exercise, entry , client);
+                addAerobicEntryPane pane = new addAerobicEntryPane();
+                int minutes = pane.getMinutes();
+                if (minutes > 0 ){
+                    AerobicExerciseEntry entry = exercise.addEntry(minutes);
+                    broker.addAerobicExerciseEntry(exercise, entry , client);
+                }
             }
             catch(NumberFormatException e){
                 JOptionPane.showMessageDialog(null, "Enter A number", "Whoops!", JOptionPane.ERROR_MESSAGE);
@@ -65,8 +70,11 @@ public class ClientMenuController {
             WeightExercise exercise = menu.getWeightExercise();
             try{
                 AddWeightEntryPane pane = new AddWeightEntryPane();
-                WeightExerciseEntry entry = exercise.addEntry(pane.getSet1weight(),pane.getSet1reps(),pane.getSet2weight(),pane.getSet2reps());
-                broker.addWeightExerciseEntry(exercise, entry , client);
+                boolean entryTest = exercise.addEntry(pane.getSet1weight(),pane.getSet1reps(),pane.getSet2weight(),pane.getSet2reps(), LocalDateTime.now());
+                if (entryTest){
+                    WeightExerciseEntry entry = exercise.addEntry(pane.getSet1weight(),pane.getSet1reps(),pane.getSet2weight(),pane.getSet2reps());
+                    broker.addWeightExerciseEntry(exercise, entry , client);
+                }
             }
             catch(NumberFormatException e){
                 JOptionPane.showMessageDialog(null, "Enter A number", "Whoops!", JOptionPane.ERROR_MESSAGE);

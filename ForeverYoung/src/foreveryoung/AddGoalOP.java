@@ -26,6 +26,7 @@ public class AddGoalOP {
     private JPanel fieldPanel;
     private JTextField nameField = new JTextField();
     private JTextArea description = new JTextArea();
+    private int n;
     
     public AddGoalOP(){
         mainPanel = new JPanel(new GridLayout());
@@ -40,14 +41,20 @@ public class AddGoalOP {
              
         
         JFrame frame = new JFrame();
-        JOptionPane.showConfirmDialog(frame, mainPanel, "New Goal", JOptionPane.OK_CANCEL_OPTION);
+        n = JOptionPane.showConfirmDialog(frame, mainPanel, "New Goal", JOptionPane.OK_CANCEL_OPTION);
     }
     
     public String getGoalName(){
+        if(n == JOptionPane.CANCEL_OPTION){
+            return "";
+        }
         return nameField.getText();
     }
     
     public String getDescription(){
+        if(n == JOptionPane.CANCEL_OPTION){
+            return "";
+        }
         return description.getText();
     }
     

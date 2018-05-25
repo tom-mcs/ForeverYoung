@@ -27,6 +27,7 @@ public class addExerciseOP {
     private String[] WeightsExercises = {"Seated Lateral Raise", "Bicep Curl", "Shoulder Shrug", "One Arm Triceps", "One Arm Row", "Chest Press", "Abdominal Crunch", "Leg Extention", "Heel Raises", "Hamstring Curl", "Gluteals Extension", "Body Weight Squat"};
     private JComboBox comboBox;
     private String type;
+    int n;
     
     public addExerciseOP(String type){
         if(type == "aerobic"){
@@ -44,11 +45,14 @@ public class addExerciseOP {
         fieldPanel.add(comboBox);
         
         JFrame frame = new JFrame();
-        JOptionPane.showConfirmDialog(frame, mainPanel, "Exercise Name", JOptionPane.OK_CANCEL_OPTION);
+        n = JOptionPane.showConfirmDialog(frame, mainPanel, "Exercise Name", JOptionPane.OK_CANCEL_OPTION);
     }
     
     public String getExerciseName(){
-        return (String)comboBox.getSelectedItem();
+        if (n == JOptionPane.OK_OPTION){
+            return (String)comboBox.getSelectedItem();
+        }
+        return "";
     }
     
 }
