@@ -88,9 +88,15 @@ public class ClientMenuController {
         if(menu.isCompleteGoalClicked()){
             menu.setCompleteGoalClicked(false);
             Goal goal = menu.getGoal();
-            goal.setCompleted(true);
+            try {
+                goal.setCompleted(true);
             broker.setGoalAsCompleted(goal, client);
             menu.updateTables();
+            } 
+            catch(NullPointerException e){
+                System.out.println(e);
+            }
+            
         }
     }
     
