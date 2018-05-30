@@ -6,8 +6,8 @@
 package foreveryoung;
 
 import static foreveryoung.ForeverYoung.textFont;
-import static foreveryoung.MainFrame.screenHeight;
-import static foreveryoung.MainFrame.screenWidth;
+//import static foreveryoung.MainFrame.screenHeight;
+//import static foreveryoung.MainFrame.screenWidth;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
