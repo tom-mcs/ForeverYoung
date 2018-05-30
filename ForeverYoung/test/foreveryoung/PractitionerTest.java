@@ -30,6 +30,7 @@ public class PractitionerTest {
     /**
      * Test of newClient method, of class Practitioner.
      * Working with two objects with matching values. Expected to fail the test. 
+     * 
      */
     @Test
     public void testNewClient() {        

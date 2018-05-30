@@ -332,24 +332,29 @@ public class BrokerTest {
 
     /**
      * Test of addWeightExerciseEntry method, of class Broker.
+     * Test appears to fail somewhere database wise, even though the test
+     * keeps running forever like a while loop. Oddly, it appears that the test 
+     * doesn't show up on the test suite, assumed to be hidden/invisible fail. 
      */
     @Test
     public void testAddWeightExerciseEntry() {
+        
         System.out.println("addWeightExerciseEntry");
         User user = new User("Royal", "fqac", "Elizabeth", "Mary");
-        Client sample = new Client(user, "practitioner01");
-        broke.removeUser(sample);
+        Client sample = new Client(user, "practitioner01"); 
+        broke.addClient(sample);
         WeightExercise exercise = new WeightExercise("Chest Press");
         LocalDateTime today = LocalDateTime.now();
         Set setA = new Set(1, 5); 
         Set setB = new Set(3, 9);
-        WeightExerciseEntry exerciseEntry = new WeightExerciseEntry(today, setA, setB);
+        WeightExerciseEntry exerciseEntry = new WeightExerciseEntry(today, setA, setB);         
         
-        broke.addClient(sample);
         boolean expResult = true;
         boolean result = broke.addWeightExerciseEntry(exercise, exerciseEntry, sample);
-    
+        broke.removeUser(sample);
         assertEquals(expResult, result);
+        
+        
     }
 
     /**
